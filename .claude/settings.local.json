@@ -8,7 +8,13 @@
       "Bash(pnpm articles:list:*)",
       "Bash(pnpm articles:build:*)",
       "Bash(timeout 10 pnpm dev:*)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "Bash(npm run articles:build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm run articles:build:*)",
+      "Bash(pnpm run build:*)"
     ]
   }
 }

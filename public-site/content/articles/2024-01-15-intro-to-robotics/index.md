@@ -15,6 +15,10 @@ feature_image_alt: 'A colorful robot toy on a desk'
 feature_image_caption: 'Photo by Unsplash'
 excerpt: "Learn the basics of robotics with this beginner-friendly guide. We'll explore what robots are, how they work, and build a simple robot together."
 status: published
+next: chemistry-basics
+validated_tutorial: true
+supported_evidence: true
+community_approved: 24
 ---
 
 # What is a Robot?

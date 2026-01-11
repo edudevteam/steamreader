@@ -78,7 +78,11 @@
         "caption": "Photo by Unsplash"
       },
       "readingTime": 3,
-      "status": "published"
+      "status": "published",
+      "previousArticle": {
+        "slug": "intro-to-robotics",
+        "title": "Introduction to Robotics for Kids"
+      }
     },
     {
       "slug": "intro-to-robotics",
@@ -118,9 +122,18 @@
         "caption": "Photo by Unsplash"
       },
       "readingTime": 2,
-      "status": "published"
+      "status": "published",
+      "validation": {
+        "validatedTutorial": true,
+        "supportedEvidence": true,
+        "communityApproved": 24
+      },
+      "nextArticle": {
+        "slug": "chemistry-basics",
+        "title": "Chemistry in the Kitchen"
+      }
     }
   ],
   "totalCount": 3,
-  "lastUpdated": "2026-01-11T03:42:17.766Z"
+  "lastUpdated": "2026-01-11T22:15:22.352Z"
 }

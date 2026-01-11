@@ -2,12 +2,26 @@ import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
 import { marked } from 'marked'
+import { markedHighlight } from 'marked-highlight'
+import hljs from 'highlight.js'
 import readingTime from 'reading-time'
 import slugify from 'slugify'
 import chalk from 'chalk'
+
+// Configure marked with syntax highlighting
+marked.use(
+  markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext'
+      return hljs.highlight(code, { language }).value
+    }
+  })
+)
 import type {
   Article,
   ArticleMeta,
+  ArticleRef,
   ArticlesIndex,
   Frontmatter,
   Category,
@@ -18,6 +32,12 @@ import type {
 const CONTENT_DIR = path.join(process.cwd(), 'content/articles')
 const OUTPUT_DIR = path.join(process.cwd(), 'src/data')
 const ARTICLES_OUTPUT_DIR = path.join(OUTPUT_DIR, 'articles')
+
+// Intermediate type for articles before resolving prev/next references
+interface ArticleWithRawRefs extends Omit<Article, 'previousArticle' | 'nextArticle'> {
+  _previousSlug?: string
+  _nextSlug?: string
+}
 
 function generateSlug(text: string): string {
   return slugify(text, { lower: true, strict: true })
@@ -35,7 +55,7 @@ function generateExcerpt(content: string, length = 160): string {
   return plainText.length > length ? plainText.slice(0, length).trim() + '...' : plainText
 }
 
-async function processArticle(dirName: string): Promise<Article | null> {
+async function processArticle(dirName: string): Promise<ArticleWithRawRefs | null> {
   const articlePath = path.join(CONTENT_DIR, dirName, 'index.md')
 
   try {
@@ -59,7 +79,7 @@ async function processArticle(dirName: string): Promise<Article | null> {
       featureImageSrc = `https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200`
     }
 
-    const article: Article = {
+    const article: ArticleWithRawRefs = {
       slug,
       title: frontmatter.title,
       subtitle: frontmatter.subtitle,
@@ -85,7 +105,14 @@ async function processArticle(dirName: string): Promise<Article | null> {
       },
       readingTime: Math.ceil(stats.minutes),
       status: frontmatter.status || 'published',
-      content: htmlContent
+      validation: (frontmatter.validated_tutorial || frontmatter.supported_evidence || frontmatter.community_approved) ? {
+        validatedTutorial: frontmatter.validated_tutorial,
+        supportedEvidence: frontmatter.supported_evidence,
+        communityApproved: frontmatter.community_approved
+      } : undefined,
+      content: htmlContent,
+      _previousSlug: frontmatter.previous,
+      _nextSlug: frontmatter.next
     }
 
     return article
@@ -93,6 +120,42 @@ async function processArticle(dirName: string): Promise<Article | null> {
     console.error(chalk.red(`Error processing ${dirName}:`), error)
     return null
   }
+}
+
+function resolveArticleRefs(rawArticles: ArticleWithRawRefs[]): Article[] {
+  // Create a map of slug -> title for quick lookups
+  const slugToTitle = new Map<string, string>()
+  for (const article of rawArticles) {
+    slugToTitle.set(article.slug, article.title)
+  }
+
+  return rawArticles.map((raw) => {
+    const { _previousSlug, _nextSlug, ...articleBase } = raw
+
+    const article: Article = { ...articleBase }
+
+    // Resolve previous article reference
+    if (_previousSlug) {
+      const title = slugToTitle.get(_previousSlug)
+      if (title) {
+        article.previousArticle = { slug: _previousSlug, title }
+      } else {
+        console.warn(chalk.yellow(`  Warning: Previous article "${_previousSlug}" not found for "${raw.title}"`))
+      }
+    }
+
+    // Resolve next article reference
+    if (_nextSlug) {
+      const title = slugToTitle.get(_nextSlug)
+      if (title) {
+        article.nextArticle = { slug: _nextSlug, title }
+      } else {
+        console.warn(chalk.yellow(`  Warning: Next article "${_nextSlug}" not found for "${raw.title}"`))
+      }
+    }
+
+    return article
+  })
 }
 
 function extractMeta(article: Article): ArticleMeta {
@@ -120,7 +183,8 @@ export async function buildAllArticles(): Promise<void> {
     articleDirs = []
   }
 
-  const articles: Article[] = []
+  // First pass: process all articles with raw refs
+  const rawArticles: ArticleWithRawRefs[] = []
 
   for (const dir of articleDirs) {
     const stat = await fs.stat(path.join(CONTENT_DIR, dir))
@@ -128,12 +192,17 @@ export async function buildAllArticles(): Promise<void> {
 
     const article = await processArticle(dir)
     if (article && article.status === 'published') {
-      articles.push(article)
-
-      // Write individual article JSON
-      await writeJson(path.join(ARTICLES_OUTPUT_DIR, `${article.slug}.json`), article)
-      console.log(chalk.green(`  ✓ ${article.title}`))
+      rawArticles.push(article)
     }
+  }
+
+  // Second pass: resolve prev/next references
+  const articles = resolveArticleRefs(rawArticles)
+
+  // Write individual article JSON files
+  for (const article of articles) {
+    await writeJson(path.join(ARTICLES_OUTPUT_DIR, `${article.slug}.json`), article)
+    console.log(chalk.green(`  ✓ ${article.title}`))
   }
 
   // Sort by date descending

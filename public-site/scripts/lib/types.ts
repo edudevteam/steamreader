@@ -13,6 +13,17 @@ export interface TagRef {
   name: string
 }
 
+export interface ArticleRef {
+  slug: string
+  title: string
+}
+
+export interface ValidationBadges {
+  validatedTutorial?: boolean
+  supportedEvidence?: boolean
+  communityApproved?: number
+}
+
 export interface FeatureImage {
   src: string
   alt: string
@@ -34,6 +45,9 @@ export interface ArticleMeta {
   featureImage: FeatureImage
   readingTime: number
   status: 'published' | 'draft'
+  previousArticle?: ArticleRef
+  nextArticle?: ArticleRef
+  validation?: ValidationBadges
 }
 
 export interface Article extends ArticleMeta {
@@ -82,4 +96,9 @@ export interface Frontmatter {
   feature_image_caption?: string
   excerpt?: string
   status?: 'published' | 'draft'
+  previous?: string
+  next?: string
+  validated_tutorial?: boolean
+  supported_evidence?: boolean
+  community_approved?: number
 }

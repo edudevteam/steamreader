@@ -10,6 +10,10 @@ import CategoryPage from 'pages/Category'
 import TagPage from 'pages/Tag'
 import AuthorPage from 'pages/Author'
 import SearchPage from 'pages/Search'
+import AboutPage from 'pages/About'
+import ContactPage from 'pages/Contact'
+import NewsletterPage from 'pages/Newsletter'
+import ValidationProcessPage from 'pages/ValidationProcess'
 import NotFoundPage from 'pages/NotFound'
 
 export const router = createBrowserRouter([
@@ -56,6 +60,22 @@ export const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchPage />
+      },
+      {
+        path: 'about',
+        element: <AboutPage />
+      },
+      {
+        path: 'contact',
+        element: <ContactPage />
+      },
+      {
+        path: 'newsletter',
+        element: <NewsletterPage />
+      },
+      {
+        path: 'validation-process',
+        element: <ValidationProcessPage />
       },
       {
         path: '*',

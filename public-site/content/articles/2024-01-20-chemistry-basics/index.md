@@ -15,6 +15,7 @@ feature_image_alt: 'Colorful chemistry experiment with bubbling liquids'
 feature_image_caption: 'Photo by Unsplash'
 excerpt: 'Discover the amazing world of chemistry right in your own kitchen! Learn about chemical reactions, acids and bases, and conduct safe experiments.'
 status: published
+previous: intro-to-robotics
 ---
 
 # Chemistry Is Everywhere
