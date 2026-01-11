@@ -1,0 +1,126 @@
+{
+  "articles": [
+    {
+      "slug": "art-of-coding",
+      "title": "The Art of Coding",
+      "subtitle": "Creative Programming for Young Artists",
+      "excerpt": "Combine creativity with technology! Learn how to create digital art, animations, and interactive stories using code.",
+      "author": {
+        "slug": "maya-johnson",
+        "name": "Maya Johnson"
+      },
+      "publishedAt": "2024-01-25",
+      "category": {
+        "slug": "technology",
+        "name": "Technology"
+      },
+      "tags": [
+        {
+          "slug": "coding",
+          "name": "coding"
+        },
+        {
+          "slug": "art",
+          "name": "art"
+        },
+        {
+          "slug": "creative",
+          "name": "creative"
+        },
+        {
+          "slug": "scratch",
+          "name": "scratch"
+        }
+      ],
+      "featureImage": {
+        "src": "https://images.unsplash.com/photo-1550439062-609e1531270e?w=1200",
+        "alt": "Colorful code on a computer screen",
+        "caption": "Photo by Unsplash"
+      },
+      "readingTime": 3,
+      "status": "published"
+    },
+    {
+      "slug": "chemistry-basics",
+      "title": "Chemistry in the Kitchen",
+      "subtitle": "Fun Science Experiments You Can Do at Home",
+      "excerpt": "Discover the amazing world of chemistry right in your own kitchen! Learn about chemical reactions, acids and bases, and conduct safe experiments.",
+      "author": {
+        "slug": "alex-chen",
+        "name": "Dr. Alex Chen"
+      },
+      "publishedAt": "2024-01-20",
+      "category": {
+        "slug": "science",
+        "name": "Science"
+      },
+      "tags": [
+        {
+          "slug": "chemistry",
+          "name": "chemistry"
+        },
+        {
+          "slug": "experiments",
+          "name": "experiments"
+        },
+        {
+          "slug": "home-science",
+          "name": "home-science"
+        },
+        {
+          "slug": "tutorial",
+          "name": "tutorial"
+        }
+      ],
+      "featureImage": {
+        "src": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200",
+        "alt": "Colorful chemistry experiment with bubbling liquids",
+        "caption": "Photo by Unsplash"
+      },
+      "readingTime": 3,
+      "status": "published"
+    },
+    {
+      "slug": "intro-to-robotics",
+      "title": "Introduction to Robotics for Kids",
+      "subtitle": "Building Your First Robot",
+      "excerpt": "Learn the basics of robotics with this beginner-friendly guide. We'll explore what robots are, how they work, and build a simple robot together.",
+      "author": {
+        "slug": "jane-smith",
+        "name": "Jane Smith"
+      },
+      "publishedAt": "2024-01-15",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "tags": [
+        {
+          "slug": "robotics",
+          "name": "robotics"
+        },
+        {
+          "slug": "electronics",
+          "name": "electronics"
+        },
+        {
+          "slug": "beginner",
+          "name": "beginner"
+        },
+        {
+          "slug": "education",
+          "name": "education"
+        }
+      ],
+      "featureImage": {
+        "src": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200",
+        "alt": "A colorful robot toy on a desk",
+        "caption": "Photo by Unsplash"
+      },
+      "readingTime": 2,
+      "status": "published"
+    }
+  ],
+  "totalCount": 3,
+  "lastUpdated": "2026-01-11T03:42:17.766Z"
+}

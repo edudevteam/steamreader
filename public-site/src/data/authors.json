@@ -1,0 +1,19 @@
+{
+  "authors": [
+    {
+      "slug": "maya-johnson",
+      "name": "Maya Johnson",
+      "articleCount": 1
+    },
+    {
+      "slug": "alex-chen",
+      "name": "Dr. Alex Chen",
+      "articleCount": 1
+    },
+    {
+      "slug": "jane-smith",
+      "name": "Jane Smith",
+      "articleCount": 1
+    }
+  ]
+}
