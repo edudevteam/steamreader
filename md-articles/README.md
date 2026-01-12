@@ -78,7 +78,7 @@ Each article requires YAML frontmatter at the top of the file between `---` mark
 | `feature_image_caption` | string | Caption displayed below feature image |
 | `excerpt` | string | Short description (auto-generated from content if omitted) |
 | `status` | string | `published` or `draft` (defaults to `published`) |
-| `previous` | string | Slug of the previous article in a series |
+| `prev` | string | Slug of the previous article in a series |
 | `next` | string | Slug of the next article in a series |
 
 ### Validation Badges (Optional)
@@ -175,10 +175,10 @@ Draft articles will not be included in the build output.
 
 ## Article Series
 
-To link articles in a series, use the `previous` and `next` fields with the target article's slug:
+To link articles in a series, use the `prev` and `next` fields with the target article's slug:
 
 ```yaml
-previous: intro-to-python
+prev: intro-to-python
 next: python-advanced-topics
 ```
 

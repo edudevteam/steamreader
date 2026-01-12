@@ -3,27 +3,27 @@
     {
       "slug": "education",
       "name": "education",
-      "articleCount": 3
+      "articleCount": 4
     },
     {
       "slug": "tutorial",
       "name": "tutorial",
-      "articleCount": 3
+      "articleCount": 4
     },
     {
       "slug": "coding",
       "name": "coding",
-      "articleCount": 2
+      "articleCount": 3
     },
     {
       "slug": "python",
       "name": "python",
-      "articleCount": 2
+      "articleCount": 3
     },
     {
       "slug": "venv",
       "name": "venv",
-      "articleCount": 2
+      "articleCount": 3
     },
     {
       "slug": "virtual-environment",
@@ -33,6 +33,31 @@
     {
       "slug": "pip",
       "name": "pip",
+      "articleCount": 1
+    },
+    {
+      "slug": "rest-api",
+      "name": "rest api",
+      "articleCount": 1
+    },
+    {
+      "slug": "fastapi",
+      "name": "fastapi",
+      "articleCount": 1
+    },
+    {
+      "slug": "server",
+      "name": "server",
+      "articleCount": 1
+    },
+    {
+      "slug": "insomnia",
+      "name": "insomnia",
+      "articleCount": 1
+    },
+    {
+      "slug": "postman",
+      "name": "postman",
       "articleCount": 1
     },
     {

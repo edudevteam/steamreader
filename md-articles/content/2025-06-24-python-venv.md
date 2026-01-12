@@ -17,7 +17,7 @@ feature_image_alt: 'python virtual environments'
 feature_image_caption: 'Python (venv) virtual environments'
 excerpt: 'What to keep your Python projects clean, organized, and bug-free? Learn how to create a "magic coding button" aka. (virtual environment) that keeps your tools seperate and your code happy.'
 status: published
-next: python-virtual-environments
+next: python-fast-api
 validated_tutorial: true
 ---
 

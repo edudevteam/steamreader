@@ -136,7 +136,7 @@ async function processArticle(fileName: string): Promise<ArticleWithRawRefs | nu
         communityApproved: frontmatter.community_approved
       } : undefined,
       content: htmlContent,
-      _previousSlug: frontmatter.previous,
+      _previousSlug: frontmatter.prev || frontmatter.previous,
       _nextSlug: frontmatter.next
     }
 

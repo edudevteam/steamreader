@@ -53,6 +53,10 @@
       "status": "published",
       "validation": {
         "validatedTutorial": true
+      },
+      "previousArticle": {
+        "slug": "python-requirements",
+        "title": "Creating the Python requirements.txt"
       }
     },
     {
@@ -104,6 +108,81 @@
       "status": "published",
       "validation": {
         "validatedTutorial": true
+      },
+      "nextArticle": {
+        "slug": "python-fast-api",
+        "title": "Create a Python FastAPI Server"
+      }
+    },
+    {
+      "slug": "python-fast-api",
+      "title": "Create a Python FastAPI Server",
+      "subtitle": "Building a local web REST API",
+      "excerpt": "A guided step-by-step tutorial shows how Web API's work. You will learn how to use API tools to get data nd even build yoru own web api using python.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2025-06-15",
+      "category": {
+        "slug": "technology",
+        "name": "Technology"
+      },
+      "tags": [
+        {
+          "slug": "education",
+          "name": "education"
+        },
+        {
+          "slug": "tutorial",
+          "name": "tutorial"
+        },
+        {
+          "slug": "coding",
+          "name": "coding"
+        },
+        {
+          "slug": "python",
+          "name": "python"
+        },
+        {
+          "slug": "rest-api",
+          "name": "rest api"
+        },
+        {
+          "slug": "fastapi",
+          "name": "fastapi"
+        },
+        {
+          "slug": "server",
+          "name": "server"
+        },
+        {
+          "slug": "insomnia",
+          "name": "insomnia"
+        },
+        {
+          "slug": "postman",
+          "name": "postman"
+        },
+        {
+          "slug": "venv",
+          "name": "venv"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/fast-api-tutorial-up-and-running-locally.png",
+        "alt": "Python Fast API Tutorial",
+        "caption": "Python Fast API Tutorial"
+      },
+      "readingTime": 8,
+      "status": "published",
+      "validation": {
+        "validatedTutorial": true
+      },
+      "previousArticle": {
+        "slug": "python-venv",
+        "title": "Python Virtual Environments"
       }
     },
     {
@@ -200,6 +279,6 @@
       }
     }
   ],
-  "totalCount": 4,
-  "lastUpdated": "2026-01-12T04:34:18.560Z"
+  "totalCount": 5,
+  "lastUpdated": "2026-01-12T05:34:59.183Z"
 }

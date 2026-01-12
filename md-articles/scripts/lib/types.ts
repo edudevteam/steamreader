@@ -96,6 +96,7 @@ export interface Frontmatter {
   feature_image_caption?: string
   excerpt?: string
   status?: 'published' | 'draft'
+  prev?: string
   previous?: string
   next?: string
   validated_tutorial?: boolean
