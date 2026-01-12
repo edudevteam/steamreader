@@ -102,18 +102,6 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* Hero Quote */}
-      <section className="mb-10 py-8 text-center">
-        <blockquote className="mx-auto max-w-3xl">
-          <p className="text-lg font-light italic text-gray-700 md:text-xl">
-            "{quote.text}"
-          </p>
-          <footer className="mt-4 text-xs font-medium text-indigo-600">
-            — {quote.author}
-          </footer>
-        </blockquote>
-      </section>
-
       {/* Search Bar */}
       <section className="mb-8">
         <Link
@@ -184,6 +172,18 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      {/* Quote */}
+      <section className="my-16 py-8 text-center">
+        <blockquote className="mx-auto max-w-3xl">
+          <p className="text-lg font-light italic text-gray-700 md:text-xl">
+            "{quote.text}"
+          </p>
+          <footer className="mt-4 text-xs font-medium text-indigo-600">
+            — {quote.author}
+          </footer>
+        </blockquote>
       </section>
 
       {/* The Learning Lab - Tutorials */}
