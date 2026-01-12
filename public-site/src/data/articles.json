@@ -1,44 +1,110 @@
 {
   "articles": [
     {
-      "slug": "art-of-coding",
-      "title": "The Art of Coding",
-      "subtitle": "Creative Programming for Young Artists",
-      "excerpt": "Combine creativity with technology! Learn how to create digital art, animations, and interactive stories using code.",
+      "slug": "python-requirements",
+      "title": "Creating the Python requirements.txt",
+      "subtitle": "Making code portal and reusable",
+      "excerpt": "It's not enough to create a `venv` for a python project. You also need an easy way to download the correct libraries using the `pip` command. That's where the requirements.txt document comes into play.",
       "author": {
-        "slug": "maya-johnson",
-        "name": "Maya Johnson"
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
       },
-      "publishedAt": "2024-01-25",
+      "publishedAt": "2025-06-24",
       "category": {
         "slug": "technology",
         "name": "Technology"
       },
       "tags": [
         {
+          "slug": "education",
+          "name": "education"
+        },
+        {
+          "slug": "tutorial",
+          "name": "tutorial"
+        },
+        {
           "slug": "coding",
           "name": "coding"
         },
         {
-          "slug": "art",
-          "name": "art"
+          "slug": "python",
+          "name": "python"
         },
         {
-          "slug": "creative",
-          "name": "creative"
+          "slug": "venv",
+          "name": "venv"
         },
         {
-          "slug": "scratch",
-          "name": "scratch"
+          "slug": "virtual-environment",
+          "name": "virtual environment"
+        },
+        {
+          "slug": "pip",
+          "name": "pip"
         }
       ],
       "featureImage": {
-        "src": "https://images.unsplash.com/photo-1550439062-609e1531270e?w=1200",
-        "alt": "Colorful code on a computer screen",
-        "caption": "Photo by Unsplash"
+        "src": "/images/python-generating-requirements-file.png",
+        "alt": "python generating requirements TXT file",
+        "caption": "Graphic by FundedYouth"
       },
-      "readingTime": 3,
-      "status": "published"
+      "readingTime": 2,
+      "status": "published",
+      "validation": {
+        "validatedTutorial": true
+      }
+    },
+    {
+      "slug": "python-venv",
+      "title": "Python Virtual Environments",
+      "subtitle": "Why it is absolutely necessary to work in a virtual environment",
+      "excerpt": "What to keep your Python projects clean, organized, and bug-free? Learn how to create a \"magic coding button\" aka. (virtual environment) that keeps your tools seperate and your code happy.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2025-06-20",
+      "category": {
+        "slug": "technology",
+        "name": "Technology"
+      },
+      "tags": [
+        {
+          "slug": "education",
+          "name": "education"
+        },
+        {
+          "slug": "tutorial",
+          "name": "tutorial"
+        },
+        {
+          "slug": "coding",
+          "name": "coding"
+        },
+        {
+          "slug": "python",
+          "name": "python"
+        },
+        {
+          "slug": "venv",
+          "name": "venv"
+        },
+        {
+          "slug": "virtual-environment",
+          "name": "virtual environment"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/python-virtual-environments-banner.png",
+        "alt": "python virtual environments",
+        "caption": "Python (venv) virtual environments"
+      },
+      "readingTime": 4,
+      "status": "published",
+      "validation": {
+        "validatedTutorial": true
+      }
     },
     {
       "slug": "chemistry-basics",
@@ -134,6 +200,6 @@
       }
     }
   ],
-  "totalCount": 3,
-  "lastUpdated": "2026-01-11T22:15:22.352Z"
+  "totalCount": 4,
+  "lastUpdated": "2026-01-12T04:34:18.560Z"
 }

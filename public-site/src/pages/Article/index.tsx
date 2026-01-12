@@ -62,9 +62,18 @@ export default function ArticlePage() {
       const wrapper = document.createElement('div')
       wrapper.className = 'code-block-wrapper rounded-lg overflow-hidden my-4'
 
+      // Extract language from code class (e.g., "hljs language-bash" -> "bash")
+      const languageMatch = code.className.match(/language-(\w+)/)
+      const language = languageMatch ? languageMatch[1] : ''
+
       // Create header bar
       const header = document.createElement('div')
-      header.className = 'flex items-center justify-end px-4 py-2 bg-gray-800 border-b border-gray-700'
+      header.className = 'flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700'
+
+      // Create language label
+      const languageLabel = document.createElement('span')
+      languageLabel.className = 'text-xs font-medium text-gray-400'
+      languageLabel.textContent = language
 
       // Create copy button
       const button = document.createElement('button')
@@ -81,6 +90,7 @@ export default function ArticlePage() {
         handleCopy(code.textContent || '', button)
       })
 
+      header.appendChild(languageLabel)
       header.appendChild(button)
 
       // Wrap the pre element

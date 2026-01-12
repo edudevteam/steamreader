@@ -29,9 +29,14 @@ import type {
   Author
 } from './types.js'
 
-const CONTENT_DIR = path.join(process.cwd(), 'content/articles')
-const OUTPUT_DIR = path.join(process.cwd(), 'src/data')
+const CONTENT_DIR = path.join(process.cwd(), 'content')
+const IMAGES_DIR = path.join(process.cwd(), 'content/images')
+const OUTPUT_DIR = path.join(process.cwd(), '../public-site/src/data')
 const ARTICLES_OUTPUT_DIR = path.join(OUTPUT_DIR, 'articles')
+const PUBLIC_IMAGES_DIR = path.join(process.cwd(), '../public-site/public/images')
+
+// Pattern for article files: YYYY-MM-DD-slug.md
+const ARTICLE_PATTERN = /^\d{4}-\d{2}-\d{2}-.+\.md$/
 
 // Intermediate type for articles before resolving prev/next references
 interface ArticleWithRawRefs extends Omit<Article, 'previousArticle' | 'nextArticle'> {
@@ -55,16 +60,40 @@ function generateExcerpt(content: string, length = 160): string {
   return plainText.length > length ? plainText.slice(0, length).trim() + '...' : plainText
 }
 
-async function processArticle(dirName: string): Promise<ArticleWithRawRefs | null> {
-  const articlePath = path.join(CONTENT_DIR, dirName, 'index.md')
+async function copyAllImages(): Promise<void> {
+  try {
+    const files = await fs.readdir(IMAGES_DIR)
+    await fs.mkdir(PUBLIC_IMAGES_DIR, { recursive: true })
+
+    for (const file of files) {
+      const srcPath = path.join(IMAGES_DIR, file)
+      const destPath = path.join(PUBLIC_IMAGES_DIR, file)
+      const stat = await fs.stat(srcPath)
+
+      if (stat.isFile()) {
+        await fs.copyFile(srcPath, destPath)
+      }
+    }
+
+    if (files.length > 0) {
+      console.log(chalk.gray(`  Copied ${files.length} images to public/images`))
+    }
+  } catch {
+    // No images directory, that's fine
+  }
+}
+
+async function processArticle(fileName: string): Promise<ArticleWithRawRefs | null> {
+  const articlePath = path.join(CONTENT_DIR, fileName)
 
   try {
     const fileContent = await fs.readFile(articlePath, 'utf-8')
     const { data, content } = matter(fileContent)
     const frontmatter = data as Frontmatter
 
-    // Generate slug from directory name (remove date prefix if present)
-    const slug = dirName.replace(/^\d{4}-\d{2}-\d{2}-/, '')
+    // Generate slug from filename (remove date prefix and .md extension)
+    // e.g., "2024-01-15-intro-to-robotics.md" -> "intro-to-robotics"
+    const slug = fileName.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')
 
     // Process markdown to HTML
     const htmlContent = await marked.parse(content)
@@ -72,12 +101,8 @@ async function processArticle(dirName: string): Promise<ArticleWithRawRefs | nul
     // Calculate reading time
     const stats = readingTime(content)
 
-    // Handle feature image - check if it's a URL or local path
-    let featureImageSrc = frontmatter.feature_image
-    if (!featureImageSrc.startsWith('http')) {
-      // For local images, we'd normally process them, but for now use a placeholder
-      featureImageSrc = `https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200`
-    }
+    // Handle feature image - use as-is (local paths like /images/... or external URLs)
+    const featureImageSrc = frontmatter.feature_image
 
     const article: ArticleWithRawRefs = {
       slug,
@@ -117,7 +142,7 @@ async function processArticle(dirName: string): Promise<ArticleWithRawRefs | nul
 
     return article
   } catch (error) {
-    console.error(chalk.red(`Error processing ${dirName}:`), error)
+    console.error(chalk.red(`Error processing ${fileName}:`), error)
     return null
   }
 }
@@ -174,29 +199,31 @@ export async function buildAllArticles(): Promise<void> {
   // Ensure output directories exist
   await fs.mkdir(ARTICLES_OUTPUT_DIR, { recursive: true })
 
-  let articleDirs: string[]
+  // Copy all images from shared images directory
+  await copyAllImages()
+
+  let files: string[]
   try {
-    articleDirs = await fs.readdir(CONTENT_DIR)
+    files = await fs.readdir(CONTENT_DIR)
   } catch {
-    console.log(chalk.yellow('No articles directory found. Creating it...'))
-    await fs.mkdir(CONTENT_DIR, { recursive: true })
-    articleDirs = []
+    console.log(chalk.yellow('No content directory found.'))
+    files = []
   }
 
-  // First pass: process all articles with raw refs
+  // Filter to only article files (YYYY-MM-DD-slug.md format)
+  const articleFiles = files.filter(f => ARTICLE_PATTERN.test(f))
+
+  // Process all articles
   const rawArticles: ArticleWithRawRefs[] = []
 
-  for (const dir of articleDirs) {
-    const stat = await fs.stat(path.join(CONTENT_DIR, dir))
-    if (!stat.isDirectory()) continue
-
-    const article = await processArticle(dir)
+  for (const file of articleFiles) {
+    const article = await processArticle(file)
     if (article && article.status === 'published') {
       rawArticles.push(article)
     }
   }
 
-  // Second pass: resolve prev/next references
+  // Resolve prev/next references
   const articles = resolveArticleRefs(rawArticles)
 
   // Write individual article JSON files
@@ -227,15 +254,18 @@ export async function buildAllArticles(): Promise<void> {
 export async function buildSingleArticle(slug: string): Promise<void> {
   console.log(chalk.blue(`\nBuilding article: ${slug}\n`))
 
-  const articleDirs = await fs.readdir(CONTENT_DIR)
-  const dir = articleDirs.find((d) => d.includes(slug))
+  const files = await fs.readdir(CONTENT_DIR)
+  const file = files.find((f) => ARTICLE_PATTERN.test(f) && f.includes(slug))
 
-  if (!dir) {
+  if (!file) {
     console.log(chalk.red(`Article not found: ${slug}`))
     return
   }
 
-  const article = await processArticle(dir)
+  // Copy images (in case new ones were added)
+  await copyAllImages()
+
+  const article = await processArticle(file)
   if (!article) {
     console.log(chalk.red(`Failed to process article: ${slug}`))
     return
@@ -307,31 +337,31 @@ async function generateIndices(articles: Article[]): Promise<void> {
 }
 
 export async function listArticles(): Promise<void> {
-  console.log(chalk.blue('\nArticles in content directory:\n'))
+  console.log(chalk.blue('\nArticles:\n'))
 
-  let articleDirs: string[]
+  let files: string[]
   try {
-    articleDirs = await fs.readdir(CONTENT_DIR)
+    files = await fs.readdir(CONTENT_DIR)
   } catch {
-    console.log(chalk.yellow('No articles directory found.'))
+    console.log(chalk.yellow('No content directory found.'))
     return
   }
 
-  for (const dir of articleDirs) {
-    const stat = await fs.stat(path.join(CONTENT_DIR, dir))
-    if (!stat.isDirectory()) continue
+  // Filter to only article files
+  const articleFiles = files.filter(f => ARTICLE_PATTERN.test(f)).sort()
 
+  for (const file of articleFiles) {
     try {
-      const articlePath = path.join(CONTENT_DIR, dir, 'index.md')
+      const articlePath = path.join(CONTENT_DIR, file)
       const fileContent = await fs.readFile(articlePath, 'utf-8')
       const { data } = matter(fileContent)
       const frontmatter = data as Frontmatter
 
       const status = frontmatter.status === 'draft' ? chalk.yellow('[draft]') : chalk.green('[published]')
       console.log(`  ${status} ${frontmatter.title}`)
-      console.log(chalk.gray(`         ${dir}`))
+      console.log(chalk.gray(`         ${file}`))
     } catch {
-      console.log(chalk.red(`  [error] ${dir}`))
+      console.log(chalk.red(`  [error] ${file}`))
     }
   }
   console.log()
@@ -340,18 +370,18 @@ export async function listArticles(): Promise<void> {
 export async function deleteArticle(slug: string): Promise<void> {
   console.log(chalk.blue(`\nDeleting article: ${slug}\n`))
 
-  // Find article directory
-  const articleDirs = await fs.readdir(CONTENT_DIR)
-  const dir = articleDirs.find((d) => d.includes(slug))
+  // Find article file
+  const files = await fs.readdir(CONTENT_DIR)
+  const file = files.find((f) => ARTICLE_PATTERN.test(f) && f.includes(slug))
 
-  if (!dir) {
+  if (!file) {
     console.log(chalk.red(`Article not found: ${slug}`))
     return
   }
 
-  // Delete source directory
-  await fs.rm(path.join(CONTENT_DIR, dir), { recursive: true })
-  console.log(chalk.green(`  ✓ Deleted source: ${dir}`))
+  // Delete the markdown file
+  await fs.unlink(path.join(CONTENT_DIR, file))
+  console.log(chalk.green(`  ✓ Deleted: ${file}`))
 
   // Delete JSON file if it exists
   try {

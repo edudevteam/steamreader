@@ -1,23 +1,38 @@
 {
   "tags": [
     {
+      "slug": "education",
+      "name": "education",
+      "articleCount": 3
+    },
+    {
+      "slug": "tutorial",
+      "name": "tutorial",
+      "articleCount": 3
+    },
+    {
       "slug": "coding",
       "name": "coding",
-      "articleCount": 1
+      "articleCount": 2
     },
     {
-      "slug": "art",
-      "name": "art",
-      "articleCount": 1
+      "slug": "python",
+      "name": "python",
+      "articleCount": 2
     },
     {
-      "slug": "creative",
-      "name": "creative",
-      "articleCount": 1
+      "slug": "venv",
+      "name": "venv",
+      "articleCount": 2
     },
     {
-      "slug": "scratch",
-      "name": "scratch",
+      "slug": "virtual-environment",
+      "name": "virtual environment",
+      "articleCount": 2
+    },
+    {
+      "slug": "pip",
+      "name": "pip",
       "articleCount": 1
     },
     {
@@ -36,11 +51,6 @@
       "articleCount": 1
     },
     {
-      "slug": "tutorial",
-      "name": "tutorial",
-      "articleCount": 1
-    },
-    {
       "slug": "robotics",
       "name": "robotics",
       "articleCount": 1
@@ -53,11 +63,6 @@
     {
       "slug": "beginner",
       "name": "beginner",
-      "articleCount": 1
-    },
-    {
-      "slug": "education",
-      "name": "education",
       "articleCount": 1
     }
   ]
