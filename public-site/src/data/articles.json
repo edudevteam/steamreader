@@ -9,7 +9,7 @@
         "slug": "ryan-jones",
         "name": "Ryan Jones"
       },
-      "publishedAt": "2026-06-15",
+      "publishedAt": "2026-01-15",
       "category": {
         "slug": "tutorial",
         "name": "Tutorial"
@@ -372,5 +372,5 @@
     }
   ],
   "totalCount": 4,
-  "lastUpdated": "2026-01-18T08:30:39.056Z"
+  "lastUpdated": "2026-01-18T08:36:19.110Z"
 }
