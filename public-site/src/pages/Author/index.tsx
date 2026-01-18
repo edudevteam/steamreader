@@ -2,8 +2,9 @@ import { useParams, Link } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import authorsData from 'data/authors.json'
 import type { ArticleMeta, Author } from 'types'
+import { filterPublishedArticles } from 'utils'
 
-const articles = articlesData.articles as ArticleMeta[]
+const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 const authors = authorsData.authors as Author[]
 
 export default function AuthorPage() {

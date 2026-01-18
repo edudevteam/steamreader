@@ -2,8 +2,9 @@ import { useParams, Link } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import tagsData from 'data/tags.json'
 import type { ArticleMeta } from 'types'
+import { filterPublishedArticles } from 'utils'
 
-const articles = articlesData.articles as ArticleMeta[]
+const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 const tags = tagsData.tags
 
 export default function TagPage() {

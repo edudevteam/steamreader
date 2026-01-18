@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import type { ArticleMeta } from 'types'
+import { filterPublishedArticles } from 'utils'
 
-const articles = articlesData.articles as ArticleMeta[]
+const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 
 export default function RandomPage() {
   const navigate = useNavigate()

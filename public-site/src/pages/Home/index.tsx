@@ -1,10 +1,12 @@
-import { useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { useMemo, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import categoriesData from 'data/categories.json'
 import type { ArticleMeta } from 'types'
+import { filterPublishedArticles } from 'utils'
+import ArticleCarousel from 'components/ArticleCarousel'
 
-const articles = articlesData.articles as ArticleMeta[]
+const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 const categories = categoriesData.categories
 
 const quotes = [
@@ -74,11 +76,10 @@ const quotes = [
   }
 ]
 
-// Get the latest 3 articles
+// Get the latest articles (sorted by date)
 const getLatestArticles = () => {
   return [...articles]
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, 3)
 }
 
 // Get tutorial articles (by tag)
@@ -86,7 +87,6 @@ const getTutorialArticles = () => {
   return [...articles]
     .filter((a) => a.tags.some((t) => t.slug === 'tutorial'))
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, 3)
 }
 
 // Get a random quote
@@ -99,16 +99,37 @@ export default function HomePage() {
   const latestArticles = getLatestArticles()
   const tutorialArticles = getTutorialArticles()
   const quote = useMemo(() => getRandomQuote(), [])
+  const [searchQuery, setSearchQuery] = useState('')
+  const navigate = useNavigate()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    const trimmed = searchQuery.trim()
+    if (trimmed) {
+      navigate(`/search?q=${encodeURIComponent(trimmed)}`)
+    } else {
+      navigate('/search')
+    }
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Search Bar */}
       <section className="mb-8">
-        <Link
-          to="/search"
-          className="flex w-full items-center gap-3 rounded-full border border-gray-300 bg-white px-5 py-3 text-gray-500 transition-colors hover:border-gray-400"
-        >
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <form onSubmit={handleSearch} className="relative">
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search articles by title, author, category, or tags..."
+            className="w-full rounded-full border border-gray-300 bg-white px-5 py-3 pl-12 text-gray-900 placeholder-gray-500 transition-colors hover:border-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <svg
+            className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -116,8 +137,7 @@ export default function HomePage() {
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
-          <span>Search articles by title, author, category, or tags...</span>
-        </Link>
+        </form>
       </section>
 
       {/* Category Pills */}
@@ -136,43 +156,13 @@ export default function HomePage() {
       </section>
 
       {/* Latest Articles */}
-      <section>
-        <h2 className="mb-6 text-2xl font-bold text-gray-900">Latest Articles</h2>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {latestArticles.map((article) => (
-            <Link
-              key={article.slug}
-              to={`/article/${article.slug}`}
-              className="group overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg"
-            >
-              <div className="aspect-video w-full overflow-hidden">
-                <img
-                  src={article.featureImage.src}
-                  alt={article.featureImage.alt}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-4">
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600">
-                    {article.category.name}
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    {article.readingTime} min
-                  </span>
-                </div>
-                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-indigo-600">
-                  {article.title}
-                </h3>
-                <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
-                <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {new Date(article.publishedAt).toLocaleDateString()}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <ArticleCarousel
+        articles={latestArticles}
+        title="Latest Articles"
+        count={3}
+        viewAllLink="/latest"
+        viewAllText="View all articles"
+      />
 
       {/* Quote */}
       <section className="my-16 py-8 text-center">
@@ -188,54 +178,17 @@ export default function HomePage() {
 
       {/* The Learning Lab - Tutorials */}
       {tutorialArticles.length > 0 && (
-        <section className="mt-16">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">The Learning Lab</h2>
-              <p className="mt-1 text-sm text-gray-600">Step-by-step guides to master new skills</p>
-            </div>
-            <Link
-              to="/tag/tutorial"
-              className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
-            >
-              View all tutorials &rarr;
-            </Link>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {tutorialArticles.map((article) => (
-              <Link
-                key={article.slug}
-                to={`/article/${article.slug}`}
-                className="group overflow-hidden rounded-xl border-2 border-indigo-100 bg-gradient-to-br from-indigo-50 to-white shadow-md transition-all hover:border-indigo-200 hover:shadow-lg"
-              >
-                <div className="aspect-video w-full overflow-hidden">
-                  <img
-                    src={article.featureImage.src}
-                    alt={article.featureImage.alt}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-4">
-                  <div className="mb-2 flex items-center gap-2">
-                    <span className="rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700">
-                      Tutorial
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      {article.readingTime} min
-                    </span>
-                  </div>
-                  <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-indigo-600">
-                    {article.title}
-                  </h3>
-                  <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
-                  <div className="text-xs text-gray-500">
-                    {article.author.name} &#8226; {new Date(article.publishedAt).toLocaleDateString()}
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <div className="mt-16">
+          <ArticleCarousel
+            articles={tutorialArticles}
+            title="The Learning Lab"
+            subtitle="Step-by-step guides to master new skills"
+            count={3}
+            variant="tutorial"
+            viewAllLink="/tag/tutorial"
+            viewAllText="View all tutorials"
+          />
+        </div>
       )}
     </div>
   )

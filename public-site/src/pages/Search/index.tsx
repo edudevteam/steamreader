@@ -3,8 +3,9 @@ import { Link, useSearchParams } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import categoriesData from 'data/categories.json'
 import type { ArticleMeta } from 'types'
+import { filterPublishedArticles } from 'utils'
 
-const articles = articlesData.articles as ArticleMeta[]
+const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 const categories = categoriesData.categories
 
 export default function SearchPage() {
@@ -58,8 +59,6 @@ export default function SearchPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Search Header */}
       <header className="mb-8">
-        <h1 className="mb-6 text-3xl font-bold text-gray-900">Search Articles</h1>
-
         <form onSubmit={handleSearch} className="space-y-4">
           {/* Search Input */}
           <div className="relative">

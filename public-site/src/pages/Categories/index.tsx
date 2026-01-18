@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom'
 import categoriesData from 'data/categories.json'
 import articlesData from 'data/articles.json'
 import type { Category, ArticleMeta } from 'types'
+import { filterPublishedArticles } from 'utils'
 
 const categories = categoriesData.categories as Category[]
-const articles = articlesData.articles as ArticleMeta[]
+const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 
 // Calculate article count for each category
 const getArticleCount = (slug: string) =>

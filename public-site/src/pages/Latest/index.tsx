@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import type { ArticleMeta } from 'types'
+import { filterPublishedArticles } from 'utils'
 
-const articles = articlesData.articles as ArticleMeta[]
+const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 
 // Get the latest 6 articles
 const getLatestArticles = () => {

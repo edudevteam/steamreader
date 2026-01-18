@@ -19,7 +19,10 @@
       "Bash(pnpm list:*)",
       "Bash(npx tsx:*)",
       "Bash(ls:*)",
-      "Bash(pnpm build:article:*)"
+      "Bash(pnpm build:article:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(timeout 10 npm run dev:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }

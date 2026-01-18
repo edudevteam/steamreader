@@ -2,8 +2,9 @@ import { useParams, Link } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import categoriesData from 'data/categories.json'
 import type { ArticleMeta, Category } from 'types'
+import { filterPublishedArticles } from 'utils'
 
-const articles = articlesData.articles as ArticleMeta[]
+const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 const categories = categoriesData.categories as Category[]
 
 export default function CategoryPage() {
