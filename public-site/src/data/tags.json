@@ -13,7 +13,17 @@
     {
       "slug": "coding",
       "name": "coding",
-      "articleCount": 3
+      "articleCount": 4
+    },
+    {
+      "slug": "codeorg",
+      "name": "code.org",
+      "articleCount": 1
+    },
+    {
+      "slug": "sprite-lab",
+      "name": "sprite lab",
+      "articleCount": 1
     },
     {
       "slug": "python",
@@ -58,36 +68,6 @@
     {
       "slug": "postman",
       "name": "postman",
-      "articleCount": 1
-    },
-    {
-      "slug": "chemistry",
-      "name": "chemistry",
-      "articleCount": 1
-    },
-    {
-      "slug": "experiments",
-      "name": "experiments",
-      "articleCount": 1
-    },
-    {
-      "slug": "home-science",
-      "name": "home-science",
-      "articleCount": 1
-    },
-    {
-      "slug": "robotics",
-      "name": "robotics",
-      "articleCount": 1
-    },
-    {
-      "slug": "electronics",
-      "name": "electronics",
-      "articleCount": 1
-    },
-    {
-      "slug": "beginner",
-      "name": "beginner",
       "articleCount": 1
     }
   ]

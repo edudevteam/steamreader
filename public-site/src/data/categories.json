@@ -3,17 +3,7 @@
     {
       "slug": "technology",
       "name": "Technology",
-      "articleCount": 3
-    },
-    {
-      "slug": "science",
-      "name": "Science",
-      "articleCount": 1
-    },
-    {
-      "slug": "engineering",
-      "name": "Engineering",
-      "articleCount": 1
+      "articleCount": 4
     }
   ]
 }
