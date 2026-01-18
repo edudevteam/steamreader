@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import type { Article } from 'types'
+import TableOfContents from 'components/TableOfContents'
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -316,6 +317,9 @@ export default function ArticlePage() {
           </figcaption>
         )}
       </figure>
+
+      {/* Table of Contents */}
+      <TableOfContents items={article.tableOfContents || []} />
 
       {/* Article Content */}
       <div

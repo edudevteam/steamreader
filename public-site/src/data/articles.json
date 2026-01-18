@@ -2,7 +2,7 @@
   "articles": [
     {
       "slug": "sprite-lab-new-project",
-      "title": "Code.org - Sprite Lab",
+      "title": "Code.org - Sprite Lab Overview",
       "subtitle": "Getting to know your workspace",
       "excerpt": "Learn the basics of Sprite Lab by Code.org. Get familiar with the workspace, blocks, and stage. This is the starting point for all Sprite Lab tutorials.",
       "author": {
@@ -11,8 +11,8 @@
       },
       "publishedAt": "2026-06-15",
       "category": {
-        "slug": "technology",
-        "name": "Technology"
+        "slug": "tutorial",
+        "name": "Tutorial"
       },
       "tags": [
         {
@@ -45,7 +45,49 @@
       "status": "published",
       "validation": {
         "validatedTutorial": true
-      }
+      },
+      "tableOfContents": [
+        {
+          "id": "sprite-lab-development-tool",
+          "text": "Sprite Lab Development Tool",
+          "level": 2
+        },
+        {
+          "id": "create-a-new-sprite-lab-project",
+          "text": "Create a New Sprite Lab Project",
+          "level": 3
+        },
+        {
+          "id": "rename-project",
+          "text": "Rename Project",
+          "level": 3
+        },
+        {
+          "id": "breaking-down-the-app",
+          "text": "Breaking down the app",
+          "level": 3
+        },
+        {
+          "id": "adding-a-block-to-the-workspace",
+          "text": "Adding a Block to the Workspace",
+          "level": 3
+        },
+        {
+          "id": "additional-buttons-and-settings",
+          "text": "Additional Buttons and Settings",
+          "level": 3
+        },
+        {
+          "id": "find-and-open-a-saved-project",
+          "text": "Find and Open a saved project",
+          "level": 3
+        },
+        {
+          "id": "share-your-app",
+          "text": "Share your app",
+          "level": 3
+        }
+      ]
     },
     {
       "slug": "python-requirements",
@@ -101,6 +143,28 @@
       "validation": {
         "validatedTutorial": true
       },
+      "tableOfContents": [
+        {
+          "id": "tutorial",
+          "text": "Tutorial",
+          "level": 2
+        },
+        {
+          "id": "create-requirmentstxt-the-standard-way",
+          "text": "Create \"requirments.txt\" the standard way",
+          "level": 3
+        },
+        {
+          "id": "alternative-only-used-libraries-requirementstxt",
+          "text": "(alternative) - Only used libraries requirements.txt",
+          "level": 3
+        },
+        {
+          "id": "congrats",
+          "text": "🎉 Congrats",
+          "level": 2
+        }
+      ],
       "previousArticle": {
         "slug": "python-requirements",
         "title": "Creating the Python requirements.txt"
@@ -156,6 +220,33 @@
       "validation": {
         "validatedTutorial": true
       },
+      "tableOfContents": [
+        {
+          "id": "whats-a-virtual-environment",
+          "text": "What’s a Virtual Environment?",
+          "level": 2
+        },
+        {
+          "id": "why-make-a-virtual-environment-python-bubble",
+          "text": "Why make a Virtual Environment (Python Bubble)?",
+          "level": 3
+        },
+        {
+          "id": "lets-make-your-first-virtual-environment-python-bubble",
+          "text": "Let’s Make Your First Virtual Environment (Python Bubble)!",
+          "level": 2
+        },
+        {
+          "id": "you-did-it",
+          "text": "🎉 You Did It!",
+          "level": 3
+        },
+        {
+          "id": "testing",
+          "text": "Testing",
+          "level": 2
+        }
+      ],
       "nextArticle": {
         "slug": "python-fast-api",
         "title": "Create a Python FastAPI Server"
@@ -227,6 +318,53 @@
       "validation": {
         "validatedTutorial": true
       },
+      "tableOfContents": [
+        {
+          "id": "building-a-simple-api-with-python",
+          "text": "Building a Simple API with Python",
+          "level": 2
+        },
+        {
+          "id": "what-is-an-api",
+          "text": "What is an API",
+          "level": 3
+        },
+        {
+          "id": "tools-we-need",
+          "text": "Tools we need",
+          "level": 3
+        },
+        {
+          "id": "learning-by-playing",
+          "text": "Learning by playing",
+          "level": 3
+        },
+        {
+          "id": "project-start",
+          "text": "Project Start",
+          "level": 3
+        },
+        {
+          "id": "lets-create-the-api-application",
+          "text": "Let’s create the API application",
+          "level": 3
+        },
+        {
+          "id": "lets-dig-into-the-code",
+          "text": "Let’s dig into the code",
+          "level": 3
+        },
+        {
+          "id": "endpoint-basics",
+          "text": "Endpoint Basics",
+          "level": 3
+        },
+        {
+          "id": "finished",
+          "text": "Finished",
+          "level": 2
+        }
+      ],
       "previousArticle": {
         "slug": "python-venv",
         "title": "Python Virtual Environments"
@@ -234,5 +372,5 @@
     }
   ],
   "totalCount": 4,
-  "lastUpdated": "2026-01-18T07:53:39.718Z"
+  "lastUpdated": "2026-01-18T08:30:39.056Z"
 }

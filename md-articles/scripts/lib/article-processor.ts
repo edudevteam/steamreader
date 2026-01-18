@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
-import { marked } from 'marked'
+import { marked, Marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
 import hljs from 'highlight.js'
 import readingTime from 'reading-time'
@@ -26,7 +26,8 @@ import type {
   Frontmatter,
   Category,
   Tag,
-  Author
+  Author,
+  TocItem
 } from './types.js'
 
 const CONTENT_DIR = path.join(process.cwd(), 'content')
@@ -58,6 +59,35 @@ function generateExcerpt(content: string, length = 160): string {
     .trim()
 
   return plainText.length > length ? plainText.slice(0, length).trim() + '...' : plainText
+}
+
+function generateHeadingId(text: string): string {
+  return slugify(text, { lower: true, strict: true })
+}
+
+function extractTableOfContents(content: string): TocItem[] {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm
+  const toc: TocItem[] = []
+  let match
+
+  while ((match = headingRegex.exec(content)) !== null) {
+    const level = match[1].length as 2 | 3
+    const text = match[2].trim()
+    const id = generateHeadingId(text)
+    toc.push({ id, text, level })
+  }
+
+  return toc
+}
+
+function createHeadingRenderer() {
+  return {
+    heading({ tokens, depth }: { tokens: { text: string }[]; depth: number }) {
+      const text = tokens.map(t => t.text).join('')
+      const id = generateHeadingId(text)
+      return `<h${depth} id="${id}">${text}</h${depth}>\n`
+    }
+  }
 }
 
 async function copyAllImages(): Promise<void> {
@@ -95,8 +125,24 @@ async function processArticle(fileName: string): Promise<ArticleWithRawRefs | nu
     // e.g., "2024-01-15-intro-to-robotics.md" -> "intro-to-robotics"
     const slug = fileName.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')
 
+    // Extract table of contents from markdown before processing
+    const tableOfContents = extractTableOfContents(content)
+
+    // Create a marked instance with custom heading renderer for IDs
+    const markedWithIds = new Marked()
+    markedWithIds.use({ renderer: createHeadingRenderer() })
+    markedWithIds.use(
+      markedHighlight({
+        langPrefix: 'hljs language-',
+        highlight(code, lang) {
+          const language = hljs.getLanguage(lang) ? lang : 'plaintext'
+          return hljs.highlight(code, { language }).value
+        }
+      })
+    )
+
     // Process markdown to HTML
-    const htmlContent = await marked.parse(content)
+    const htmlContent = await markedWithIds.parse(content)
 
     // Calculate reading time
     const stats = readingTime(content)
@@ -136,6 +182,7 @@ async function processArticle(fileName: string): Promise<ArticleWithRawRefs | nu
         communityApproved: frontmatter.community_approved
       } : undefined,
       content: htmlContent,
+      tableOfContents,
       _previousSlug: frontmatter.prev || frontmatter.previous,
       _nextSlug: frontmatter.next
     }

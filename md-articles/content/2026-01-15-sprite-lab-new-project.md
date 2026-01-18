@@ -1,10 +1,10 @@
 ---
-title: "Code.org - Sprite Lab"
+title: "Code.org - Sprite Lab Overview"
 subtitle: "Getting to know your workspace"
 author: "Ryan Jones"
 author_slug: "ryan-jones"
 date: "2026-06-15"
-category: "Technology"
+category: "Tutorial"
 tags:
   - education
   - tutorial

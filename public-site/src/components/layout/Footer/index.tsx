@@ -1,12 +1,8 @@
 import { Link } from 'react-router-dom'
+import categoriesData from 'data/categories.json'
+import type { Category } from 'types'
 
-const categories = [
-  { name: 'Science', href: '/category/science' },
-  { name: 'Technology', href: '/category/technology' },
-  { name: 'Engineering', href: '/category/engineering' },
-  { name: 'Arts', href: '/category/arts' },
-  { name: 'Mathematics', href: '/category/mathematics' }
-]
+const categories = categoriesData.categories as Category[]
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -37,9 +33,9 @@ export default function Footer() {
             </h3>
             <ul className="mt-3 space-y-2">
               {categories.map((category) => (
-                <li key={category.name}>
+                <li key={category.slug}>
                   <Link
-                    to={category.href}
+                    to={`/category/${category.slug}`}
                     className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
                   >
                     {category.name}
@@ -136,9 +132,9 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-2">
               {categories.map((category) => (
-                <li key={category.name}>
+                <li key={category.slug}>
                   <Link
-                    to={category.href}
+                    to={`/category/${category.slug}`}
                     className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
                   >
                     {category.name}

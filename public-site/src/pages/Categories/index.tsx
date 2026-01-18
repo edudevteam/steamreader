@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom'
 import categoriesData from 'data/categories.json'
-import type { Category } from 'types'
+import articlesData from 'data/articles.json'
+import type { Category, ArticleMeta } from 'types'
 
 const categories = categoriesData.categories as Category[]
+const articles = articlesData.articles as ArticleMeta[]
+
+// Calculate article count for each category
+const getArticleCount = (slug: string) =>
+  articles.filter((a) => a.category.slug === slug).length
 
 // Define colors for each category
 const categoryColors: Record<string, string> = {
+  tutorial: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
   science: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
   technology: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200',
   engineering: 'bg-amber-100 text-amber-700 hover:bg-amber-200',
@@ -24,21 +31,24 @@ export default function CategoriesPage() {
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.map((category) => (
-          <Link
-            key={category.slug}
-            to={`/category/${category.slug}`}
-            className={`rounded-xl p-6 transition-colors ${categoryColors[category.slug] || defaultColor}`}
-          >
-            <h2 className="text-xl font-semibold">{category.name}</h2>
-            {category.description && (
-              <p className="mt-2 text-sm opacity-80">{category.description}</p>
-            )}
-            <p className="mt-3 text-sm font-medium">
-              {category.articleCount} article{category.articleCount !== 1 ? 's' : ''}
-            </p>
-          </Link>
-        ))}
+        {categories.map((category) => {
+          const articleCount = getArticleCount(category.slug)
+          return (
+            <Link
+              key={category.slug}
+              to={`/category/${category.slug}`}
+              className={`rounded-xl p-6 transition-colors ${categoryColors[category.slug] || defaultColor}`}
+            >
+              <h2 className="text-xl font-semibold">{category.name}</h2>
+              {category.description && (
+                <p className="mt-2 text-sm opacity-80">{category.description}</p>
+              )}
+              <p className="mt-3 text-sm font-medium">
+                {articleCount} article{articleCount !== 1 ? 's' : ''}
+              </p>
+            </Link>
+          )
+        })}
       </div>
 
       {categories.length === 0 && (

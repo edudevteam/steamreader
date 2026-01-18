@@ -18,6 +18,12 @@ export interface ArticleRef {
   title: string
 }
 
+export interface TocItem {
+  id: string
+  text: string
+  level: 2 | 3
+}
+
 export interface ValidationBadges {
   validatedTutorial?: boolean
   supportedEvidence?: boolean
@@ -52,6 +58,7 @@ export interface ArticleMeta {
 
 export interface Article extends ArticleMeta {
   content: string
+  tableOfContents: TocItem[]
 }
 
 export interface ArticlesIndex {

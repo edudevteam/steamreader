@@ -128,6 +128,58 @@ next: "part-3-advanced-patterns"
 
 The values should be article slugs (directory name without the date prefix). The build process resolves these to include the article title for display.
 
+## Categories
+
+Categories are managed through a single JSON file. Changes automatically update the footer, categories page, and individual category pages.
+
+### Category Data File
+
+Edit `src/data/categories.json`:
+
+```json
+{
+  "categories": [
+    { "slug": "tutorial", "name": "Tutorial" },
+    { "slug": "technology", "name": "Technology" }
+  ]
+}
+```
+
+### Adding a Category
+
+Add a new object to the `categories` array:
+
+```json
+{ "slug": "science", "name": "Science" }
+```
+
+- `slug`: URL-friendly identifier (lowercase, no spaces)
+- `name`: Display name shown in the UI
+
+Article counts are calculated automatically from the articles data.
+
+### Removing a Category
+
+Delete the category object from the array. Make sure no articles reference this category first.
+
+### Reordering Categories
+
+Change the order of objects in the array. The footer and categories page display them in array order.
+
+### Category Colors (Optional)
+
+To customize category colors on the categories page, edit `src/pages/Categories/index.tsx`:
+
+```typescript
+const categoryColors: Record<string, string> = {
+  tutorial: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
+  science: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
+  technology: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+}
+```
+
+Categories without a color mapping use the default gray style.
+
 ## H5P Interactive Content
 
 [H5P](https://h5p.org) is an open-source framework for creating interactive content like quizzes, presentations, interactive videos, and more.

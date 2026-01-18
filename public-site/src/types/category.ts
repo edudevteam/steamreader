@@ -3,7 +3,6 @@ export interface Category {
   name: string
   description?: string
   color?: string
-  articleCount: number
 }
 
 export interface CategoriesIndex {

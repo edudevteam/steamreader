@@ -1,9 +1,14 @@
 {
   "categories": [
     {
+      "slug": "tutorial",
+      "name": "Tutorial",
+      "articleCount": 1
+    },
+    {
       "slug": "technology",
       "name": "Technology",
-      "articleCount": 4
+      "articleCount": 3
     }
   ]
 }
