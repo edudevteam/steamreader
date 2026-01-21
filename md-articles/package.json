@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "new": "tsx scripts/new-article.ts",
     "build": "tsx scripts/articles.ts build",
     "build:article": "tsx scripts/articles.ts build -s",
     "list": "tsx scripts/articles.ts list",
