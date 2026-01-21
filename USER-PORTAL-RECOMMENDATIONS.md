@@ -49,11 +49,13 @@ React App (Cloudflare Pages)
 
 **Key Finding:** Articles use **slugs** as their primary identifier (e.g., `python-fast-api`). These are derived from filenames and are stable/unique.
 
-**Existing Validation Fields:** The schema already includes placeholder fields that are currently static:
+**Existing Validation Fields (TO BE REMOVED):** The schema currently includes static placeholder fields that will be **removed** once the dynamic voting system is implemented:
 
-- `validated_tutorial` (boolean)
-- `supported_evidence` (boolean)
-- `community_approved` (number)
+- `validated_tutorial` (boolean) → **REMOVE** - replaced by dynamic `tutorial_verified` votes from Supabase
+- `supported_evidence` (boolean) → **REMOVE** - replaced by dynamic `links_verified` votes from Supabase
+- `community_approved` (number) → **REMOVE** - replaced by dynamic `endorsed` votes from Supabase
+
+These fields will no longer exist in frontmatter. All vote counts will be fetched at runtime from the database.
 
 ---
 
@@ -63,38 +65,9 @@ Linking **static JSON articles** (built at deploy time) to **dynamic user votes*
 
 ---
 
-## Option A: Use Slug as Database Key (Simplest)
+## Article Identification Strategy: Frontmatter UUID
 
-Use the existing article slug as the primary key in Supabase.
-
-```sql
--- Supabase Table
-CREATE TABLE article_votes (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  article_slug TEXT NOT NULL,
-  user_id UUID REFERENCES auth.users NOT NULL,
-  vote_type TEXT NOT NULL CHECK (vote_type IN ('read', 'tutorial_verified', 'links_verified', 'endorsed')),
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(article_slug, user_id, vote_type)
-);
-```
-
-**Pros:**
-
-- No changes to build system
-- Slugs are already stable and unique
-- Immediate implementation
-
-**Cons:**
-
-- If you rename an article slug, historical votes are orphaned
-- Slug becomes a business-critical identifier
-
----
-
-## Option B: Add UUID to Frontmatter (More Robust) ✔️ CHOSEN
-
-Add an explicit `id` field to markdown frontmatter:
+Each article has an explicit `id` field (UUID v4) in the markdown frontmatter. This UUID is the stable identifier used in the database for vote tracking.
 
 ```yaml
 ---
@@ -105,44 +78,12 @@ slug: python-fast-api
 ---
 ```
 
-**Pros:**
+**Benefits:**
 
-- Slugs can change without breaking vote history
-- Database uses stable UUIDs
-- More traditional database design
-
-**Cons:**
-
-- ~~Requires manual UUID generation for each article~~ → Solved with template script
-- Build system changes needed
-- ~~Extra maintenance overhead~~ → Solved with sync script
-
----
-
-## Option C: Deterministic ID from Slug (Zero Friction)
-
-Generate a consistent ID at build time using a hash function:
-
-```typescript
-import crypto from "crypto";
-
-const generateArticleId = (slug: string): string => {
-  return crypto.createHash("sha256").update(slug).digest("hex").slice(0, 12);
-};
-
-// "python-fast-api" → "a1b2c3d4e5f6" (same every build)
-```
-
-**Pros:**
-
-- No manual UUIDs needed
-- Deterministic (same slug = same ID always)
-- Minimal build system changes
-
-**Cons:**
-
-- Still tied to slug (renaming breaks ID)
-- Hash collisions theoretically possible (extremely unlikely with 12 chars)
+- Slugs can change freely without breaking vote history
+- Database uses stable UUIDs as foreign keys
+- Traditional, robust database design
+- UUID generation automated via `pnpm new` script ✅
 
 ---
 
@@ -167,12 +108,75 @@ const generateArticleId = (slug: string): string => {
 │  │   ├── profiles (user info, roles, birthdate)    │
 │  │   ├── article_votes (user votes on articles)    │
 │  │   └── vote_aggregates (cached counts, optional) │
-│  └── Edge Functions (optional)                      │
-│      └── Send emails via Resend                     │
+│  └── Edge Functions (Deno runtime)                  │
+│      ├── Send emails via Resend                     │
+│      ├── Auto-read vote insertion                   │
+│      └── Any future serverless logic                │
 └─────────────────────────────────────────────────────┘
 ```
 
-All authentication and voting happens **client-side** via the Supabase JS SDK. No backend server needed — Cloudflare Pages remains fully static.
+All authentication and voting happens **client-side** via the Supabase JS SDK. No backend server needed — Cloudflare Pages remains fully static. Any serverless logic (email sending, complex validations) runs on **Supabase Edge Functions**.
+
+---
+
+## Supabase Edge Functions
+
+All serverless/lambda functions run on Supabase Edge Functions (Deno runtime), NOT Cloudflare Workers.
+
+### Auto-Read Vote Trigger
+
+When a user votes `tutorial_verified`, `links_verified`, or `endorsed`, automatically insert a `read` vote if one doesn't exist:
+
+```sql
+-- Database trigger (alternative to Edge Function)
+CREATE OR REPLACE FUNCTION auto_insert_read_vote()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- If vote is not 'read', ensure a 'read' vote exists
+  IF NEW.vote_type != 'read' THEN
+    INSERT INTO article_votes (article_id, user_id, vote_type)
+    VALUES (NEW.article_id, NEW.user_id, 'read')
+    ON CONFLICT (article_id, user_id, vote_type) DO NOTHING;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_auto_read_vote
+  AFTER INSERT ON article_votes
+  FOR EACH ROW
+  EXECUTE FUNCTION auto_insert_read_vote();
+```
+
+### Email via Resend (Edge Function)
+
+```typescript
+// supabase/functions/send-email/index.ts
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+serve(async (req) => {
+  const { to, subject, html } = await req.json();
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
+    },
+    body: JSON.stringify({
+      from: "STEAM Reader <noreply@steamreader.com>",
+      to,
+      subject,
+      html,
+    }),
+  });
+
+  const data = await res.json();
+  return new Response(JSON.stringify(data), {
+    headers: { "Content-Type": "application/json" },
+  });
+});
+```
 
 ---
 
@@ -280,26 +284,38 @@ GROUP BY a.id, a.slug;
 
 ## Workflow Scripts
 
-### 1. Article Template Generator
+### 1. Article Template Generator ✅ IMPLEMENTED
 
-A CLI script to scaffold new articles with auto-generated UUIDs.
+A CLI script to scaffold new articles with auto-generated UUIDs via interactive prompts.
 
 **Location:** `md-articles/scripts/new-article.ts`
 
 **Usage:**
 
 ```bash
-pnpm new "My Article Title"
-# or with options
-pnpm new "My Article Title" --author "Ryan Jones" --category "Technology"
+cd md-articles
+pnpm new
 ```
+
+**Interactive Prompts:**
+
+1. Article title (required)
+2. Subtitle (optional)
+3. Author (default: "Ryan Jones")
+4. Category (default: "Tutorial")
+5. Tags (comma-separated, optional)
+6. Feature image path (default: "/images/articles/placeholder.jpg")
+7. Feature image alt text
+8. Excerpt
+9. Status (default: "draft")
 
 **What it does:**
 
-1. Generates a UUID v4
-2. Creates filename with today's date: `YYYY-MM-DD-my-article-title.md`
-3. Generates slug from title: `my-article-title`
-4. Creates markdown file with frontmatter template
+1. Generates a UUID v4 automatically
+2. Auto-sets date to today
+3. Creates filename with today's date: `YYYY-MM-DD-my-article-title.md`
+4. Generates slug from title: `my-article-title`
+5. Creates markdown file with complete frontmatter template
 
 **Output Example:**
 
@@ -307,19 +323,27 @@ pnpm new "My Article Title" --author "Ryan Jones" --category "Technology"
 ---
 id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 title: "My Article Title"
+subtitle: ""
 author: "Ryan Jones"
-date: "2026-01-19"
-category: "Technology"
-tags: []
+author_slug: "ryan-jones"
+date: "2026-01-20"
+category: "Tutorial"
+tags:
+  - coding
+  - education
+
 feature_image: "/images/articles/placeholder.jpg"
-feature_image_alt: ""
+feature_image_alt: "My Article Title"
+feature_image_caption: ""
 excerpt: ""
-status: "draft"
+status: draft
+prev:
+next:
 ---
 
 # My Article Title
 
-Start writing here...
+Start writing your article here...
 ```
 
 ---
@@ -373,48 +397,28 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ...  # Service role for write access
 **When to Run:**
 
 - Manually after publishing new articles
-- As part of CI/CD pipeline (GitHub Actions) on merge to main
-- Before deploying to Cloudflare Pages
+- Locally before pushing to trigger Cloudflare Pages deployment
 
 ---
 
-### CI/CD Integration (Optional)
+### CI/CD Integration (Cloudflare Pages)
 
-Add to GitHub Actions workflow:
+Cloudflare Pages handles deployment automatically on push to main. The sync script should be run **locally** before pushing, or via Cloudflare Pages build command:
 
-```yaml
-# .github/workflows/deploy.yml
-name: Deploy
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  sync-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install dependencies
-        run: cd md-articles && pnpm install
-
-      - name: Sync articles to Supabase
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: cd md-articles && pnpm sync
-
-      - name: Build site
-        run: cd public-site && pnpm install && pnpm build
-
-      # Cloudflare Pages deployment happens automatically via integration
+```bash
+# In Cloudflare Pages build settings:
+# Build command: cd md-articles && pnpm install && pnpm sync && cd ../public-site && pnpm install && pnpm build
+# Build output directory: public-site/dist
 ```
+
+**Environment Variables (Cloudflare Pages Dashboard):**
+
+```
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+```
+
+> **Note:** All serverless functions run on **Supabase Edge Functions**, not Cloudflare Workers. Cloudflare Pages remains a static hosting solution.
 
 ---
 
@@ -502,7 +506,7 @@ const { error } = await supabase.from("article_votes").insert({
    - See voting analytics?
    - Manage user roles?
 
-5. **Email provider** — Supabase has built-in email. Is Resend required for branding/deliverability?
+5. ~~**Email provider** — Supabase has built-in email. Is Resend required for branding/deliverability?~~ → Resolved: Using **Resend** for all transactional emails (better deliverability & branding)
 
 ---
 
@@ -510,7 +514,7 @@ const { error } = await supabase.from("article_votes").insert({
 
 ### Phase 1: Foundation
 
-- [ ] Create `new-article.ts` template generator script
+- [x] Create `new-article.ts` template generator script ✅
 - [ ] Add UUIDs to existing articles (4 articles)
 - [ ] Update `article-processor.ts` to include `id` in JSON output
 - [ ] Set up Supabase project
@@ -541,8 +545,10 @@ const { error } = await supabase.from("article_votes").insert({
 - [ ] Implement vote/unvote functionality
 - [ ] Display user's own votes when logged in
 
-### Phase 5: Polish
+### Phase 5: Email & Polish
 
-- [ ] Configure Resend for transactional emails (optional)
-- [ ] Add CI/CD sync step to deployment workflow
+- [ ] Set up Resend account and API key
+- [ ] Configure Resend for transactional emails (password reset, welcome emails)
+- [ ] Create email templates
+- [ ] Deploy Supabase Edge Function for email sending
 - [ ] Test end-to-end flow

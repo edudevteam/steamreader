@@ -70,7 +70,6 @@ excerpt: "${options.excerpt}"
 status: ${options.status}
 prev:
 next:
-validated_tutorial: false
 ---
 
 # ${options.title}
