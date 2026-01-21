@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import type { Article } from 'types'
 import TableOfContents from 'components/TableOfContents'
 import VoteButtons from 'components/VoteButtons'
+import VoteBadges from 'components/VoteBadges'
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -194,71 +195,6 @@ export default function ArticlePage() {
     </div>
   )
 
-  const ValidationBadgesDisplay = () => {
-    if (!article.validation) return null
-
-    const badges = []
-
-    if (article.validation.validatedTutorial) {
-      badges.push(
-        <div key="validated" className="group relative flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1">
-          <svg className="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="text-sm font-medium text-green-700">Validated Tutorial</span>
-          <div className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-            This tutorial has been successfully completed by a reviewer
-          </div>
-        </div>
-      )
-    }
-
-    if (article.validation.supportedEvidence) {
-      badges.push(
-        <div key="evidence" className="group relative flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1">
-          <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <span className="text-sm font-medium text-blue-700">Supported Evidence</span>
-          <div className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-            References and links have been verified as credible and working
-          </div>
-        </div>
-      )
-    }
-
-    if (article.validation.communityApproved && article.validation.communityApproved > 0) {
-      badges.push(
-        <div key="community" className="group relative flex items-center gap-1.5 rounded-full bg-purple-100 px-3 py-1">
-          <svg className="h-4 w-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <span className="text-sm font-medium text-purple-700">Community Approved</span>
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-600 px-1.5 text-xs font-bold text-white">
-            {article.validation.communityApproved}
-          </span>
-          <div className="absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-            {article.validation.communityApproved} community members approve this article
-          </div>
-        </div>
-      )
-    }
-
-    if (badges.length === 0) return null
-
-    return (
-      <div className="mb-6 flex flex-wrap items-center gap-2">
-        {badges}
-        <Link
-          to="/validation-process"
-          className="text-xs text-gray-500 hover:text-indigo-600 hover:underline"
-        >
-          What's this?
-        </Link>
-      </div>
-    )
-  }
-
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Social Share - Top */}
@@ -266,8 +202,10 @@ export default function ArticlePage() {
         <SocialShareButtons />
       </div>
 
-      {/* Validation Badges */}
-      <ValidationBadgesDisplay />
+      {/* Community Feedback Badges */}
+      <div className="mb-6">
+        <VoteBadges articleId={article.id} />
+      </div>
 
       {/* Article Header */}
       <header className="mb-8">

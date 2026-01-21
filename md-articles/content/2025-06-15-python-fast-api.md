@@ -23,7 +23,6 @@ feature_image_caption: "Python Fast API Tutorial"
 excerpt: "A guided step-by-step tutorial shows how Web API's work. You will learn how to use API tools to get data nd even build yoru own web api using python."
 status: published
 prev: python-venv
-validated_tutorial: true
 ---
 
 ## Building a Simple API with Python

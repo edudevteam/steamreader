@@ -1,11 +1,11 @@
 ---
 id: "d4c3b2a1-6f5e-4d3c-b2a1-9e8d7c6b5a4f"
-title: 'Python Virtual Environments'
-subtitle: 'Why it is absolutely necessary to work in a virtual environment'
-author: 'Ryan Jones'
-author_slug: 'ryan-jones'
-date: '2025-06-20'
-category: 'Technology'
+title: "Python Virtual Environments"
+subtitle: "Why it is absolutely necessary to work in a virtual environment"
+author: "Ryan Jones"
+author_slug: "ryan-jones"
+date: "2025-06-20"
+category: "Technology"
 tags:
   - education
   - tutorial
@@ -13,13 +13,12 @@ tags:
   - python
   - venv
   - virtual environment
-feature_image: '/images/python-virtual-environments-banner.png'
-feature_image_alt: 'python virtual environments'
-feature_image_caption: 'Python (venv) virtual environments'
+feature_image: "/images/python-virtual-environments-banner.png"
+feature_image_alt: "python virtual environments"
+feature_image_caption: "Python (venv) virtual environments"
 excerpt: 'What to keep your Python projects clean, organized, and bug-free? Learn how to create a "magic coding button" aka. (virtual environment) that keeps your tools seperate and your code happy.'
 status: published
 next: python-fast-api
-validated_tutorial: true
 ---
 
 ## What’s a Virtual Environment?

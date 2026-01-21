@@ -1,11 +1,11 @@
 ---
 id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
-title: 'Creating the Python requirements.txt'
-subtitle: 'Making code portal and reusable'
-author: 'Ryan Jones'
-author_slug: 'ryan-jones'
-date: '2025-06-24'
-category: 'Technology'
+title: "Creating the Python requirements.txt"
+subtitle: "Making code portal and reusable"
+author: "Ryan Jones"
+author_slug: "ryan-jones"
+date: "2025-06-24"
+category: "Technology"
 tags:
   - education
   - tutorial
@@ -14,13 +14,12 @@ tags:
   - venv
   - virtual environment
   - pip
-feature_image: '/images/python-generating-requirements-file.png'
-feature_image_alt: 'python generating requirements TXT file'
-feature_image_caption: 'Graphic by FundedYouth'
+feature_image: "/images/python-generating-requirements-file.png"
+feature_image_alt: "python generating requirements TXT file"
+feature_image_caption: "Graphic by FundedYouth"
 excerpt: "It's not enough to create a `venv` for a python project. You also need an easy way to download the correct libraries using the `pip` command. That's where the requirements.txt document comes into play."
 status: published
 prev: python-requirements
-validated_tutorial: true
 ---
 
 The `requirements.txt` has two major benefits.
