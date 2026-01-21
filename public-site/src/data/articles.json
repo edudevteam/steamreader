@@ -1,6 +1,7 @@
 {
   "articles": [
     {
+      "id": "e5f6a7b8-c9d0-4e1f-a2b3-4c5d6e7f8a9b",
       "slug": "sprite-lab-new-project",
       "title": "Code.org - Sprite Lab Overview",
       "subtitle": "Getting to know your workspace",
@@ -90,6 +91,7 @@
       ]
     },
     {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
       "slug": "python-requirements",
       "title": "Creating the Python requirements.txt",
       "subtitle": "Making code portal and reusable",
@@ -171,6 +173,7 @@
       }
     },
     {
+      "id": "d4c3b2a1-6f5e-4d3c-b2a1-9e8d7c6b5a4f",
       "slug": "python-venv",
       "title": "Python Virtual Environments",
       "subtitle": "Why it is absolutely necessary to work in a virtual environment",
@@ -253,6 +256,7 @@
       }
     },
     {
+      "id": "c9e4a2b1-5f8d-4e3a-9c7b-8d6e5f4a3b2c",
       "slug": "python-fast-api",
       "title": "Create a Python FastAPI Server",
       "subtitle": "Building a local web REST API",
@@ -372,5 +376,5 @@
     }
   ],
   "totalCount": 4,
-  "lastUpdated": "2026-01-18T08:36:19.110Z"
+  "lastUpdated": "2026-01-21T20:12:03.883Z"
 }

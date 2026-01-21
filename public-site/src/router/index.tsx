@@ -15,6 +15,10 @@ import ContactPage from 'pages/Contact'
 import NewsletterPage from 'pages/Newsletter'
 import ValidationProcessPage from 'pages/ValidationProcess'
 import NotFoundPage from 'pages/NotFound'
+import LoginPage from 'pages/Login'
+import SignupPage from 'pages/Signup'
+import ResetPasswordPage from 'pages/ResetPassword'
+import AccountPage from 'pages/Account'
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +80,22 @@ export const router = createBrowserRouter([
       {
         path: 'validation-process',
         element: <ValidationProcessPage />
+      },
+      {
+        path: 'login',
+        element: <LoginPage />
+      },
+      {
+        path: 'signup',
+        element: <SignupPage />
+      },
+      {
+        path: 'reset-password',
+        element: <ResetPasswordPage />
+      },
+      {
+        path: 'account',
+        element: <AccountPage />
       },
       {
         path: '*',

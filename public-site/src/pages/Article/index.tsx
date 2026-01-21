@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import type { Article } from 'types'
 import TableOfContents from 'components/TableOfContents'
+import VoteButtons from 'components/VoteButtons'
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -383,6 +384,11 @@ export default function ArticlePage() {
           </div>
         </nav>
       )}
+
+      {/* Voting Section */}
+      <div className="mt-8 border-t border-gray-200 pt-8">
+        <VoteButtons articleId={article.id} />
+      </div>
 
       {/* Social Share - Bottom */}
       <div className="mt-8 border-t border-gray-200 pt-8">

@@ -7,11 +7,15 @@
     "build": "tsx scripts/articles.ts build",
     "build:article": "tsx scripts/articles.ts build -s",
     "list": "tsx scripts/articles.ts list",
-    "delete": "tsx scripts/articles.ts delete"
+    "delete": "tsx scripts/articles.ts delete",
+    "sync": "tsx scripts/sync-articles.ts",
+    "sync:dry": "tsx scripts/sync-articles.ts --dry-run"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.91.0",
     "chalk": "^5.6.2",
     "commander": "^14.0.2",
+    "dotenv": "^17.2.3",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.11.1",
     "marked": "^17.0.1",

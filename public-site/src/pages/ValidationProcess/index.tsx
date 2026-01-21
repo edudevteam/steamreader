@@ -11,22 +11,46 @@ export default function ValidationProcessPage() {
       </p>
 
       <div className="space-y-8">
-        {/* Validated Tutorial */}
+        {/* Mark as Read */}
         <div className="rounded-lg border border-gray-200 p-6">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1">
               <svg className="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="text-sm font-medium text-green-700">Validated Tutorial</span>
+              <span className="text-sm font-medium text-green-700">Mark as Read</span>
             </div>
           </div>
           <h2 className="mb-2 text-xl font-semibold text-gray-900">What it means</h2>
           <p className="mb-4 text-gray-600">
-            A qualified reviewer has successfully completed this tutorial from start to finish,
+            A community member has read this article. This helps track engagement and indicates
+            that the content has been reviewed by the community.
+          </p>
+          <h3 className="mb-2 font-semibold text-gray-900">How it works:</h3>
+          <ul className="list-inside list-disc space-y-1 text-gray-600">
+            <li>Any registered user can mark an article as read</li>
+            <li>Reading is automatically recorded when you verify or endorse an article</li>
+            <li>Higher read counts indicate more community engagement</li>
+            <li>You can toggle your read status at any time</li>
+          </ul>
+        </div>
+
+        {/* Certified */}
+        <div className="rounded-lg border border-gray-200 p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1">
+              <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span className="text-sm font-medium text-blue-700">Certified</span>
+            </div>
+          </div>
+          <h2 className="mb-2 text-xl font-semibold text-gray-900">What it means</h2>
+          <p className="mb-4 text-gray-600">
+            A community member has successfully completed this tutorial from start to finish,
             verifying that all steps work as described and produce the expected results.
           </p>
-          <h3 className="mb-2 font-semibold text-gray-900">Verification criteria:</h3>
+          <h3 className="mb-2 font-semibold text-gray-900">Certification criteria:</h3>
           <ul className="list-inside list-disc space-y-1 text-gray-600">
             <li>All code examples compile and run without errors</li>
             <li>Step-by-step instructions are accurate and complete</li>
@@ -35,54 +59,51 @@ export default function ValidationProcessPage() {
           </ul>
         </div>
 
-        {/* Supported Evidence */}
-        <div className="rounded-lg border border-gray-200 p-6">
-          <div className="mb-4 flex items-center gap-3">
-            <div className="flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1">
-              <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <span className="text-sm font-medium text-blue-700">Supported Evidence</span>
-            </div>
-          </div>
-          <h2 className="mb-2 text-xl font-semibold text-gray-900">What it means</h2>
-          <p className="mb-4 text-gray-600">
-            All references, citations, and external links in this article have been verified
-            for credibility and accessibility.
-          </p>
-          <h3 className="mb-2 font-semibold text-gray-900">Verification criteria:</h3>
-          <ul className="list-inside list-disc space-y-1 text-gray-600">
-            <li>All external links are working and accessible</li>
-            <li>Sources are from reputable and authoritative websites</li>
-            <li>Scientific claims are backed by peer-reviewed research when applicable</li>
-            <li>Statistics and data are current and accurately represented</li>
-          </ul>
-        </div>
-
-        {/* Community Approved */}
+        {/* Links Verified */}
         <div className="rounded-lg border border-gray-200 p-6">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex items-center gap-1.5 rounded-full bg-purple-100 px-3 py-1">
               <svg className="h-4 w-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
-              <span className="text-sm font-medium text-purple-700">Community Approved</span>
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-600 px-1.5 text-xs font-bold text-white">
-                42
-              </span>
+              <span className="text-sm font-medium text-purple-700">Links Verified</span>
             </div>
           </div>
           <h2 className="mb-2 text-xl font-semibold text-gray-900">What it means</h2>
           <p className="mb-4 text-gray-600">
-            Community members have read and endorsed this article as accurate, helpful, and valuable.
-            The number indicates how many people have given their approval.
+            A community member has verified that all external links and embedded videos in this
+            article are working and accessible.
           </p>
-          <h3 className="mb-2 font-semibold text-gray-900">How community approval works:</h3>
+          <h3 className="mb-2 font-semibold text-gray-900">Verification criteria:</h3>
           <ul className="list-inside list-disc space-y-1 text-gray-600">
-            <li>Registered community members can approve articles they find valuable</li>
-            <li>Each member can only approve an article once</li>
+            <li>All external links are working and accessible</li>
+            <li>Embedded videos play correctly</li>
+            <li>Referenced resources are still available</li>
+            <li>Links point to the intended destinations</li>
+          </ul>
+        </div>
+
+        {/* Endorse */}
+        <div className="rounded-lg border border-gray-200 p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1">
+              <svg className="h-4 w-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+              </svg>
+              <span className="text-sm font-medium text-amber-700">Endorse</span>
+            </div>
+          </div>
+          <h2 className="mb-2 text-xl font-semibold text-gray-900">What it means</h2>
+          <p className="mb-4 text-gray-600">
+            A community member personally recommends this content as valuable, accurate, and helpful.
+            Endorsements indicate strong approval from the community.
+          </p>
+          <h3 className="mb-2 font-semibold text-gray-900">How endorsements work:</h3>
+          <ul className="list-inside list-disc space-y-1 text-gray-600">
+            <li>Registered community members can endorse articles they find valuable</li>
+            <li>Each member can only endorse an article once</li>
             <li>Higher numbers indicate broader community consensus</li>
-            <li>Approvals can be withdrawn if content quality changes</li>
+            <li>Endorsements can be withdrawn if needed</li>
           </ul>
         </div>
       </div>

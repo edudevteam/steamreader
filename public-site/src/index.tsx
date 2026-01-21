@@ -4,12 +4,15 @@ import { RouterProvider } from 'react-router-dom'
 import 'tailwindcss/tailwind.css'
 import 'highlight.js/styles/github-dark.css'
 import { router } from 'router'
+import { AuthProvider } from 'context/AuthContext'
 
 const container = document.getElementById('root') as HTMLDivElement
 const root = createRoot(container)
 
 root.render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>
 )

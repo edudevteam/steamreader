@@ -39,6 +39,7 @@ export interface FeatureImage {
 }
 
 export interface ArticleMeta {
+  id?: string
   slug: string
   title: string
   subtitle?: string

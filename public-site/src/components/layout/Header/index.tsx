@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { classNames } from 'utils'
+import { useAuth } from 'context/AuthContext'
 
 const navigation = [
   {
@@ -61,6 +62,15 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+  const { user, profile, loading, signOut } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSignOut = async () => {
+    setProfileMenuOpen(false)
+    await signOut()
+    navigate('/')
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-gray-50 shadow-md">
@@ -93,6 +103,78 @@ export default function Header() {
                 {item.name}
               </NavLink>
             ))}
+
+            {/* Auth section */}
+            <div className="ml-4 flex items-center border-l border-gray-200 pl-4">
+              {loading ? (
+                <span className="text-sm text-gray-400">...</span>
+              ) : user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+                    className="flex items-center gap-1.5 rounded-full p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                    title="Account menu"
+                  >
+                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown menu */}
+                  {profileMenuOpen && (
+                    <>
+                      {/* Backdrop to close menu */}
+                      <div
+                        className="fixed inset-0 z-10"
+                        onClick={() => setProfileMenuOpen(false)}
+                      />
+                      <div className="absolute right-0 z-20 mt-2 w-48 origin-top-right rounded-lg bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                        <div className="border-b border-gray-100 px-4 py-2">
+                          <p className="text-sm font-medium text-gray-900">{profile?.display_name || 'User'}</p>
+                          <p className="truncate text-xs text-gray-500">{user.email}</p>
+                        </div>
+                        <NavLink
+                          to="/account"
+                          onClick={() => setProfileMenuOpen(false)}
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                          Account
+                        </NavLink>
+                        <button
+                          onClick={handleSignOut}
+                          className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                          </svg>
+                          Sign Out
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    classNames(
+                      'flex items-center gap-1.5 text-sm font-medium transition-colors',
+                      isActive
+                        ? 'text-indigo-600'
+                        : 'text-gray-600 hover:text-gray-900'
+                    )
+                  }
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                  </svg>
+                  Sign In
+                </NavLink>
+              )}
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -139,6 +221,61 @@ export default function Header() {
                   {item.name}
                 </NavLink>
               ))}
+
+              {/* Mobile auth link */}
+              <div className="border-t border-gray-200 pt-3">
+                {user ? (
+                  <>
+                    <NavLink
+                      to="/account"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={({ isActive }) =>
+                        classNames(
+                          'flex items-center gap-2 rounded-lg px-3 py-2 text-base font-medium',
+                          isActive
+                            ? 'bg-indigo-50 text-indigo-600'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        )
+                      }
+                    >
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      {profile?.display_name || 'Account'}
+                    </NavLink>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false)
+                        handleSignOut()
+                      }}
+                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-base font-medium text-red-600 hover:bg-red-50"
+                    >
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <NavLink
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      classNames(
+                        'flex items-center gap-2 rounded-lg px-3 py-2 text-base font-medium',
+                        isActive
+                          ? 'bg-indigo-50 text-indigo-600'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      )
+                    }
+                  >
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    Sign In
+                  </NavLink>
+                )}
+              </div>
             </div>
           </div>
         )}

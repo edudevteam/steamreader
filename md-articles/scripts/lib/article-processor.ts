@@ -151,6 +151,7 @@ async function processArticle(fileName: string): Promise<ArticleWithRawRefs | nu
     const featureImageSrc = frontmatter.feature_image
 
     const article: ArticleWithRawRefs = {
+      id: frontmatter.id,
       slug,
       title: frontmatter.title,
       subtitle: frontmatter.subtitle,
