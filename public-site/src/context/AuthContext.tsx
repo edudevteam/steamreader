@@ -49,28 +49,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Get initial session
-    supabase.auth.getSession()
-      .then(({ data: { session } }) => {
+    const initializeAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
         setSession(session)
         setUser(session?.user ?? null)
         if (session?.user) {
-          fetchProfile(session.user.id).then(setProfile).catch(console.error)
+          const profile = await fetchProfile(session.user.id)
+          setProfile(profile)
         }
-        setLoading(false)
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error getting session:', error)
+      } finally {
         setLoading(false)
-      })
+      }
+    }
+
+    initializeAuth()
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      async (event, session) => {
         setSession(session)
         setUser(session?.user ?? null)
         if (session?.user) {
           try {
-            const profile = await fetchProfile(session.user.id)
+            let profile = await fetchProfile(session.user.id)
+
+            // On first sign in after email confirmation, sync metadata to profile
+            if (event === 'SIGNED_IN' && profile && !profile.display_name && !profile.birthdate) {
+              const metadata = session.user.user_metadata
+              if (metadata?.display_name || metadata?.birthdate) {
+                await supabase
+                  .from('profiles')
+                  .update({
+                    display_name: metadata.display_name || null,
+                    birthdate: metadata.birthdate || null,
+                    updated_at: new Date().toISOString()
+                  })
+                  .eq('id', session.user.id)
+                // Refetch updated profile
+                profile = await fetchProfile(session.user.id)
+              }
+            }
+
             setProfile(profile)
           } catch (error) {
             console.error('Error fetching profile:', error)
@@ -78,7 +100,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           setProfile(null)
         }
-        setLoading(false)
       }
     )
 
@@ -98,10 +119,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error: new Error('You must be at least 13 years old to sign up.') }
     }
 
+    // Sign up with email confirmation
+    // Profile is auto-created by database trigger
+    // display_name and birthdate are stored in user metadata and synced to profile on first login
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: `${window.location.origin}/account`,
         data: {
           display_name: displayName,
           birthdate: birthdate.toISOString().split('T')[0]
@@ -109,25 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     })
 
-    if (error) {
-      return { error }
-    }
-
-    // Update profile with birthdate and display name after signup
-    // The profile is auto-created by the database trigger
-    // We'll update it with additional fields
-    const { data: { user: newUser } } = await supabase.auth.getUser()
-    if (newUser) {
-      await supabase
-        .from('profiles')
-        .update({
-          display_name: displayName,
-          birthdate: birthdate.toISOString().split('T')[0]
-        })
-        .eq('id', newUser.id)
-    }
-
-    return { error: null }
+    return { error: error || null }
   }
 
   const signIn = async (email: string, password: string) => {
