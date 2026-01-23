@@ -1,6 +1,6 @@
 ---
 id: "606374b8-f8ba-4e0f-9148-5ca337774470"
-title: "Sprite Lab Lesson 1"
+title: "Code.org - Sprite Lab Lesson 1"
 subtitle: "Chatting with Sprites"
 author: "Ryan Jones"
 author_slug: "ryan-jones"
@@ -14,6 +14,7 @@ tags:
   - variables
   - events
   - chat
+  - code.org
 
 feature_image: "/images/sprite-lab-lesson-1.png"
 feature_image_alt: "Chatting with Sprites"

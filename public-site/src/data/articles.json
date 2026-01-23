@@ -3,7 +3,7 @@
     {
       "id": "606374b8-f8ba-4e0f-9148-5ca337774470",
       "slug": "sprite-lab-lesson-1",
-      "title": "Sprite Lab Lesson 1",
+      "title": "Code.org - Sprite Lab Lesson 1",
       "subtitle": "Chatting with Sprites",
       "excerpt": "Learn how to add backgrounds and sprites, ask users for input, save their responses with variables, and make things happen using events.",
       "author": {
@@ -43,6 +43,10 @@
         {
           "slug": "chat",
           "name": "chat"
+        },
+        {
+          "slug": "codeorg",
+          "name": "code.org"
         }
       ],
       "featureImage": {
@@ -146,7 +150,7 @@
       ],
       "nextArticle": {
         "slug": "sprite-lab-lesson-1",
-        "title": "Sprite Lab Lesson 1"
+        "title": "Code.org - Sprite Lab Lesson 1"
       }
     },
     {
@@ -426,5 +430,5 @@
     }
   ],
   "totalCount": 5,
-  "lastUpdated": "2026-01-23T23:50:35.990Z"
+  "lastUpdated": "2026-01-23T23:53:13.885Z"
 }

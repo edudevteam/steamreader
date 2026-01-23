@@ -36,14 +36,14 @@
       "articleCount": 1
     },
     {
+      "slug": "codeorg",
+      "name": "code.org",
+      "articleCount": 2
+    },
+    {
       "slug": "tutorial",
       "name": "tutorial",
       "articleCount": 4
-    },
-    {
-      "slug": "codeorg",
-      "name": "code.org",
-      "articleCount": 1
     },
     {
       "slug": "python",
