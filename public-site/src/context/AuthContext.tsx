@@ -140,7 +140,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = () => {
     localStorage.clear()
     sessionStorage.clear()
-    location.reload()
+    window.location.href = '/login'
   }
 
   const resetPassword = async (email: string) => {
