@@ -10,7 +10,7 @@ export default function UpdatePasswordPage() {
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
   const [isRecoveryMode, setIsRecoveryMode] = useState(false)
-  const { user, loading: authLoading, updatePassword } = useAuth()
+  const { user, loading: authLoading, updatePassword, signOut } = useAuth()
   const navigate = useNavigate()
 
   const { isPasswordValid, passwordsMatch } = usePasswordValidation(password, confirmPassword)
@@ -61,8 +61,13 @@ export default function UpdatePasswordPage() {
       setError(error.message)
       setLoading(false)
     } else {
-      setSuccess(true)
-      setLoading(false)
+      if (isRecoveryMode) {
+        // In recovery mode, sign out and redirect to login
+        signOut()
+      } else {
+        setSuccess(true)
+        setLoading(false)
+      }
     }
   }
 

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { classNames } from 'utils'
 import { useAuth } from 'context/AuthContext'
 
@@ -62,10 +62,37 @@ const navigation = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isRecoveryMode, setIsRecoveryMode] = useState(false)
   const { user, profile, signOut } = useAuth()
+  const location = useLocation()
+
+  // Detect if user is in password recovery mode
+  useEffect(() => {
+    const isOnUpdatePassword = location.pathname === '/update-password'
+    const hashParams = new URLSearchParams(window.location.hash.substring(1))
+    const type = hashParams.get('type')
+    setIsRecoveryMode(isOnUpdatePassword && type === 'recovery')
+  }, [location])
 
   const handleSignOut = () => {
     signOut()
+  }
+
+  // Show minimal header during password recovery - no navigation allowed
+  if (isRecoveryMode) {
+    return (
+      <header className="sticky top-0 z-50 bg-gray-50 shadow-md">
+        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="STEAM Reader" className="h-8 w-auto" />
+              <span className="text-xl font-bold text-gray-900">STEAM Reader</span>
+            </div>
+            <span className="text-sm text-gray-500">Password Reset</span>
+          </div>
+        </nav>
+      </header>
+    )
   }
 
   return (
