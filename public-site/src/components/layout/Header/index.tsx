@@ -62,13 +62,21 @@ const navigation = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
   const { user, profile, signOut } = useAuth()
   const navigate = useNavigate()
 
   const handleSignOut = async () => {
-    setMenuOpen(false)
-    await signOut()
-    navigate('/')
+    if (signingOut) return // Prevent multiple clicks
+    setSigningOut(true)
+    try {
+      await signOut()
+      setMenuOpen(false)
+      navigate('/')
+    } catch (error) {
+      console.error('Sign out error:', error)
+      setSigningOut(false)
+    }
   }
 
   return (
@@ -119,6 +127,7 @@ export default function Header() {
             'absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-xl transition-transform duration-300',
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           )}
+          onClick={(e) => e.stopPropagation()}
         >
           {/* Panel header */}
           <div className="flex h-16 items-center justify-between border-b border-gray-200 px-4">
@@ -188,12 +197,13 @@ export default function Header() {
                   </NavLink>
                   <button
                     onClick={handleSignOut}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-red-600 transition-colors hover:bg-red-50"
+                    disabled={signingOut}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
-                    Sign Out
+                    {signingOut ? 'Signing Out...' : 'Sign Out'}
                   </button>
                 </>
               ) : (
