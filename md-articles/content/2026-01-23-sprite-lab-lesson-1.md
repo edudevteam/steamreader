@@ -25,7 +25,7 @@ prev: sprite-lab-new-project
 next:
 ---
 
-# Sprite Lab Lesson 1: Chatting with Sprites
+# Chatting with Sprites (Tutorial)
 
 1. In Sprite Lab, click `New project +` and select `Sprite Lab`
 
