@@ -17,10 +17,9 @@ interface AuthContextType {
   profile: UserProfile | null
   session: Session | null
   loading: boolean
-  signingOut: boolean
   signUp: (email: string, password: string, birthdate: Date, displayName?: string) => Promise<{ error: Error | null }>
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>
-  signOut: () => Promise<void>
+  signOut: () => void
   resetPassword: (email: string) => Promise<{ error: Error | null }>
   updatePassword: (password: string) => Promise<{ error: Error | null }>
   updateProfile: (updates: Partial<Pick<UserProfile, 'display_name'>>) => Promise<{ error: Error | null }>
@@ -33,7 +32,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
-  const [signingOut, setSigningOut] = useState(false)
 
   // Fetch user profile from profiles table
   const fetchProfile = async (userId: string) => {
@@ -139,21 +137,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error }
   }
 
-  const signOut = async () => {
-    if (signingOut) return // Prevent multiple calls
-    setSigningOut(true)
-    try {
-      const { error } = await supabase.auth.signOut()
-      if (error) {
-        console.error('Sign out error:', error)
-        throw error
-      }
-      setUser(null)
-      setProfile(null)
-      setSession(null)
-    } finally {
-      setSigningOut(false)
-    }
+  const signOut = () => {
+    localStorage.clear()
+    sessionStorage.clear()
+    location.reload()
   }
 
   const resetPassword = async (email: string) => {
@@ -190,7 +177,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     profile,
     session,
     loading,
-    signingOut,
     signUp,
     signIn,
     signOut,

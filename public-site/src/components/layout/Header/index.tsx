@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { classNames } from 'utils'
 import { useAuth } from 'context/AuthContext'
 
@@ -62,13 +62,10 @@ const navigation = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { user, profile, signOut, signingOut } = useAuth()
-  const navigate = useNavigate()
+  const { user, profile, signOut } = useAuth()
 
-  const handleSignOut = async () => {
-    await signOut()
-    setMenuOpen(false)
-    navigate('/')
+  const handleSignOut = () => {
+    signOut()
   }
 
   return (
@@ -191,13 +188,12 @@ export default function Header() {
                   </NavLink>
                   <button
                     onClick={handleSignOut}
-                    disabled={signingOut}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-red-600 transition-colors hover:bg-red-50"
                   >
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
-                    {signingOut ? 'Signing Out...' : 'Sign Out'}
+                    Sign Out
                   </button>
                 </>
               ) : (
