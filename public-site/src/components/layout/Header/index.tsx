@@ -152,7 +152,7 @@ export default function Header() {
                       classNames(
                         'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
                         isActive
-                          ? 'bg-indigo-50 text-indigo-600'
+                          ? 'bg-brand-50 text-brand-600'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       )
                     }
@@ -179,7 +179,7 @@ export default function Header() {
                       classNames(
                         'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
                         isActive
-                          ? 'bg-indigo-50 text-indigo-600'
+                          ? 'bg-brand-50 text-brand-600'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       )
                     }
@@ -209,7 +209,7 @@ export default function Header() {
                       classNames(
                         'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
                         isActive
-                          ? 'bg-indigo-50 text-indigo-600'
+                          ? 'bg-brand-50 text-brand-600'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       )
                     }
@@ -226,7 +226,7 @@ export default function Header() {
                       classNames(
                         'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
                         isActive
-                          ? 'bg-indigo-50 text-indigo-600'
+                          ? 'bg-brand-50 text-brand-600'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       )
                     }

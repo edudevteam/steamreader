@@ -3,7 +3,7 @@ export default function AboutPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="mb-8 text-4xl font-bold text-gray-900">About Us</h1>
 
-      <div className="prose prose-lg prose-indigo">
+      <div className="prose prose-lg prose-brand">
         <p>
           Welcome to our platform dedicated to providing high-quality educational content
           for curious minds of all ages.

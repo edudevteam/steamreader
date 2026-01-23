@@ -67,7 +67,7 @@ export default function SearchPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search by title, author, category, or tags..."
-              className="w-full rounded-full border border-gray-300 bg-white px-5 py-3 pl-12 text-gray-900 placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full rounded-full border border-gray-300 bg-white px-5 py-3 pl-12 text-gray-900 placeholder-gray-500 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
             <svg
               className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
@@ -89,7 +89,7 @@ export default function SearchPage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               <option value="">All Categories</option>
               {categories.map((category) => (
@@ -159,7 +159,7 @@ export default function SearchPage() {
                     </span>
                     <span className="text-xs text-gray-500">{article.readingTime} min</span>
                   </div>
-                  <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-indigo-600">
+                  <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                     {article.title}
                   </h3>
                   <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>

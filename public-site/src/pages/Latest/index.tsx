@@ -44,7 +44,7 @@ export default function LatestPage() {
                   </span>
                   <span className="text-xs text-gray-500">{article.readingTime} min</span>
                 </div>
-                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-indigo-600">
+                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                   {article.title}
                 </h3>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>

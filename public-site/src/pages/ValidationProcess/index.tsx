@@ -112,7 +112,7 @@ export default function ValidationProcessPage() {
         <h2 className="mb-4 text-xl font-semibold text-gray-900">Questions?</h2>
         <p className="text-gray-600">
           If you have questions about our validation process or would like to become a reviewer,
-          please <Link to="/contact" className="text-indigo-600 hover:text-indigo-700 hover:underline">contact us</Link>.
+          please <Link to="/contact" className="text-brand-600 hover:text-brand-700 hover:underline">contact us</Link>.
         </p>
       </div>
     </div>

@@ -26,7 +26,8 @@
       "Bash(pnpm sync:dry:*)",
       "Bash(pnpm tsc:*)",
       "Bash(curl:*)",
-      "Bash(dig:*)"
+      "Bash(dig:*)",
+      "Bash(find:*)"
     ]
   }
 }

@@ -33,13 +33,13 @@ export default function CategoryPage() {
       {/* Category Header */}
       <header className="mb-8">
         <nav className="mb-4">
-          <Link to="/" className="text-sm text-gray-500 hover:text-indigo-600">
+          <Link to="/" className="text-sm text-gray-500 hover:text-brand-600">
             Home
           </Link>
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-sm text-gray-900">Categories</span>
           <span className="mx-2 text-gray-400">/</span>
-          <span className="text-sm font-medium text-indigo-600">{category.name}</span>
+          <span className="text-sm font-medium text-brand-600">{category.name}</span>
         </nav>
         <h1 className="mb-2 text-3xl font-bold text-gray-900">{category.name}</h1>
         {category.description && (
@@ -70,7 +70,7 @@ export default function CategoryPage() {
                 <div className="mb-2 text-xs text-gray-500">
                   {article.readingTime} min read
                 </div>
-                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-indigo-600">
+                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                   {article.title}
                 </h3>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>

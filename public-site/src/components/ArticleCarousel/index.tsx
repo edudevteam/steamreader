@@ -48,11 +48,11 @@ export default function ArticleCarousel({
   }
 
   const cardClasses = variant === 'tutorial'
-    ? 'group overflow-hidden rounded-xl border-2 border-indigo-100 bg-gradient-to-br from-indigo-50 to-white shadow-md transition-all hover:border-indigo-200 hover:shadow-lg'
+    ? 'group overflow-hidden rounded-xl border-2 border-brand-100 bg-gradient-to-br from-brand-50 to-white shadow-md transition-all hover:border-brand-200 hover:shadow-lg'
     : 'group overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg'
 
   const badgeClasses = variant === 'tutorial'
-    ? 'rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-700'
+    ? 'rounded-full bg-brand-100 px-2 py-1 text-xs font-medium text-brand-700'
     : 'rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600'
 
   const badgeText = (article: ArticleMeta) =>
@@ -73,7 +73,7 @@ export default function ArticleCarousel({
         {viewAllLink && (
           <Link
             to={viewAllLink}
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
+            className="text-sm font-medium text-brand-600 hover:text-brand-700"
           >
             {viewAllText} &rarr;
           </Link>
@@ -121,7 +121,7 @@ export default function ArticleCarousel({
                     {article.readingTime} min
                   </span>
                 </div>
-                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-indigo-600">
+                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                   {article.title}
                 </h3>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
@@ -170,7 +170,7 @@ export default function ArticleCarousel({
                     {article.readingTime} min
                   </span>
                 </div>
-                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-indigo-600">
+                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                   {article.title}
                 </h3>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
@@ -188,7 +188,7 @@ export default function ArticleCarousel({
             <button
               onClick={goToPrevPage}
               disabled={currentPage === 0}
-              className="text-sm font-medium text-gray-600 transition-colors hover:text-indigo-600 disabled:cursor-not-allowed disabled:text-gray-300"
+              className="text-sm font-medium text-gray-600 transition-colors hover:text-brand-600 disabled:cursor-not-allowed disabled:text-gray-300"
             >
               &larr; Previous
             </button>
@@ -198,7 +198,7 @@ export default function ArticleCarousel({
                   key={i}
                   onClick={() => setCurrentPage(i)}
                   className={`h-2 w-2 rounded-full transition-colors ${
-                    i === currentPage ? 'bg-indigo-600' : 'bg-gray-300 hover:bg-gray-400'
+                    i === currentPage ? 'bg-brand-600' : 'bg-gray-300 hover:bg-gray-400'
                   }`}
                   aria-label={`Go to page ${i + 1}`}
                 />
@@ -207,7 +207,7 @@ export default function ArticleCarousel({
             <button
               onClick={goToNextPage}
               disabled={currentPage === totalPages - 1}
-              className="text-sm font-medium text-gray-600 transition-colors hover:text-indigo-600 disabled:cursor-not-allowed disabled:text-gray-300"
+              className="text-sm font-medium text-gray-600 transition-colors hover:text-brand-600 disabled:cursor-not-allowed disabled:text-gray-300"
             >
               Next &rarr;
             </button>

@@ -122,7 +122,7 @@ export default function HomePage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search articles by title, author, category, or tags..."
-            className="w-full rounded-full border border-gray-300 bg-white px-5 py-3 pl-12 text-gray-900 placeholder-gray-500 transition-colors hover:border-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full rounded-full border border-gray-300 bg-white px-5 py-3 pl-12 text-gray-900 placeholder-gray-500 transition-colors hover:border-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
           <svg
             className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
@@ -147,7 +147,7 @@ export default function HomePage() {
             <Link
               key={category.slug}
               to={`/category/${category.slug}`}
-              className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-indigo-100 hover:text-indigo-700"
+              className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-brand-100 hover:text-brand-700"
             >
               {category.name}
             </Link>
@@ -170,7 +170,7 @@ export default function HomePage() {
           <p className="text-lg font-light italic text-gray-700 md:text-xl">
             "{quote.text}"
           </p>
-          <footer className="mt-4 text-xs font-medium text-indigo-600">
+          <footer className="mt-4 text-xs font-medium text-brand-600">
             — {quote.author}
           </footer>
         </blockquote>

@@ -57,7 +57,7 @@ export default function ContactPage() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-4 rounded-lg border border-gray-200 p-4 transition-colors hover:border-indigo-300 hover:bg-indigo-50"
+            className="flex items-center gap-4 rounded-lg border border-gray-200 p-4 transition-colors hover:border-brand-300 hover:bg-brand-50"
           >
             <div className="text-gray-600">{link.icon}</div>
             <div>

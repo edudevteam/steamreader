@@ -11,8 +11,36 @@ export default function UpdatePasswordPage() {
   const [isRecoveryMode, setIsRecoveryMode] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [generatorLength, setGeneratorLength] = useState(16)
   const { user, loading: authLoading, updatePassword } = useAuth()
   const navigate = useNavigate()
+
+  // Generate a secure password meeting all requirements
+  const generatePassword = () => {
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz'
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const special = '!@#$%^&*()_+-=[]{}|;:,.<>?'
+    const all = lowercase + uppercase + special + '0123456789'
+
+    // Ensure at least one of each required type
+    let newPassword = ''
+    newPassword += lowercase[Math.floor(Math.random() * lowercase.length)]
+    newPassword += uppercase[Math.floor(Math.random() * uppercase.length)]
+    newPassword += special[Math.floor(Math.random() * special.length)]
+
+    // Fill the rest randomly
+    for (let i = 3; i < generatorLength; i++) {
+      newPassword += all[Math.floor(Math.random() * all.length)]
+    }
+
+    // Shuffle the password
+    newPassword = newPassword.split('').sort(() => Math.random() - 0.5).join('')
+
+    setPassword(newPassword)
+    setConfirmPassword(newPassword)
+    setShowPassword(true)
+    setShowConfirmPassword(true)
+  }
 
   useEffect(() => {
     // Check if this is a password recovery flow
@@ -106,7 +134,7 @@ export default function UpdatePasswordPage() {
           </p>
           <Link
             to="/account"
-            className="inline-block rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+            className="inline-block rounded-md bg-brand-600 px-4 py-2 text-white hover:bg-brand-700"
           >
             Go to Account
           </Link>
@@ -148,7 +176,7 @@ export default function UpdatePasswordPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className={`block w-full rounded-md border px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-1 ${
                   isPasswordValid === null
-                    ? 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                    ? 'border-gray-300 focus:border-brand-500 focus:ring-brand-500'
                     : isPasswordValid
                       ? 'border-green-500 bg-green-50 focus:border-green-500 focus:ring-green-500'
                       : 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
@@ -189,6 +217,38 @@ export default function UpdatePasswordPage() {
                 </li>
               </ul>
             ) : null}
+
+            {/* Password Generator */}
+            <div className="mt-3 rounded-md bg-gray-50 p-3">
+              <div className="mb-3">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="passwordLength" className="text-sm text-gray-600">
+                    Total Characters
+                  </label>
+                  <span className="text-sm font-medium text-gray-900">{generatorLength}</span>
+                </div>
+                <input
+                  id="passwordLength"
+                  type="range"
+                  min={13}
+                  max={26}
+                  value={generatorLength}
+                  onChange={(e) => setGeneratorLength(Number(e.target.value))}
+                  className="mt-2 w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
+                />
+                <div className="flex justify-between text-xs text-gray-400 mt-1">
+                  <span>13</span>
+                  <span>26</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={generatePassword}
+                className="w-full rounded-md bg-brand-100 px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+              >
+                Generate Password
+              </button>
+            </div>
           </div>
 
           <div>
@@ -204,7 +264,7 @@ export default function UpdatePasswordPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className={`block w-full rounded-md border px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-1 ${
                   passwordsMatch === null
-                    ? 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                    ? 'border-gray-300 focus:border-brand-500 focus:ring-brand-500'
                     : passwordsMatch
                       ? 'border-green-500 bg-green-50 focus:border-green-500 focus:ring-green-500'
                       : 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
@@ -237,7 +297,7 @@ export default function UpdatePasswordPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-md bg-brand-600 px-4 py-2 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? 'Updating...' : 'Update Password'}
           </button>
@@ -245,7 +305,7 @@ export default function UpdatePasswordPage() {
 
         {!isRecoveryMode && (
           <div className="mt-6 text-center text-sm text-gray-600">
-            <Link to="/account" className="text-indigo-600 hover:text-indigo-500">
+            <Link to="/account" className="text-brand-600 hover:text-brand-500">
               Back to Account
             </Link>
           </div>

@@ -126,7 +126,7 @@ export default function SignupPage() {
           </p>
           <Link
             to="/login"
-            className="inline-block rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+            className="inline-block rounded-md bg-brand-600 px-4 py-2 text-white hover:bg-brand-700"
           >
             Go to Login
           </Link>
@@ -156,7 +156,7 @@ export default function SignupPage() {
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
               placeholder="Your name"
             />
           </div>
@@ -171,7 +171,7 @@ export default function SignupPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
               placeholder="you@example.com"
             />
           </div>
@@ -189,7 +189,7 @@ export default function SignupPage() {
               max={new Date().toISOString().split('T')[0]}
               className={`mt-1 block w-full rounded-md border px-3 py-2 shadow-sm focus:outline-none focus:ring-1 ${
                 isOldEnough === null
-                  ? 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                  ? 'border-gray-300 focus:border-brand-500 focus:ring-brand-500'
                   : isOldEnough
                     ? 'border-green-500 bg-green-50 focus:border-green-500 focus:ring-green-500'
                     : 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
@@ -216,7 +216,7 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className={`block w-full rounded-md border px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-1 ${
                   isPasswordValid === null
-                    ? 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                    ? 'border-gray-300 focus:border-brand-500 focus:ring-brand-500'
                     : isPasswordValid
                       ? 'border-green-500 bg-green-50 focus:border-green-500 focus:ring-green-500'
                       : 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
@@ -274,7 +274,7 @@ export default function SignupPage() {
                   max={26}
                   value={generatorLength}
                   onChange={(e) => setGeneratorLength(Number(e.target.value))}
-                  className="mt-2 w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="mt-2 w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
                 />
                 <div className="flex justify-between text-xs text-gray-400 mt-1">
                   <span>13</span>
@@ -284,7 +284,7 @@ export default function SignupPage() {
               <button
                 type="button"
                 onClick={generatePassword}
-                className="w-full rounded-md bg-indigo-100 px-3 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="w-full rounded-md bg-brand-100 px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
               >
                 Generate Password
               </button>
@@ -304,7 +304,7 @@ export default function SignupPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className={`block w-full rounded-md border px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-1 ${
                   passwordsMatch === null
-                    ? 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                    ? 'border-gray-300 focus:border-brand-500 focus:ring-brand-500'
                     : passwordsMatch
                       ? 'border-green-500 bg-green-50 focus:border-green-500 focus:ring-green-500'
                       : 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
@@ -337,7 +337,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-md bg-brand-600 px-4 py-2 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? 'Creating account...' : 'Create Account'}
           </button>
@@ -345,14 +345,14 @@ export default function SignupPage() {
 
         <p className="mt-4 text-center text-xs text-gray-500">
           By signing up, you confirm that you are at least 13 years old and agree to our{' '}
-          <Link to="/terms" className="text-indigo-600 hover:text-indigo-500 underline">
+          <Link to="/terms" className="text-brand-600 hover:text-brand-500 underline">
             Terms and Conditions
           </Link>.
         </p>
 
         <div className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{' '}
-          <Link to="/login" className="text-indigo-600 hover:text-indigo-500">
+          <Link to="/login" className="text-brand-600 hover:text-brand-500">
             Sign in
           </Link>
         </div>

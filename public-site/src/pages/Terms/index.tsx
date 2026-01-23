@@ -3,7 +3,7 @@ export default function TermsPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="mb-8 text-4xl font-bold text-gray-900">Terms and Conditions</h1>
 
-      <div className="prose prose-lg prose-indigo">
+      <div className="prose prose-lg prose-brand">
         <p className="text-gray-600">
           Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
         </p>

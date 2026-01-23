@@ -36,7 +36,7 @@ export default function Footer() {
                 <li key={category.slug}>
                   <Link
                     to={`/category/${category.slug}`}
-                    className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                    className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                   >
                     {category.name}
                   </Link>
@@ -54,7 +54,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/about"
-                  className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                 >
                   About
                 </Link>
@@ -62,7 +62,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/validation-process"
-                  className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Validation Process
                 </Link>
@@ -70,7 +70,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/contact"
-                  className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Contact
                 </Link>
@@ -78,7 +78,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/newsletter"
-                  className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Newsletter
                 </Link>
@@ -95,7 +95,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/"
-                  className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Home
                 </Link>
@@ -103,7 +103,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/search"
-                  className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Search Articles
                 </Link>
@@ -111,7 +111,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/terms"
-                  className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Terms & Conditions
                 </Link>
@@ -143,7 +143,7 @@ export default function Footer() {
                 <li key={category.slug}>
                   <Link
                     to={`/category/${category.slug}`}
-                    className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                    className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                   >
                     {category.name}
                   </Link>
@@ -161,7 +161,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/about"
-                  className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
                   About
                 </Link>
@@ -169,7 +169,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/validation-process"
-                  className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Validation Process
                 </Link>
@@ -177,7 +177,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/contact"
-                  className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Contact
                 </Link>
@@ -185,7 +185,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/newsletter"
-                  className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Newsletter
                 </Link>
@@ -202,7 +202,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/"
-                  className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Home
                 </Link>
@@ -210,7 +210,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/search"
-                  className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Search Articles
                 </Link>
@@ -218,7 +218,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/terms"
-                  className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Terms & Conditions
                 </Link>

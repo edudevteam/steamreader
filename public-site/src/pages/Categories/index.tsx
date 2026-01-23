@@ -13,7 +13,7 @@ const getArticleCount = (slug: string) =>
 
 // Define colors for each category
 const categoryColors: Record<string, string> = {
-  tutorial: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
+  tutorial: 'bg-brand-100 text-brand-700 hover:bg-brand-200',
   science: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
   technology: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200',
   engineering: 'bg-amber-100 text-amber-700 hover:bg-amber-200',

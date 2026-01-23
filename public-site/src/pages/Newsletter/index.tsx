@@ -3,7 +3,7 @@ export default function NewsletterPage() {
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="text-center">
         <svg
-          className="mx-auto h-12 w-12 text-indigo-600"
+          className="mx-auto h-12 w-12 text-brand-600"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -22,7 +22,7 @@ export default function NewsletterPage() {
       </div>
 
       <div className="mt-10 rounded-lg bg-gray-50 p-8 text-center">
-        <span className="inline-block rounded-full bg-indigo-100 px-4 py-1 text-sm font-medium text-indigo-700">
+        <span className="inline-block rounded-full bg-brand-100 px-4 py-1 text-sm font-medium text-brand-700">
           Coming Soon
         </span>
         <h2 className="mt-4 text-xl font-semibold text-gray-900">
@@ -37,9 +37,9 @@ export default function NewsletterPage() {
         <h2 className="text-center text-lg font-semibold text-gray-900">What you'll get:</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-100">
               <svg
-                className="h-6 w-6 text-indigo-600"
+                className="h-6 w-6 text-brand-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -58,9 +58,9 @@ export default function NewsletterPage() {
             </p>
           </div>
           <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-100">
               <svg
-                className="h-6 w-6 text-indigo-600"
+                className="h-6 w-6 text-brand-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -79,9 +79,9 @@ export default function NewsletterPage() {
             </p>
           </div>
           <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-100">
               <svg
-                className="h-6 w-6 text-indigo-600"
+                className="h-6 w-6 text-brand-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

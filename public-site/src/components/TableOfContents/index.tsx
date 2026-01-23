@@ -38,7 +38,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
         {/* Floating TOC button */}
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand-600 text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
           aria-label="Open table of contents"
         >
           <svg
@@ -74,7 +74,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
           <div className="flex items-center justify-between border-b border-gray-200 px-4 py-4">
             <div className="flex items-center gap-2">
               <svg
-                className="h-5 w-5 text-indigo-600"
+                className="h-5 w-5 text-brand-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -116,7 +116,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
                 <li key={parent.id}>
                   <button
                     onClick={() => scrollToHeading(parent.id)}
-                    className="w-full rounded-lg px-3 py-2 text-left font-medium text-gray-900 transition-colors hover:bg-indigo-50 hover:text-indigo-600"
+                    className="w-full rounded-lg px-3 py-2 text-left font-medium text-gray-900 transition-colors hover:bg-brand-50 hover:text-brand-600"
                   >
                     {parent.text}
                   </button>
@@ -126,7 +126,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
                         <li key={child.id}>
                           <button
                             onClick={() => scrollToHeading(child.id)}
-                            className="w-full rounded-lg px-3 py-1.5 text-left text-sm text-gray-600 transition-colors hover:bg-indigo-50 hover:text-indigo-600"
+                            className="w-full rounded-lg px-3 py-1.5 text-left text-sm text-gray-600 transition-colors hover:bg-brand-50 hover:text-brand-600"
                           >
                             {child.text}
                           </button>

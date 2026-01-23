@@ -11,6 +11,18 @@ export default {
           engineering: '#F59E0B',
           arts: '#EC4899',
           mathematics: '#8B5CF6'
+        },
+        brand: {
+          50: '#f3e8ff',
+          100: '#e9d5ff',
+          200: '#d8b4fe',
+          300: '#c084fc',
+          400: '#a855f7',
+          500: '#9333ea',
+          600: '#673ab7',
+          700: '#5b21b6',
+          800: '#4c1d95',
+          900: '#3b0764'
         }
       },
       typography: {

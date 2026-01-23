@@ -21,7 +21,7 @@ export default function TagsPage() {
             <Link
               key={tag.slug}
               to={`/tag/${tag.slug}`}
-              className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-indigo-100 hover:text-indigo-700"
+              className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-brand-100 hover:text-brand-700"
             >
               <span>#{tag.name}</span>
               <span className="rounded-full bg-white px-2 py-0.5 text-xs text-gray-500">

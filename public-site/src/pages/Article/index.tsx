@@ -186,7 +186,7 @@ export default function ArticlePage() {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full bg-gray-100 p-2 text-gray-600 transition-colors hover:bg-indigo-100 hover:text-indigo-600"
+          className="rounded-full bg-gray-100 p-2 text-gray-600 transition-colors hover:bg-brand-100 hover:text-brand-600"
           aria-label={`Share on ${link.name}`}
         >
           {link.icon}
@@ -212,7 +212,7 @@ export default function ArticlePage() {
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <Link
             to={`/category/${article.category.slug}`}
-            className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700 transition-colors hover:bg-indigo-200"
+            className="rounded-full bg-brand-100 px-3 py-1 text-sm font-medium text-brand-700 transition-colors hover:bg-brand-200"
           >
             {article.category.name}
           </Link>
@@ -228,7 +228,7 @@ export default function ArticlePage() {
         <div className="flex items-center gap-4 text-sm text-gray-600">
           <Link
             to={`/author/${article.author.slug}`}
-            className="font-medium hover:text-indigo-600"
+            className="font-medium hover:text-brand-600"
           >
             {article.author.name}
           </Link>
@@ -263,7 +263,7 @@ export default function ArticlePage() {
       {/* Article Content */}
       <div
         ref={contentRef}
-        className="prose prose-lg prose-indigo mx-auto"
+        className="prose prose-lg prose-brand mx-auto"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
 
@@ -290,10 +290,10 @@ export default function ArticlePage() {
             {article.previousArticle ? (
               <Link
                 to={`/article/${article.previousArticle.slug}`}
-                className="flex-1 group rounded-lg border border-gray-200 p-4 transition-colors hover:border-indigo-300 hover:bg-indigo-50"
+                className="flex-1 group rounded-lg border border-gray-200 p-4 transition-colors hover:border-brand-300 hover:bg-brand-50"
               >
                 <span className="text-sm text-gray-500">Previous</span>
-                <div className="mt-1 flex items-center gap-2 text-gray-900 group-hover:text-indigo-600">
+                <div className="mt-1 flex items-center gap-2 text-gray-900 group-hover:text-brand-600">
                   <svg className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
@@ -306,10 +306,10 @@ export default function ArticlePage() {
             {article.nextArticle ? (
               <Link
                 to={`/article/${article.nextArticle.slug}`}
-                className="flex-1 group rounded-lg border border-gray-200 p-4 text-right transition-colors hover:border-indigo-300 hover:bg-indigo-50"
+                className="flex-1 group rounded-lg border border-gray-200 p-4 text-right transition-colors hover:border-brand-300 hover:bg-brand-50"
               >
                 <span className="text-sm text-gray-500">Next</span>
-                <div className="mt-1 flex items-center justify-end gap-2 text-gray-900 group-hover:text-indigo-600">
+                <div className="mt-1 flex items-center justify-end gap-2 text-gray-900 group-hover:text-brand-600">
                   <span className="font-medium">{article.nextArticle.title}</span>
                   <svg className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

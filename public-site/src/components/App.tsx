@@ -27,7 +27,7 @@ function App() {
           <div className="my-10">
             <a
               href="vscode://"
-              className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-offset-2"
+              className="inline-block rounded-md border border-transparent bg-brand-600 px-8 py-3 text-center font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-700 focus:ring-offset-2"
             >
               Start building for free
             </a>
@@ -50,7 +50,7 @@ function App() {
                           <img
                             src={`https://picsum.photos/600?random=${number}`}
                             alt=""
-                            className="size-full bg-indigo-100 object-cover object-center"
+                            className="size-full bg-brand-100 object-cover object-center"
                           />
                         </div>
                       ))}

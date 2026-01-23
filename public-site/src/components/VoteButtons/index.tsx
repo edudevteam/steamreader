@@ -94,7 +94,7 @@ export default function VoteButtons({ articleId }: VoteButtonsProps) {
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-semibold text-gray-900">Community Feedback</h3>
         {!user && (
-          <Link to="/login" className="text-xs text-indigo-600 hover:text-indigo-500">
+          <Link to="/login" className="text-xs text-brand-600 hover:text-brand-500">
             Sign in to vote
           </Link>
         )}

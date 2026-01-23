@@ -22,7 +22,7 @@ export default function RandomPage() {
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
       <div className="text-center">
-        <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent mx-auto"></div>
+        <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-brand-600 border-t-transparent mx-auto"></div>
         <p className="text-gray-600">Finding a random article...</p>
       </div>
     </div>
