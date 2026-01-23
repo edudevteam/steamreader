@@ -1,9 +1,39 @@
 {
   "tags": [
     {
+      "slug": "sprite-lab",
+      "name": "sprite lab",
+      "articleCount": 2
+    },
+    {
       "slug": "education",
       "name": "education",
-      "articleCount": 4
+      "articleCount": 5
+    },
+    {
+      "slug": "coding",
+      "name": "coding",
+      "articleCount": 5
+    },
+    {
+      "slug": "blocks",
+      "name": "blocks",
+      "articleCount": 1
+    },
+    {
+      "slug": "variables",
+      "name": "variables",
+      "articleCount": 1
+    },
+    {
+      "slug": "events",
+      "name": "events",
+      "articleCount": 1
+    },
+    {
+      "slug": "chat",
+      "name": "chat",
+      "articleCount": 1
     },
     {
       "slug": "tutorial",
@@ -11,18 +41,8 @@
       "articleCount": 4
     },
     {
-      "slug": "coding",
-      "name": "coding",
-      "articleCount": 4
-    },
-    {
       "slug": "codeorg",
       "name": "code.org",
-      "articleCount": 1
-    },
-    {
-      "slug": "sprite-lab",
-      "name": "sprite lab",
       "articleCount": 1
     },
     {

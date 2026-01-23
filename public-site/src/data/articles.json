@@ -1,6 +1,64 @@
 {
   "articles": [
     {
+      "id": "606374b8-f8ba-4e0f-9148-5ca337774470",
+      "slug": "sprite-lab-lesson-1",
+      "title": "Sprite Lab Lesson 1",
+      "subtitle": "Chatting with Sprites",
+      "excerpt": "Learn how to add backgrounds and sprites, ask users for input, save their responses with variables, and make things happen using events.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2026-01-23",
+      "category": {
+        "slug": "tutorial",
+        "name": "Tutorial"
+      },
+      "tags": [
+        {
+          "slug": "sprite-lab",
+          "name": "sprite lab"
+        },
+        {
+          "slug": "education",
+          "name": "education"
+        },
+        {
+          "slug": "coding",
+          "name": "coding"
+        },
+        {
+          "slug": "blocks",
+          "name": "blocks"
+        },
+        {
+          "slug": "variables",
+          "name": "variables"
+        },
+        {
+          "slug": "events",
+          "name": "events"
+        },
+        {
+          "slug": "chat",
+          "name": "chat"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/sprite-lab-lesson-1.png",
+        "alt": "Chatting with Sprites",
+        "caption": ""
+      },
+      "readingTime": 2,
+      "status": "published",
+      "tableOfContents": [],
+      "previousArticle": {
+        "slug": "sprite-lab-new-project",
+        "title": "Code.org - Sprite Lab Overview"
+      }
+    },
+    {
       "id": "e5f6a7b8-c9d0-4e1f-a2b3-4c5d6e7f8a9b",
       "slug": "sprite-lab-new-project",
       "title": "Code.org - Sprite Lab Overview",
@@ -85,7 +143,11 @@
           "text": "Share your app",
           "level": 3
         }
-      ]
+      ],
+      "nextArticle": {
+        "slug": "sprite-lab-lesson-1",
+        "title": "Sprite Lab Lesson 1"
+      }
     },
     {
       "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
@@ -363,6 +425,6 @@
       }
     }
   ],
-  "totalCount": 4,
-  "lastUpdated": "2026-01-23T18:58:45.795Z"
+  "totalCount": 5,
+  "lastUpdated": "2026-01-23T23:50:35.990Z"
 }

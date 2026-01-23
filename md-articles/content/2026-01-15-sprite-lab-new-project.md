@@ -18,7 +18,7 @@ feature_image_alt: "Code.org Sprite Lab"
 feature_image_caption: "Code.org Sprite Lab"
 excerpt: "Learn the basics of Sprite Lab by Code.org. Get familiar with the workspace, blocks, and stage. This is the starting point for all Sprite Lab tutorials."
 status: published
-next:
+next: sprite-lab-lesson-1
 ---
 
 ## Sprite Lab Development Tool

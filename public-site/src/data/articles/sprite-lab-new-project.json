@@ -84,5 +84,9 @@
       "text": "Share your app",
       "level": 3
     }
-  ]
+  ],
+  "nextArticle": {
+    "slug": "sprite-lab-lesson-1",
+    "title": "Sprite Lab Lesson 1"
+  }
 }
