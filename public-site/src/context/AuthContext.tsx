@@ -110,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/account`,
+        emailRedirectTo: `${window.location.origin}/email-confirmed`,
         data: {
           display_name: displayName,
           birthdate: birthdate.toISOString().split('T')[0]

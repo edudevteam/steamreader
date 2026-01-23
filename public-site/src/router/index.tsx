@@ -20,6 +20,7 @@ import SignupPage from 'pages/Signup'
 import ResetPasswordPage from 'pages/ResetPassword'
 import UpdatePasswordPage from 'pages/UpdatePassword'
 import AccountPage from 'pages/Account'
+import EmailConfirmedPage from 'pages/EmailConfirmed'
 
 export const router = createBrowserRouter([
   {
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
       {
         path: 'account',
         element: <AccountPage />
+      },
+      {
+        path: 'email-confirmed',
+        element: <EmailConfirmedPage />
       },
       {
         path: '*',
