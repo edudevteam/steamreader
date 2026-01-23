@@ -13,6 +13,35 @@ interface VoteCounts {
   endorsed_count: number
 }
 
+interface BadgeProps {
+  count: number
+  color: 'green' | 'blue' | 'purple' | 'amber'
+  tooltip: string
+  icon: React.ReactNode
+}
+
+function Badge({ count, color, tooltip, icon }: BadgeProps) {
+  const colorClasses = {
+    green: 'bg-green-100 text-green-700',
+    blue: 'bg-blue-100 text-blue-700',
+    purple: 'bg-purple-100 text-purple-700',
+    amber: 'bg-amber-100 text-amber-700'
+  }
+
+  return (
+    <div className="relative group">
+      <div className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium cursor-help ${colorClasses[color]}`}>
+        {icon}
+        {count}
+      </div>
+      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+        {tooltip}
+        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+      </div>
+    </div>
+  )
+}
+
 export default function VoteBadges({ articleId, compact = false }: VoteBadgesProps) {
   const [counts, setCounts] = useState<VoteCounts | null>(null)
 
@@ -82,51 +111,62 @@ export default function VoteBadges({ articleId, compact = false }: VoteBadgesPro
     )
   }
 
+  const icons = {
+    read: (
+      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+    tutorial: (
+      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+    links: (
+      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+      </svg>
+    ),
+    endorsed: (
+      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+      </svg>
+    )
+  }
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       {counts.read_count > 0 && (
-        <div
-          className="flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 cursor-help"
-          title={`${counts.read_count} reader${counts.read_count !== 1 ? 's' : ''} marked this as read`}
-        >
-          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          {counts.read_count}
-        </div>
+        <Badge
+          count={counts.read_count}
+          color="green"
+          tooltip="Marked as read"
+          icon={icons.read}
+        />
       )}
       {counts.tutorial_verified_count > 0 && (
-        <div
-          className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 cursor-help"
-          title={`${counts.tutorial_verified_count} reader${counts.tutorial_verified_count !== 1 ? 's' : ''} verified the tutorial steps work`}
-        >
-          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
-          {counts.tutorial_verified_count}
-        </div>
+        <Badge
+          count={counts.tutorial_verified_count}
+          color="blue"
+          tooltip="Tutorial steps verified"
+          icon={icons.tutorial}
+        />
       )}
       {counts.links_verified_count > 0 && (
-        <div
-          className="flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700 cursor-help"
-          title={`${counts.links_verified_count} reader${counts.links_verified_count !== 1 ? 's' : ''} verified all links are working`}
-        >
-          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-          </svg>
-          {counts.links_verified_count}
-        </div>
+        <Badge
+          count={counts.links_verified_count}
+          color="purple"
+          tooltip="Links verified"
+          icon={icons.links}
+        />
       )}
       {counts.endorsed_count > 0 && (
-        <div
-          className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 cursor-help"
-          title={`${counts.endorsed_count} reader${counts.endorsed_count !== 1 ? 's' : ''} recommend this article`}
-        >
-          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-          </svg>
-          {counts.endorsed_count}
-        </div>
+        <Badge
+          count={counts.endorsed_count}
+          color="amber"
+          tooltip="Recommended"
+          icon={icons.endorsed}
+        />
       )}
     </div>
   )
