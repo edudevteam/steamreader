@@ -75,7 +75,8 @@ export default function Header() {
       navigate('/')
     } catch (error) {
       console.error('Sign out error:', error)
-      setSigningOut(false)
+    } finally {
+      setSigningOut(false) // Always reset, whether success or error
     }
   }
 
