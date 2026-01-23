@@ -4,8 +4,9 @@
 -- ============================================
 -- PROFILES TABLE
 -- ============================================
+-- Profile is created ONLY after email confirmation
 CREATE TABLE IF NOT EXISTS profiles (
-  id UUID REFERENCES auth.users PRIMARY KEY,
+  id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
   email TEXT,
   display_name TEXT,
   birthdate DATE,
@@ -25,19 +26,33 @@ CREATE POLICY "Users can view own profile" ON profiles
 CREATE POLICY "Users can update own profile" ON profiles
   FOR UPDATE USING (auth.uid() = id);
 
--- Auto-create profile on user signup
-CREATE OR REPLACE FUNCTION public.handle_new_user()
+-- ============================================
+-- CREATE PROFILE ON EMAIL CONFIRMATION
+-- ============================================
+-- This trigger fires when a user confirms their email
+-- It creates their profile using data from user_metadata
+CREATE OR REPLACE FUNCTION public.handle_user_confirmed()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email)
-  VALUES (NEW.id, NEW.email);
+  -- Only create profile when email_confirmed_at changes from NULL to a value
+  IF OLD.email_confirmed_at IS NULL AND NEW.email_confirmed_at IS NOT NULL THEN
+    INSERT INTO public.profiles (id, email, display_name, birthdate)
+    VALUES (
+      NEW.id,
+      NEW.email,
+      NEW.raw_user_meta_data->>'display_name',
+      (NEW.raw_user_meta_data->>'birthdate')::DATE
+    )
+    ON CONFLICT (id) DO NOTHING;
+  END IF;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-CREATE OR REPLACE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+-- Trigger on auth.users UPDATE (when email is confirmed)
+CREATE OR REPLACE TRIGGER on_auth_user_confirmed
+  AFTER UPDATE ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_user_confirmed();
 
 -- ============================================
 -- ARTICLES TABLE

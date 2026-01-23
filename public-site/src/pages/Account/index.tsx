@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from 'context/AuthContext'
 
 export default function AccountPage() {
@@ -129,6 +129,20 @@ export default function AccountPage() {
               {saving ? 'Saving...' : 'Save Changes'}
             </button>
           </form>
+        </div>
+
+        {/* Security Section */}
+        <div className="rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-xl font-semibold text-gray-900">Security</h2>
+          <p className="mb-4 text-sm text-gray-600">
+            Manage your account security settings.
+          </p>
+          <Link
+            to="/update-password"
+            className="inline-block rounded-md bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          >
+            Change Password
+          </Link>
         </div>
 
         {/* Sign Out Section */}

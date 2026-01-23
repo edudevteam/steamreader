@@ -18,6 +18,7 @@ import NotFoundPage from 'pages/NotFound'
 import LoginPage from 'pages/Login'
 import SignupPage from 'pages/Signup'
 import ResetPasswordPage from 'pages/ResetPassword'
+import UpdatePasswordPage from 'pages/UpdatePassword'
 import AccountPage from 'pages/Account'
 
 export const router = createBrowserRouter([
@@ -92,6 +93,10 @@ export const router = createBrowserRouter([
       {
         path: 'reset-password',
         element: <ResetPasswordPage />
+      },
+      {
+        path: 'update-password',
+        element: <UpdatePasswordPage />
       },
       {
         path: 'account',

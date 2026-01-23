@@ -21,6 +21,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: Error | null }>
+  updatePassword: (password: string) => Promise<{ error: Error | null }>
   updateProfile: (updates: Partial<Pick<UserProfile, 'display_name'>>) => Promise<{ error: Error | null }>
 }
 
@@ -69,30 +70,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (_event, session) => {
         setSession(session)
         setUser(session?.user ?? null)
         if (session?.user) {
           try {
-            let profile = await fetchProfile(session.user.id)
-
-            // On first sign in after email confirmation, sync metadata to profile
-            if (event === 'SIGNED_IN' && profile && !profile.display_name && !profile.birthdate) {
-              const metadata = session.user.user_metadata
-              if (metadata?.display_name || metadata?.birthdate) {
-                await supabase
-                  .from('profiles')
-                  .update({
-                    display_name: metadata.display_name || null,
-                    birthdate: metadata.birthdate || null,
-                    updated_at: new Date().toISOString()
-                  })
-                  .eq('id', session.user.id)
-                // Refetch updated profile
-                profile = await fetchProfile(session.user.id)
-              }
-            }
-
+            // Profile is created by database trigger on email confirmation
+            const profile = await fetchProfile(session.user.id)
             setProfile(profile)
           } catch (error) {
             console.error('Error fetching profile:', error)
@@ -154,8 +138,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/account`
+      redirectTo: `${window.location.origin}/update-password`
     })
+    return { error }
+  }
+
+  const updatePassword = async (password: string) => {
+    const { error } = await supabase.auth.updateUser({ password })
     return { error }
   }
 
@@ -185,6 +174,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signIn,
     signOut,
     resetPassword,
+    updatePassword,
     updateProfile
   }
 

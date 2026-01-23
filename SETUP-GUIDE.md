@@ -11,9 +11,10 @@ Complete instructions for cloning and setting up the STEAM Reader project with S
 5. [Resend Email Integration](#resend-email-integration)
 6. [Environment Variables](#environment-variables)
 7. [Database Schema](#database-schema)
-8. [Syncing Articles](#syncing-articles)
-9. [Cloudflare Pages Deployment](#cloudflare-pages-deployment)
-10. [Production Configuration](#production-configuration)
+8. [Database Reset & Fresh Start](#database-reset--fresh-start)
+9. [Syncing Articles](#syncing-articles)
+10. [Cloudflare Pages Deployment](#cloudflare-pages-deployment)
+11. [Production Configuration](#production-configuration)
 
 ---
 
@@ -294,8 +295,72 @@ The schema includes these key components:
 
 ### Triggers
 
-1. **Auto-create profile**: When a user signs up, automatically creates a profile
+1. **Profile on email confirmation**: When a user confirms their email, their profile is automatically created with display_name and birthdate from signup metadata
 2. **Auto-read vote**: When voting tutorial_verified, links_verified, or endorsed, automatically adds a read vote
+
+---
+
+## Database Reset & Fresh Start
+
+If you need to wipe the database and start fresh (useful during development):
+
+### 1. Run the Reset Script
+
+In **Supabase Dashboard → SQL Editor**, run the contents of:
+```
+md-articles/supabase/reset-database.sql
+```
+
+This will:
+- Drop all views, triggers, and functions
+- Drop all tables (profiles, articles, article_votes)
+- Delete all auth users
+
+### 2. Run the Schema
+
+After reset, run the schema to recreate everything:
+```
+md-articles/supabase/schema.sql
+```
+
+### 3. Verify URL Configuration
+
+In **Supabase Dashboard → Authentication → URL Configuration**:
+
+| Setting | Value |
+|---------|-------|
+| Site URL | `https://yourdomain.com` |
+| Redirect URLs | `https://yourdomain.com/**` |
+
+For local development, also add:
+- `http://localhost:5173/**`
+
+### 4. Test the Authentication Flow
+
+The authentication flow works as follows:
+
+```
+User signs up
+  → User created in auth.users (email_confirmed_at = NULL)
+  → NO profile created yet
+  → Confirmation email sent via Resend
+
+User clicks confirmation link
+  → email_confirmed_at gets set
+  → Database trigger fires → Profile created with display_name & birthdate
+  → User redirected to /account
+  → User can now log in
+```
+
+**Test steps:**
+1. Sign up with a new email
+2. Check Resend dashboard - verify email was sent
+3. Check spam folder for confirmation email
+4. **Without** clicking the link, try to log in (should fail with "Email not confirmed")
+5. Click the confirmation link in email
+6. Verify you're redirected to `/account`
+7. Check Supabase → Authentication → Users - `email_confirmed_at` should have a timestamp
+8. Check Supabase → Table Editor → profiles - your profile should exist
 
 ---
 
@@ -467,6 +532,7 @@ cd md-articles && supabase functions deploy
 | File | Purpose |
 |------|---------|
 | `md-articles/supabase/schema.sql` | Database schema |
+| `md-articles/supabase/reset-database.sql` | Database reset script |
 | `public-site/src/context/AuthContext.tsx` | Auth state management |
 | `public-site/src/lib/supabase.ts` | Supabase client |
 | `md-articles/scripts/sync-articles.ts` | Article sync script |
