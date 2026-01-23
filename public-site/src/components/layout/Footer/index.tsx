@@ -108,6 +108,14 @@ export default function Footer() {
                   Search Articles
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/terms"
+                  className="text-xs text-gray-600 transition-colors hover:text-indigo-600"
+                >
+                  Terms & Conditions
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -205,6 +213,14 @@ export default function Footer() {
                   className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
                 >
                   Search Articles
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/terms"
+                  className="text-sm text-gray-600 transition-colors hover:text-indigo-600"
+                >
+                  Terms & Conditions
                 </Link>
               </li>
             </ul>

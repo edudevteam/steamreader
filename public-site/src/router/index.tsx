@@ -21,6 +21,7 @@ import ResetPasswordPage from 'pages/ResetPassword'
 import UpdatePasswordPage from 'pages/UpdatePassword'
 import AccountPage from 'pages/Account'
 import EmailConfirmedPage from 'pages/EmailConfirmed'
+import TermsPage from 'pages/Terms'
 
 export const router = createBrowserRouter([
   {
@@ -106,6 +107,10 @@ export const router = createBrowserRouter([
       {
         path: 'email-confirmed',
         element: <EmailConfirmedPage />
+      },
+      {
+        path: 'terms',
+        element: <TermsPage />
       },
       {
         path: '*',

@@ -17,6 +17,7 @@ interface AuthContextType {
   profile: UserProfile | null
   session: Session | null
   loading: boolean
+  signingOut: boolean
   signUp: (email: string, password: string, birthdate: Date, displayName?: string) => Promise<{ error: Error | null }>
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>
   signOut: () => Promise<void>
@@ -32,6 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
+  const [signingOut, setSigningOut] = useState(false)
 
   // Fetch user profile from profiles table
   const fetchProfile = async (userId: string) => {
@@ -49,10 +51,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    // Get initial session
+    // Get initial session with timeout safeguard
     const initializeAuth = async () => {
+      // Set a timeout to prevent infinite loading
+      const timeout = setTimeout(() => {
+        console.warn('Auth initialization timed out')
+        setLoading(false)
+      }, 5000)
+
       try {
         const { data: { session } } = await supabase.auth.getSession()
+        clearTimeout(timeout)
         setSession(session)
         setUser(session?.user ?? null)
         if (session?.user) {
@@ -61,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         console.error('Error getting session:', error)
+        clearTimeout(timeout)
       } finally {
         setLoading(false)
       }
@@ -130,14 +140,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) {
-      console.error('Sign out error:', error)
-      throw error
+    if (signingOut) return // Prevent multiple calls
+    setSigningOut(true)
+    try {
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        console.error('Sign out error:', error)
+        throw error
+      }
+      setUser(null)
+      setProfile(null)
+      setSession(null)
+    } finally {
+      setSigningOut(false)
     }
-    setUser(null)
-    setProfile(null)
-    setSession(null)
   }
 
   const resetPassword = async (email: string) => {
@@ -174,6 +190,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     profile,
     session,
     loading,
+    signingOut,
     signUp,
     signIn,
     signOut,

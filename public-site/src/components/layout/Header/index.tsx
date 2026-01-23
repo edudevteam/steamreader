@@ -62,22 +62,13 @@ const navigation = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [signingOut, setSigningOut] = useState(false)
-  const { user, profile, signOut } = useAuth()
+  const { user, profile, signOut, signingOut } = useAuth()
   const navigate = useNavigate()
 
   const handleSignOut = async () => {
-    if (signingOut) return // Prevent multiple clicks
-    setSigningOut(true)
-    try {
-      await signOut()
-      setMenuOpen(false)
-      navigate('/')
-    } catch (error) {
-      console.error('Sign out error:', error)
-    } finally {
-      setSigningOut(false) // Always reset, whether success or error
-    }
+    await signOut()
+    setMenuOpen(false)
+    navigate('/')
   }
 
   return (
@@ -97,13 +88,15 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+              className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-white hover:opacity-90"
+              style={{ backgroundColor: '#673ab7' }}
               aria-expanded={menuOpen}
             >
               <span className="sr-only">Open main menu</span>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
+              <span className="text-sm font-medium">Menu</span>
             </button>
           </div>
         </nav>
@@ -208,23 +201,42 @@ export default function Header() {
                   </button>
                 </>
               ) : (
-                <NavLink
-                  to="/login"
-                  onClick={() => setMenuOpen(false)}
-                  className={({ isActive }) =>
-                    classNames(
-                      'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
-                      isActive
-                        ? 'bg-indigo-50 text-indigo-600'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    )
-                  }
-                >
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                  </svg>
-                  Sign In
-                </NavLink>
+                <>
+                  <NavLink
+                    to="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) =>
+                      classNames(
+                        'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
+                        isActive
+                          ? 'bg-indigo-50 text-indigo-600'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      )
+                    }
+                  >
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    Sign In
+                  </NavLink>
+                  <NavLink
+                    to="/signup"
+                    onClick={() => setMenuOpen(false)}
+                    className={({ isActive }) =>
+                      classNames(
+                        'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
+                        isActive
+                          ? 'bg-indigo-50 text-indigo-600'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      )
+                    }
+                  >
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    Sign Up
+                  </NavLink>
+                </>
               )}
             </div>
           </div>

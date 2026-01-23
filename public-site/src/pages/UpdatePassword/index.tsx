@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from 'context/AuthContext'
 
@@ -9,6 +9,8 @@ export default function UpdatePasswordPage() {
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
   const [isRecoveryMode, setIsRecoveryMode] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const { user, loading: authLoading, updatePassword } = useAuth()
   const navigate = useNavigate()
 
@@ -24,11 +26,37 @@ export default function UpdatePasswordPage() {
   }, [])
 
   useEffect(() => {
-    // If not in recovery mode and not logged in, redirect to login
-    if (!authLoading && !user && !isRecoveryMode) {
-      navigate('/login')
+    // Only redirect after auth has finished loading
+    // If user is logged in (either normally or via recovery), allow access
+    // If not logged in and not in recovery mode, redirect to login
+    if (!authLoading) {
+      if (!user && !isRecoveryMode) {
+        navigate('/login')
+      }
     }
   }, [user, authLoading, isRecoveryMode, navigate])
+
+  // Password requirements validation
+  const passwordRequirements = useMemo(() => {
+    if (!password) return null
+    return {
+      minLength: password.length >= 13,
+      hasLowercase: /[a-z]/.test(password),
+      hasUppercase: /[A-Z]/.test(password),
+      hasSpecial: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
+    }
+  }, [password])
+
+  const isPasswordValid = useMemo(() => {
+    if (!passwordRequirements) return null
+    return Object.values(passwordRequirements).every(Boolean)
+  }, [passwordRequirements])
+
+  // Check if passwords match
+  const passwordsMatch = useMemo(() => {
+    if (!confirmPassword) return null
+    return password === confirmPassword
+  }, [password, confirmPassword])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,9 +68,9 @@ export default function UpdatePasswordPage() {
       return
     }
 
-    // Validate password length
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+    // Validate password requirements
+    if (!isPasswordValid) {
+      setError('Password does not meet all requirements')
       return
     }
 
@@ -108,32 +136,102 @@ export default function UpdatePasswordPage() {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               New Password
             </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              placeholder="Enter new password"
-              minLength={6}
-            />
+            <p className="mt-1 text-xs text-gray-500">
+              Must be 13+ characters with uppercase, lowercase, and special character
+            </p>
+            <div className="relative mt-1">
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`block w-full rounded-md border px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-1 ${
+                  isPasswordValid === null
+                    ? 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                    : isPasswordValid
+                      ? 'border-green-500 bg-green-50 focus:border-green-500 focus:ring-green-500'
+                      : 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
+                }`}
+                placeholder="Enter new password"
+                minLength={13}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              >
+                {showPassword ? (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                  </svg>
+                ) : (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            {passwordRequirements ? (
+              <ul className="mt-2 space-y-1 text-sm">
+                <li className={passwordRequirements.minLength ? 'text-green-600' : 'text-red-600'}>
+                  {passwordRequirements.minLength ? '✓' : '✗'} At least 13 characters
+                </li>
+                <li className={passwordRequirements.hasLowercase ? 'text-green-600' : 'text-red-600'}>
+                  {passwordRequirements.hasLowercase ? '✓' : '✗'} One lowercase letter
+                </li>
+                <li className={passwordRequirements.hasUppercase ? 'text-green-600' : 'text-red-600'}>
+                  {passwordRequirements.hasUppercase ? '✓' : '✗'} One uppercase letter
+                </li>
+                <li className={passwordRequirements.hasSpecial ? 'text-green-600' : 'text-red-600'}>
+                  {passwordRequirements.hasSpecial ? '✓' : '✗'} One special character
+                </li>
+              </ul>
+            ) : null}
           </div>
 
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
               Confirm New Password
             </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              placeholder="Confirm new password"
-              minLength={6}
-            />
+            <div className="relative mt-1">
+              <input
+                id="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={`block w-full rounded-md border px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-1 ${
+                  passwordsMatch === null
+                    ? 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                    : passwordsMatch
+                      ? 'border-green-500 bg-green-50 focus:border-green-500 focus:ring-green-500'
+                      : 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500'
+                }`}
+                placeholder="Confirm new password"
+                minLength={13}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              >
+                {showConfirmPassword ? (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                  </svg>
+                ) : (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+            {passwordsMatch === false && (
+              <p className="mt-1 text-sm text-red-600">Passwords do not match</p>
+            )}
           </div>
 
           <button
