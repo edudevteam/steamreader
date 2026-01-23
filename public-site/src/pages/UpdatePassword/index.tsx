@@ -79,6 +79,28 @@ export default function UpdatePasswordPage() {
     )
   }
 
+  // Recovery mode but no session - link is expired or invalid
+  if (isRecoveryMode && !user) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
+        <div className="rounded-lg bg-white p-8 shadow-md text-center">
+          <div className="mb-4 text-5xl text-red-500">!</div>
+          <h1 className="mb-4 text-2xl font-bold text-gray-900">Link Expired</h1>
+          <p className="mb-6 text-gray-600">
+            This password reset link has expired or has already been used.
+            Please request a new one.
+          </p>
+          <Link
+            to="/reset-password"
+            className="inline-block rounded-md bg-brand-600 px-4 py-2 text-white hover:bg-brand-700"
+          >
+            Request New Link
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   if (success) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
