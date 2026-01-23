@@ -29,17 +29,20 @@ steamreader/
 │   ├── scripts/                 # Build and sync scripts
 │   │   ├── lib/                 # Processing libraries
 │   │   └── sync-articles.ts     # Supabase sync script
-│   ├── supabase/                # Supabase configuration
-│   │   ├── functions/           # Edge Functions
-│   │   │   ├── send-email/
-│   │   │   └── send-welcome-email/
-│   │   └── schema.sql           # Database schema
 │   └── .env                     # Environment variables (not committed)
+│
+├── supabase/                    # Supabase configuration
+│   ├── functions/               # Edge Functions
+│   │   ├── send-email/
+│   │   └── send-welcome-email/
+│   ├── schema.sql               # Database schema
+│   └── reset-database.sql       # Database reset script
 │
 ├── public-site/                 # React frontend (Vite)
 │   ├── src/
 │   │   ├── components/          # React components
 │   │   │   ├── layout/Header/   # Navigation with auth
+│   │   │   ├── PasswordInput/   # Reusable password field
 │   │   │   ├── VoteBadges/      # Vote count badges
 │   │   │   └── VoteButtons/     # Interactive voting UI
 │   │   ├── context/             # React contexts
@@ -50,9 +53,12 @@ steamreader/
 │   │   │   └── supabase.ts      # Supabase client
 │   │   ├── pages/               # Route pages
 │   │   │   ├── Account/
+│   │   │   ├── EmailConfirmed/  # Post-verification page
 │   │   │   ├── Login/
 │   │   │   ├── ResetPassword/
-│   │   │   └── Signup/
+│   │   │   ├── Signup/
+│   │   │   ├── Terms/           # Terms and conditions
+│   │   │   └── UpdatePassword/
 │   │   └── types/
 │   └── .env                     # Environment variables (not committed)
 │
@@ -127,7 +133,7 @@ pnpm dev
 ### 2. Run the Database Schema
 
 1. Go to Supabase Dashboard → SQL Editor
-2. Copy the contents of `md-articles/supabase/schema.sql`
+2. Copy the contents of `supabase/schema.sql`
 3. Run the SQL
 
 The schema creates:
@@ -162,6 +168,16 @@ In Authentication → Email Templates, customize:
 - Reset Password
 - Magic Link
 - Change Email
+
+### 6. Email Confirmation Redirect
+
+The app uses a custom email confirmation flow. In Supabase Dashboard → Authentication → URL Configuration, set the email confirmation redirect:
+
+**Confirm Email Template → Redirect URL:**
+- Production: `https://yourdomain.com/email-confirmed`
+- Local: `http://localhost:5173/email-confirmed`
+
+This redirects users to a dedicated page that signs them out and prompts them to log in manually.
 
 ---
 
@@ -300,6 +316,74 @@ The schema includes these key components:
 
 ---
 
+## Frontend Authentication Configuration
+
+### Session Storage
+
+The Supabase client is configured to use `sessionStorage` instead of `localStorage`. This means:
+- User sessions are cleared when the browser is closed
+- Each browser tab maintains its own session
+- More secure for shared computers
+
+This is configured in `public-site/src/lib/supabase.ts`:
+```typescript
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    storage: typeof window !== 'undefined' ? window.sessionStorage : undefined,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+})
+```
+
+### Sign Out Behavior
+
+Sign out clears all storage and redirects to the login page:
+```typescript
+const signOut = () => {
+  localStorage.clear()
+  sessionStorage.clear()
+  window.location.href = '/login'
+}
+```
+
+### Password Requirements
+
+User passwords must meet the following requirements:
+- Minimum 13 characters
+- At least one uppercase letter (A-Z)
+- At least one lowercase letter (a-z)
+- At least one special character (!@#$%^&*()_+-=[]{}|;:,.<>?)
+
+The `PasswordInput` component (`src/components/PasswordInput/`) provides:
+- Real-time validation with visual feedback
+- Show/hide password toggle
+- Character count display
+- Password generator with configurable length (13-26 characters)
+
+### Brand Colors
+
+The site uses a custom purple brand color. The color palette is defined in `tailwind.config.mjs`:
+```javascript
+brand: {
+  50: '#f3e8ff',
+  100: '#e9d5ff',
+  200: '#d8b4fe',
+  300: '#c084fc',
+  400: '#a855f7',
+  500: '#9333ea',
+  600: '#673ab7',  // Primary brand color
+  700: '#5b21b6',
+  800: '#4c1d95',
+  900: '#3b0764'
+}
+```
+
+Use `brand-*` classes instead of `indigo-*` for consistent theming.
+
+---
+
 ## Database Reset & Fresh Start
 
 If you need to wipe the database and start fresh (useful during development):
@@ -308,7 +392,7 @@ If you need to wipe the database and start fresh (useful during development):
 
 In **Supabase Dashboard → SQL Editor**, run the contents of:
 ```
-md-articles/supabase/reset-database.sql
+supabase/reset-database.sql
 ```
 
 This will:
@@ -320,7 +404,7 @@ This will:
 
 After reset, run the schema to recreate everything:
 ```
-md-articles/supabase/schema.sql
+supabase/schema.sql
 ```
 
 ### 3. Verify URL Configuration
@@ -531,8 +615,8 @@ cd md-articles && supabase functions deploy
 
 | File | Purpose |
 |------|---------|
-| `md-articles/supabase/schema.sql` | Database schema |
-| `md-articles/supabase/reset-database.sql` | Database reset script |
+| `supabase/schema.sql` | Database schema |
+| `supabase/reset-database.sql` | Database reset script |
 | `public-site/src/context/AuthContext.tsx` | Auth state management |
 | `public-site/src/lib/supabase.ts` | Supabase client |
 | `md-articles/scripts/sync-articles.ts` | Article sync script |
