@@ -37,7 +37,9 @@ For this first section you will be learn how to make it look like characters are
 
 2. Rename the project to: `L1 Chatting with Sprites`
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/rpmkWkAEqXM" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Change Background
 
@@ -45,7 +47,9 @@ For this first section you will be learn how to make it look like characters are
 
 4. Then change the background to the `rainbow`
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/azd3vW4vZm0" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Add Sprite
 
@@ -53,7 +57,9 @@ For this first section you will be learn how to make it look like characters are
 
 6. Click the `bunny` sprite and select the `dog`. Then click on the `yellow` block attached at the end of the sprite block to move the sprite onto the first mound in the picture.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/JdSiHUVW8tM" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Prompt and Variables
 
@@ -67,7 +73,9 @@ For this first section you will be learn how to make it look like characters are
 
 11. Now click the `Run` button under the Stage/Canvas. You should see the dog sprite say `What is your name?` but typing does nothing yet.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/C0rEz7vqC7k" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Events and Response
 
@@ -85,7 +93,9 @@ For this first section you will be learn how to make it look like characters are
 
 18. Click the `Run` button, type your name and watch the `dog` respond.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/xgRu7Pm8xBU" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ## Challenge
 
