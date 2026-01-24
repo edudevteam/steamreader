@@ -99,4 +99,8 @@ For this first section you will be learn how to make it look like characters are
 
 ## Challenge
 
-The challenge is...
+Take the skills you just learned and create a scene where it looks like two sprites are chatting. You are required to set a background, add two sprites, have a user prompt, and display an output. Watch the video sample.
+
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/ixAG25xrxmM" frameborder="0" allowfullscreen></iframe>
+</figure>
