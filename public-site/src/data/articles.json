@@ -67,6 +67,51 @@
           "level": 2
         },
         {
+          "id": "new-project-and-set-background",
+          "text": "New Project and Set Background",
+          "level": 3
+        },
+        {
+          "id": "import-new-costumes",
+          "text": "Import New Costumes",
+          "level": 3
+        },
+        {
+          "id": "add-left-and-right-arrow-sprites",
+          "text": "Add Left and Right Arrow Sprites",
+          "level": 3
+        },
+        {
+          "id": "new-variable-and-assignment",
+          "text": "New Variable and Assignment",
+          "level": 3
+        },
+        {
+          "id": "display-variable-value",
+          "text": "Display Variable Value",
+          "level": 3
+        },
+        {
+          "id": "event-click-left-button-to-decrement",
+          "text": "Event: Click Left Button to Decrement",
+          "level": 3
+        },
+        {
+          "id": "event-click-right-button-to-increment",
+          "text": "Event: Click Right Button to Increment",
+          "level": 3
+        },
+        {
+          "id": "background-swap-if-blocks",
+          "text": "Background Swap / IF Blocks",
+          "level": 3
+        },
+        {
+          "id": "repeat-if-blocks-for-left-arrow",
+          "text": "Repeat IF Blocks for Left Arrow",
+          "level": 3
+        },
+        {
           "id": "challenge",
           "text": "Challenge",
           "level": 2
@@ -138,6 +183,31 @@
           "id": "tutorial",
           "text": "Tutorial",
           "level": 2
+        },
+        {
+          "id": "rename",
+          "text": "Rename",
+          "level": 3
+        },
+        {
+          "id": "change-background",
+          "text": "Change Background",
+          "level": 3
+        },
+        {
+          "id": "add-sprite",
+          "text": "Add Sprite",
+          "level": 3
+        },
+        {
+          "id": "prompt-and-variables",
+          "text": "Prompt and Variables",
+          "level": 3
+        },
+        {
+          "id": "events-and-response",
+          "text": "Events and Response",
+          "level": 3
         },
         {
           "id": "challenge",
@@ -522,5 +592,5 @@
     }
   ],
   "totalCount": 6,
-  "lastUpdated": "2026-01-24T02:09:03.641Z"
+  "lastUpdated": "2026-01-24T05:00:00.110Z"
 }

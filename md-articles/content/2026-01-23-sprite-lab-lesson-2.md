@@ -32,11 +32,15 @@ next:
 
 Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the value of variable, Print out our changes, work with IF Conditional logic.
 
+### New Project and Set Background
+
 1. In Code.org click `New project +` and select `Sprite Lab`. Then rename the project `L2 Pict Swap`
 
 2. From the `Blocks` toolbar select `World` and drag a `set background to` block under the `when run` block and change it to the `rainbow` background.
 
 > Video
+
+### Import New Costumes
 
 3. Over in the Stage/Canvas you should see the three tabs/buttons: Code, Costumes, Backgrounds.
 
@@ -54,11 +58,15 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 > Video
 
+### Add Left and Right Arrow Sprites
+
 10. From the `Blocks` toolbar select `Sprites` and add under the background the block `make new sprite at`. Change the sprite to the left arrow. Then click on the `yellow block` and position the `arrow sprite` towards the bottom left.
 
 11. Repeat the process for step 10 but choose the right arrow. Position this sprite in the bottom right.
 
 > Video
+
+### New Variable and Assignment
 
 12. In the `Blocks` toolbar select `Variables`. Click the `Create Variable` button. Name the variable `page_number`.
 
@@ -67,6 +75,8 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 14. In the `Blocks > Math` toolbar find the `0` block and snap it to the end of the `set page_number to` block.
 
 > Video
+
+### Display Variable Value
 
 15. In the `Blocks > Text` toolbar drag the `print` block and snap it under the `set page_number to` block
 
@@ -77,6 +87,8 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 18. Click the `Run` button to see the text display at the top with the variables value, currently set to `0`.
 
 > Video
+
+### Event: Click Left Button to Decrement
 
 19. From the `Blocks > Events` drag a `when sprite clicked` block onto the `Workspace`. Change the sprite to the `left-arrow`.
 
@@ -92,6 +104,8 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 > Video
 
+### Event: Click Right Button to Increment
+
 24. Now let's repeat the steps for the `left-arrow`.
 
 25. What you will change is: Set sprite to the `right arrow`
@@ -101,6 +115,8 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 27. Click the `Run` button and click each arrow to see the number increase when you click the right arrow and decrease when you click the left arrow.
 
 > Video
+
+### Background Swap / IF Blocks
 
 Now let's learn about conditional logic also commonly referred to as `if` blocks.
 
@@ -115,6 +131,8 @@ Now let's learn about conditional logic also commonly referred to as `if` blocks
 32. If you click the `Run` button nothing will happen yet.
 
 > Video
+
+### Repeat IF Blocks for Left Arrow
 
 33. Under the `if` block add another `if` block where with variable = `page_number` and number set to `2`. Then change the background to something else than the rainbow.
 
