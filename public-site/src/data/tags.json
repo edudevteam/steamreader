@@ -1,43 +1,13 @@
 {
   "tags": [
     {
-      "slug": "sprite-lab",
-      "name": "sprite lab",
+      "slug": "codeorg",
+      "name": "code.org",
       "articleCount": 3
     },
     {
-      "slug": "education",
-      "name": "education",
-      "articleCount": 5
-    },
-    {
-      "slug": "coding",
-      "name": "coding",
-      "articleCount": 6
-    },
-    {
-      "slug": "blocks",
-      "name": "blocks",
-      "articleCount": 2
-    },
-    {
-      "slug": "variables",
-      "name": "variables",
-      "articleCount": 1
-    },
-    {
-      "slug": "events",
-      "name": "events",
-      "articleCount": 2
-    },
-    {
-      "slug": "chat",
-      "name": "chat",
-      "articleCount": 1
-    },
-    {
-      "slug": "codeorg",
-      "name": "code.org",
+      "slug": "sprite-lab",
+      "name": "sprite lab",
       "articleCount": 3
     },
     {
@@ -51,6 +21,21 @@
       "articleCount": 5
     },
     {
+      "slug": "blocks",
+      "name": "blocks",
+      "articleCount": 2
+    },
+    {
+      "slug": "coding",
+      "name": "coding",
+      "articleCount": 6
+    },
+    {
+      "slug": "events",
+      "name": "events",
+      "articleCount": 2
+    },
+    {
       "slug": "counter",
       "name": "counter",
       "articleCount": 1
@@ -58,6 +43,21 @@
     {
       "slug": "swapping-images",
       "name": "swapping images",
+      "articleCount": 1
+    },
+    {
+      "slug": "education",
+      "name": "education",
+      "articleCount": 5
+    },
+    {
+      "slug": "variables",
+      "name": "variables",
+      "articleCount": 1
+    },
+    {
+      "slug": "chat",
+      "name": "chat",
       "articleCount": 1
     },
     {

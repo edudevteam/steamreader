@@ -4,7 +4,7 @@ title: "Code.org - Sprite Lab Lesson 2"
 subtitle: "Picture Swap"
 author: "Ryan Jones"
 author_slug: "ryan-jones"
-date: "2026-01-23"
+date: "2026-01-21"
 category: "Tutorial"
 tags:
   - code.org

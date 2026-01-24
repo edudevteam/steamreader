@@ -4,7 +4,7 @@ title: "Code.org - Sprite Lab Lesson 1"
 subtitle: "Chatting with Sprites"
 author: "Ryan Jones"
 author_slug: "ryan-jones"
-date: "2026-01-23"
+date: "2026-01-20"
 category: "Tutorial"
 tags:
   - sprite lab

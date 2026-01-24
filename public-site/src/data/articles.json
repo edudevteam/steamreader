@@ -1,83 +1,6 @@
 {
   "articles": [
     {
-      "id": "606374b8-f8ba-4e0f-9148-5ca337774470",
-      "slug": "sprite-lab-lesson-1",
-      "title": "Code.org - Sprite Lab Lesson 1",
-      "subtitle": "Chatting with Sprites",
-      "excerpt": "Learn how to add backgrounds and sprites, ask users for input, save their responses with variables, and make things happen using events.",
-      "author": {
-        "slug": "ryan-jones",
-        "name": "Ryan Jones"
-      },
-      "publishedAt": "2026-01-23",
-      "category": {
-        "slug": "tutorial",
-        "name": "Tutorial"
-      },
-      "tags": [
-        {
-          "slug": "sprite-lab",
-          "name": "sprite lab"
-        },
-        {
-          "slug": "education",
-          "name": "education"
-        },
-        {
-          "slug": "coding",
-          "name": "coding"
-        },
-        {
-          "slug": "blocks",
-          "name": "blocks"
-        },
-        {
-          "slug": "variables",
-          "name": "variables"
-        },
-        {
-          "slug": "events",
-          "name": "events"
-        },
-        {
-          "slug": "chat",
-          "name": "chat"
-        },
-        {
-          "slug": "codeorg",
-          "name": "code.org"
-        }
-      ],
-      "featureImage": {
-        "src": "/images/sprite-lab-lesson-1.png",
-        "alt": "Chatting with Sprites",
-        "caption": ""
-      },
-      "readingTime": 3,
-      "status": "published",
-      "tableOfContents": [
-        {
-          "id": "tutorial",
-          "text": "Tutorial",
-          "level": 2
-        },
-        {
-          "id": "challenge",
-          "text": "Challenge",
-          "level": 2
-        }
-      ],
-      "previousArticle": {
-        "slug": "sprite-lab-new-project",
-        "title": "Code.org - Sprite Lab Overview"
-      },
-      "nextArticle": {
-        "slug": "sprite-lab-lesson-2",
-        "title": "Code.org - Sprite Lab Lesson 2"
-      }
-    },
-    {
       "id": "165af792-a141-427f-a001-3b738f2361b4",
       "slug": "sprite-lab-lesson-2",
       "title": "Code.org - Sprite Lab Lesson 2",
@@ -87,7 +10,7 @@
         "slug": "ryan-jones",
         "name": "Ryan Jones"
       },
-      "publishedAt": "2026-01-23",
+      "publishedAt": "2026-01-21",
       "category": {
         "slug": "tutorial",
         "name": "Tutorial"
@@ -152,6 +75,83 @@
       "previousArticle": {
         "slug": "sprite-lab-lesson-1",
         "title": "Code.org - Sprite Lab Lesson 1"
+      }
+    },
+    {
+      "id": "606374b8-f8ba-4e0f-9148-5ca337774470",
+      "slug": "sprite-lab-lesson-1",
+      "title": "Code.org - Sprite Lab Lesson 1",
+      "subtitle": "Chatting with Sprites",
+      "excerpt": "Learn how to add backgrounds and sprites, ask users for input, save their responses with variables, and make things happen using events.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2026-01-20",
+      "category": {
+        "slug": "tutorial",
+        "name": "Tutorial"
+      },
+      "tags": [
+        {
+          "slug": "sprite-lab",
+          "name": "sprite lab"
+        },
+        {
+          "slug": "education",
+          "name": "education"
+        },
+        {
+          "slug": "coding",
+          "name": "coding"
+        },
+        {
+          "slug": "blocks",
+          "name": "blocks"
+        },
+        {
+          "slug": "variables",
+          "name": "variables"
+        },
+        {
+          "slug": "events",
+          "name": "events"
+        },
+        {
+          "slug": "chat",
+          "name": "chat"
+        },
+        {
+          "slug": "codeorg",
+          "name": "code.org"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/sprite-lab-lesson-1.png",
+        "alt": "Chatting with Sprites",
+        "caption": ""
+      },
+      "readingTime": 3,
+      "status": "published",
+      "tableOfContents": [
+        {
+          "id": "tutorial",
+          "text": "Tutorial",
+          "level": 2
+        },
+        {
+          "id": "challenge",
+          "text": "Challenge",
+          "level": 2
+        }
+      ],
+      "previousArticle": {
+        "slug": "sprite-lab-new-project",
+        "title": "Code.org - Sprite Lab Overview"
+      },
+      "nextArticle": {
+        "slug": "sprite-lab-lesson-2",
+        "title": "Code.org - Sprite Lab Lesson 2"
       }
     },
     {
@@ -522,5 +522,5 @@
     }
   ],
   "totalCount": 6,
-  "lastUpdated": "2026-01-24T02:07:02.137Z"
+  "lastUpdated": "2026-01-24T02:09:03.641Z"
 }
