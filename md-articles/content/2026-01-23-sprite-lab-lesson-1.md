@@ -22,28 +22,32 @@ feature_image_caption: ""
 excerpt: "Learn how to add backgrounds and sprites, ask users for input, save their responses with variables, and make things happen using events."
 status: published
 prev: sprite-lab-new-project
-next:
+next: sprite-lab-lesson-2
 ---
 
 # Chatting with Sprites (Tutorial)
+
+## Tutorial
+
+For this first section you will be learn how to make it look like characters are chatting with you. This is an absolute beginner. You will learn how to add backgrounds, create something called variables and store information in the variable, re-use the variable, get a basic introduction to events, and learn how to use something called prompts.
 
 1. In Sprite Lab, click `New project +` and select `Sprite Lab`
 
 2. Rename the project to: `L1 Chatting with Sprites`
 
-# Video
+> Video
 
 3. From the `Blocks` toolbar click on `World` and drag and snap a `set background to` block to under the the `when run` block.
 
 4. Then change the background to the `rainbow`
 
-# Video
+> Video
 
 5. From the `Blocks` toolbar select `Sprites`. Then drag and snap a `make new sprite at` block with the bunny under the world block.
 
 6. Click the `bunny` sprite and select the `dog`. Then click on the `yellow` block attached at the end of the sprite block to move the sprite onto the first mound in the picture.
 
-# Video
+> Video
 
 7. In the `Blocks` toolbar select `World` and find the `prompt user for variable` block. Drag this and snap it under the sprite block.
 
@@ -55,7 +59,7 @@ next:
 
 11. Now click the `Run` button under the Stage/Canvas. You should see the dog sprite say `What is your name?` but typing does nothing yet.
 
-# Video
+> Video
 
 12. In the `Blocks` toolbar click on `Events`. Drag a `when ??? answered` on to the `Workspace`
 
@@ -71,4 +75,8 @@ next:
 
 18. Click the `Run` button, type your name and watch the `dog` respond.
 
-# Video
+> Video
+
+## Challenge
+
+The challenge is...

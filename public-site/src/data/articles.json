@@ -54,12 +54,104 @@
         "alt": "Chatting with Sprites",
         "caption": ""
       },
-      "readingTime": 2,
+      "readingTime": 3,
       "status": "published",
-      "tableOfContents": [],
+      "tableOfContents": [
+        {
+          "id": "tutorial",
+          "text": "Tutorial",
+          "level": 2
+        },
+        {
+          "id": "challenge",
+          "text": "Challenge",
+          "level": 2
+        }
+      ],
       "previousArticle": {
         "slug": "sprite-lab-new-project",
         "title": "Code.org - Sprite Lab Overview"
+      },
+      "nextArticle": {
+        "slug": "sprite-lab-lesson-2",
+        "title": "Code.org - Sprite Lab Lesson 2"
+      }
+    },
+    {
+      "id": "165af792-a141-427f-a001-3b738f2361b4",
+      "slug": "sprite-lab-lesson-2",
+      "title": "Code.org - Sprite Lab Lesson 2",
+      "subtitle": "Picture Swap",
+      "excerpt": "Learn how to use IF statements to make decisions, display messages with print statements, increase or decrease values using variables, swap images, keep track of counters, and add new assets.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2026-01-23",
+      "category": {
+        "slug": "tutorial",
+        "name": "Tutorial"
+      },
+      "tags": [
+        {
+          "slug": "codeorg",
+          "name": "code.org"
+        },
+        {
+          "slug": "sprite-lab",
+          "name": "sprite lab"
+        },
+        {
+          "slug": "eduation",
+          "name": "eduation"
+        },
+        {
+          "slug": "tutorial",
+          "name": "tutorial"
+        },
+        {
+          "slug": "blocks",
+          "name": "blocks"
+        },
+        {
+          "slug": "coding",
+          "name": "coding"
+        },
+        {
+          "slug": "events",
+          "name": "events"
+        },
+        {
+          "slug": "counter",
+          "name": "counter"
+        },
+        {
+          "slug": "swapping-images",
+          "name": "swapping images"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/sprite-lab-lesson-2.png",
+        "alt": "Picture Swapping",
+        "caption": "Picture Swapping"
+      },
+      "readingTime": 5,
+      "status": "published",
+      "tableOfContents": [
+        {
+          "id": "tutorial",
+          "text": "Tutorial",
+          "level": 2
+        },
+        {
+          "id": "challenge",
+          "text": "Challenge",
+          "level": 2
+        }
+      ],
+      "previousArticle": {
+        "slug": "sprite-lab-lesson-1",
+        "title": "Code.org - Sprite Lab Lesson 1"
       }
     },
     {
@@ -429,6 +521,6 @@
       }
     }
   ],
-  "totalCount": 5,
-  "lastUpdated": "2026-01-23T23:55:39.815Z"
+  "totalCount": 6,
+  "lastUpdated": "2026-01-24T02:07:02.137Z"
 }

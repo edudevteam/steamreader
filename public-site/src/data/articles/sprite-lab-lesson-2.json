@@ -1,0 +1,78 @@
+{
+  "id": "165af792-a141-427f-a001-3b738f2361b4",
+  "slug": "sprite-lab-lesson-2",
+  "title": "Code.org - Sprite Lab Lesson 2",
+  "subtitle": "Picture Swap",
+  "excerpt": "Learn how to use IF statements to make decisions, display messages with print statements, increase or decrease values using variables, swap images, keep track of counters, and add new assets.",
+  "author": {
+    "slug": "ryan-jones",
+    "name": "Ryan Jones"
+  },
+  "publishedAt": "2026-01-23",
+  "category": {
+    "slug": "tutorial",
+    "name": "Tutorial"
+  },
+  "tags": [
+    {
+      "slug": "codeorg",
+      "name": "code.org"
+    },
+    {
+      "slug": "sprite-lab",
+      "name": "sprite lab"
+    },
+    {
+      "slug": "eduation",
+      "name": "eduation"
+    },
+    {
+      "slug": "tutorial",
+      "name": "tutorial"
+    },
+    {
+      "slug": "blocks",
+      "name": "blocks"
+    },
+    {
+      "slug": "coding",
+      "name": "coding"
+    },
+    {
+      "slug": "events",
+      "name": "events"
+    },
+    {
+      "slug": "counter",
+      "name": "counter"
+    },
+    {
+      "slug": "swapping-images",
+      "name": "swapping images"
+    }
+  ],
+  "featureImage": {
+    "src": "/images/sprite-lab-lesson-2.png",
+    "alt": "Picture Swapping",
+    "caption": "Picture Swapping"
+  },
+  "readingTime": 5,
+  "status": "published",
+  "content": "<h1 id=\"picture-swap-tutorial\">Picture Swap (Tutorial)</h1>\n<h2 id=\"tutorial\">Tutorial</h2>\n<p>Let&#39;s learn how to work more with Event Blocks, Add Custom Sprites, Change the value of variable, Print out our changes, work with IF Conditional logic.</p>\n<ol>\n<li><p>In Code.org click <code>New project +</code> and select <code>Sprite Lab</code>. Then rename the project <code>L2 Pict Swap</code></p>\n</li>\n<li><p>From the <code>Blocks</code> toolbar select <code>World</code> and drag a <code>set background to</code> block under the <code>when run</code> block and change it to the <code>rainbow</code> background.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<ol start=\"3\">\n<li><p>Over in the Stage/Canvas you should see the three tabs/buttons: Code, Costumes, Backgrounds.</p>\n</li>\n<li><p>Select: <code>Costumes</code></p>\n</li>\n<li><p>In the <code>Costumes</code> menu click the <code>New Costume</code> button with giant plus + sign. This will open a pop-up with a bunch of extra sprites you can add.</p>\n</li>\n<li><p>For this lesson in the search field type: arrow.</p>\n</li>\n<li><p>In the results, click on the yellow right and left arrows. Clicking on one will put a checkbox over it. Once you selected both, click the <code>purple done</code> button in the bottom right of the popup.</p>\n</li>\n<li><p>You should now see the right and left arrows available in the <code>Costumes</code>.</p>\n</li>\n<li><p>Click back onto the Code<code>button to the left of </code>Costumes`.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<ol start=\"10\">\n<li><p>From the <code>Blocks</code> toolbar select <code>Sprites</code> and add under the background the block <code>make new sprite at</code>. Change the sprite to the left arrow. Then click on the <code>yellow block</code> and position the <code>arrow sprite</code> towards the bottom left.</p>\n</li>\n<li><p>Repeat the process for step 10 but choose the right arrow. Position this sprite in the bottom right.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<ol start=\"12\">\n<li><p>In the <code>Blocks</code> toolbar select <code>Variables</code>. Click the <code>Create Variable</code> button. Name the variable <code>page_number</code>.</p>\n</li>\n<li><p>Then back in <code>Blocks &gt; Variables</code> drag the <code>set page_number to</code> block onto the <code>Workspace</code> and snap it under the right arrow.</p>\n</li>\n<li><p>In the <code>Blocks &gt; Math</code> toolbar find the <code>0</code> block and snap it to the end of the <code>set page_number to</code> block.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<ol start=\"15\">\n<li><p>In the <code>Blocks &gt; Text</code> toolbar drag the <code>print</code> block and snap it under the <code>set page_number to</code> block</p>\n</li>\n<li><p>Back in the <code>Blocks &gt; Text</code> toolbar grab the double-quotes block with puzzle connector on both sides and snap it to the <code>print</code> block. In this block type <code>Page number: </code>. Make sure there is a space after the colon.</p>\n</li>\n<li><p>In the <code>Blocks &gt; Variable</code> drag a copy of the <code>page_number</code> block with only a single side onto the <code>Workspace</code> and snap it against the right-side of the double-quotes block.</p>\n</li>\n<li><p>Click the <code>Run</code> button to see the text display at the top with the variables value, currently set to <code>0</code>.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<ol start=\"19\">\n<li><p>From the <code>Blocks &gt; Events</code> drag a <code>when sprite clicked</code> block onto the <code>Workspace</code>. Change the sprite to the <code>left-arrow</code>.</p>\n</li>\n<li><p>Then from the <code>Blocks &gt; Variables</code> drag and snap in a <code>change page_number by</code> block under the event block.</p>\n</li>\n<li><p>In the <code>Blocks &gt; Math</code> toolbar drag and snap in the <code>0</code> block to the end of the <code>change page_number by</code> block. Change the numeber form <code>0</code> to <code>-1</code> (negative one)</p>\n</li>\n<li><p>Now just like with the last row for the <code>when run</code> blocks. Copy that and past it under the <code>change page_number by</code> block.</p>\n</li>\n</ol>\n<blockquote>\n<p>[print] [Page number: ] [page_number]</p>\n</blockquote>\n<ol start=\"23\">\n<li>Click the <code>Run</code> button and click on the <code>left-arrow</code>. You should see the Page number at the top start decreasing.</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<ol start=\"24\">\n<li><p>Now let&#39;s repeat the steps for the <code>left-arrow</code>.</p>\n</li>\n<li><p>What you will change is: Set sprite to the <code>right arrow</code></p>\n</li>\n<li><p>Change <code>change page_number by</code> number <code>-1</code> to just <code>1</code> remove the minus sign.</p>\n</li>\n<li><p>Click the <code>Run</code> button and click each arrow to see the number increase when you click the right arrow and decrease when you click the left arrow.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<p>Now let&#39;s learn about conditional logic also commonly referred to as <code>if</code> blocks.</p>\n<ol start=\"28\">\n<li><p>From the <code>Blocks &gt; Logic</code> toolbar select <code>if counter = [ ]</code> empty block. Drag this block under the print block for the <code>Right Arrow</code> event.</p>\n</li>\n<li><p>Click on the word <code>counter</code> in the <code>if</code> block and select <code>page_number</code>.</p>\n</li>\n<li><p>From the <code>Blocks &gt; Math</code> toolbar snap a <code>0</code> block inside the empty block space in the <code>if</code> block and change the number to <code>1</code>.</p>\n</li>\n<li><p>From the <code>Blocks &gt; World</code> toolbar drag and snap a <code>set background to</code> block inside the <code>if</code> block. Change the background to the <code>rainbow</code>.</p>\n</li>\n<li><p>If you click the <code>Run</code> button nothing will happen yet.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<ol start=\"33\">\n<li><p>Under the <code>if</code> block add another <code>if</code> block where with variable = <code>page_number</code> and number set to <code>2</code>. Then change the background to something else than the rainbow.</p>\n</li>\n<li><p>Repeat this step once more with the <code>if</code> block. Set the variable to <code>page_number</code>. Set the number to <code>3</code>. Change the background to something you are currently not using.</p>\n</li>\n<li><p>Click the <code>Run</code> button. When clicking the <code>left-arrow</code> nothing happens. But when clicking the <code>right-arrow</code> you will see the pictures change when the <code>page_number</code> value is equal to the number set in the <code>if</code> block.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<ol start=\"36\">\n<li><p>Duplicate exactly the three <code>if</code> blocks and place them under the <code>left-arrow</code> event <code>print</code> block.</p>\n</li>\n<li><p>Now when you click the <code>Run</code> button you can navigate back and forth through the images by clicking either arrow.</p>\n</li>\n</ol>\n<blockquote>\n<p>Video</p>\n</blockquote>\n<h2 id=\"challenge\">Challenge</h2>\n<p>The challenge for this project is...</p>\n",
+  "tableOfContents": [
+    {
+      "id": "tutorial",
+      "text": "Tutorial",
+      "level": 2
+    },
+    {
+      "id": "challenge",
+      "text": "Challenge",
+      "level": 2
+    }
+  ],
+  "previousArticle": {
+    "slug": "sprite-lab-lesson-1",
+    "title": "Code.org - Sprite Lab Lesson 1"
+  }
+}

@@ -3,7 +3,7 @@
     {
       "slug": "sprite-lab",
       "name": "sprite lab",
-      "articleCount": 2
+      "articleCount": 3
     },
     {
       "slug": "education",
@@ -13,12 +13,12 @@
     {
       "slug": "coding",
       "name": "coding",
-      "articleCount": 5
+      "articleCount": 6
     },
     {
       "slug": "blocks",
       "name": "blocks",
-      "articleCount": 1
+      "articleCount": 2
     },
     {
       "slug": "variables",
@@ -28,7 +28,7 @@
     {
       "slug": "events",
       "name": "events",
-      "articleCount": 1
+      "articleCount": 2
     },
     {
       "slug": "chat",
@@ -38,12 +38,27 @@
     {
       "slug": "codeorg",
       "name": "code.org",
-      "articleCount": 2
+      "articleCount": 3
+    },
+    {
+      "slug": "eduation",
+      "name": "eduation",
+      "articleCount": 1
     },
     {
       "slug": "tutorial",
       "name": "tutorial",
-      "articleCount": 4
+      "articleCount": 5
+    },
+    {
+      "slug": "counter",
+      "name": "counter",
+      "articleCount": 1
+    },
+    {
+      "slug": "swapping-images",
+      "name": "swapping images",
+      "articleCount": 1
     },
     {
       "slug": "python",
