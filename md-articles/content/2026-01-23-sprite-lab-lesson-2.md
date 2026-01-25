@@ -16,6 +16,8 @@ tags:
   - events
   - counter
   - swapping images
+  - position
+  - location
 
 feature_image: "/images/sprite-lab-lesson-2.png"
 feature_image_alt: "Picture Swapping"
@@ -38,7 +40,9 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 2. From the `Blocks` toolbar select `World` and drag a `set background to` block under the `when run` block and change it to the `rainbow` background.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/7xgvkYK0fT4" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Import New Costumes
 
@@ -56,7 +60,9 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 9. Click back onto the Code`button to the left of `Costumes`.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/mP3kc9L6M5o" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Add Left and Right Arrow Sprites
 
@@ -64,7 +70,9 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 11. Repeat the process for step 10 but choose the right arrow. Position this sprite in the bottom right.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/tgaAbjoA4hE" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### New Variable and Assignment
 
@@ -74,7 +82,9 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 14. In the `Blocks > Math` toolbar find the `0` block and snap it to the end of the `set page_number to` block.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/bIzxnA5mmds" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Display Variable Value
 
@@ -86,7 +96,9 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 18. Click the `Run` button to see the text display at the top with the variables value, currently set to `0`.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/IoLXDoo_9tY" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Event: Click Left Button to Decrement
 
@@ -102,7 +114,9 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 23. Click the `Run` button and click on the `left-arrow`. You should see the Page number at the top start decreasing.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/183nSx4bedw" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Event: Click Right Button to Increment
 
@@ -114,9 +128,11 @@ Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the v
 
 27. Click the `Run` button and click each arrow to see the number increase when you click the right arrow and decrease when you click the left arrow.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/y8AFMtlBB2c" frameborder="0" allowfullscreen></iframe>
+</figure>
 
-### Background Swap / IF Blocks
+### Add IF Blocks to Right Arrow
 
 Now let's learn about conditional logic also commonly referred to as `if` blocks.
 
@@ -128,26 +144,56 @@ Now let's learn about conditional logic also commonly referred to as `if` blocks
 
 31. From the `Blocks > World` toolbar drag and snap a `set background to` block inside the `if` block. Change the background to the `rainbow`.
 
-32. If you click the `Run` button nothing will happen yet.
+32. Under the first `if` block add another `if` block where with variable = `page_number` and number set to `2`. Then change the background to something else than the rainbow.
 
-> Video
+33. Repeat this step once more with the `if` block. Set the variable to `page_number`. Set the number to `3`. Change the background to something you are currently not using.
+
+34. Click the `Run` button. When clicking the `left-arrow` nothing happens. But when clicking the `right-arrow` you will see the pictures change when the `page_number` value is equal to the number set in the `if` block.
+
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/X0b1mbO6CQU" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 ### Repeat IF Blocks for Left Arrow
-
-33. Under the `if` block add another `if` block where with variable = `page_number` and number set to `2`. Then change the background to something else than the rainbow.
-
-34. Repeat this step once more with the `if` block. Set the variable to `page_number`. Set the number to `3`. Change the background to something you are currently not using.
-
-35. Click the `Run` button. When clicking the `left-arrow` nothing happens. But when clicking the `right-arrow` you will see the pictures change when the `page_number` value is equal to the number set in the `if` block.
-
-> Video
 
 36. Duplicate exactly the three `if` blocks and place them under the `left-arrow` event `print` block.
 
 37. Now when you click the `Run` button you can navigate back and forth through the images by clicking either arrow.
 
-> Video
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/4Aqe2pchKRE" frameborder="0" allowfullscreen></iframe>
+</figure>
 
-## Challenge
+## Challenges
 
-The challenge for this project is...
+Apply the knowledge you learned so far which includes changing the number value of a variable using event blocks, swapping backgrounds, adding custom sprites, printing out the current value of a variable for testing, and using the IF conditional blocks.
+
+### Swapping Backgrounds Practice
+
+1. Click on the `Backgrounds` button and select the `New Background +` button to open the `Backgrounds Library`.
+
+2. Search for `Village` and add all the village backgrounds.
+
+3. Click on the `Code` block to switch back to the Canvas/Stage.
+
+4. Watch the video of the completed challenge and recreate it yourself.
+
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/1AsO_Oyx0pY" frameborder="0" allowfullscreen></iframe>
+</figure>
+
+### Add Sprites with Text
+
+1. We will adapt the first challenge by introducing a new block `[sprite] jump to [random]` and using the block `Locations > [200,200]` to replace the `[random]` block.
+
+> Learn how to use the: Sprite Jump To Position [Block]
+
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/JfDg_TDme_c" frameborder="0" allowfullscreen></iframe>
+</figure>
+
+2. **Your Task:** is to adapt `Challenge 1` by adding the same sprite in a different position each time the background changes. In two of the background changes you need to have the sprite say something about the scene.
+
+<figure>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/B-k-uH4fQe8" frameborder="0" allowfullscreen></iframe>
+</figure>

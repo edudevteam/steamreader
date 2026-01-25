@@ -51,6 +51,14 @@
         {
           "slug": "swapping-images",
           "name": "swapping images"
+        },
+        {
+          "slug": "position",
+          "name": "position"
+        },
+        {
+          "slug": "location",
+          "name": "location"
         }
       ],
       "featureImage": {
@@ -58,7 +66,7 @@
         "alt": "Picture Swapping",
         "caption": "Picture Swapping"
       },
-      "readingTime": 5,
+      "readingTime": 6,
       "status": "published",
       "tableOfContents": [
         {
@@ -102,8 +110,8 @@
           "level": 3
         },
         {
-          "id": "background-swap-if-blocks",
-          "text": "Background Swap / IF Blocks",
+          "id": "add-if-blocks-to-right-arrow",
+          "text": "Add IF Blocks to Right Arrow",
           "level": 3
         },
         {
@@ -112,9 +120,19 @@
           "level": 3
         },
         {
-          "id": "challenge",
-          "text": "Challenge",
+          "id": "challenges",
+          "text": "Challenges",
           "level": 2
+        },
+        {
+          "id": "swapping-backgrounds-practice",
+          "text": "Swapping Backgrounds Practice",
+          "level": 3
+        },
+        {
+          "id": "add-sprites-with-text",
+          "text": "Add Sprites with Text",
+          "level": 3
         }
       ],
       "previousArticle": {
@@ -592,5 +610,5 @@
     }
   ],
   "totalCount": 6,
-  "lastUpdated": "2026-01-24T19:59:59.964Z"
+  "lastUpdated": "2026-01-25T00:48:08.689Z"
 }
