@@ -4,6 +4,7 @@ import type { Article } from 'types'
 import TableOfContents from 'components/TableOfContents'
 import VoteButtons from 'components/VoteButtons'
 import VoteBadges from 'components/VoteBadges'
+import { parseDate } from 'utils'
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -234,7 +235,7 @@ export default function ArticlePage() {
           </Link>
           <span>&#8226;</span>
           <time dateTime={article.publishedAt}>
-            {new Date(article.publishedAt).toLocaleDateString('en-US', {
+            {parseDate(article.publishedAt).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric'

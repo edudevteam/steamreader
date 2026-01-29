@@ -1,14 +1,64 @@
 {
   "tags": [
     {
+      "slug": "functions",
+      "name": "functions",
+      "articleCount": 1
+    },
+    {
+      "slug": "show-hide",
+      "name": "show / hide",
+      "articleCount": 1
+    },
+    {
       "slug": "codeorg",
       "name": "code.org",
-      "articleCount": 3
+      "articleCount": 4
+    },
+    {
+      "slug": "background-libarary",
+      "name": "background libarary",
+      "articleCount": 1
+    },
+    {
+      "slug": "sprite-library",
+      "name": "sprite library",
+      "articleCount": 1
+    },
+    {
+      "slug": "import",
+      "name": "import",
+      "articleCount": 1
     },
     {
       "slug": "sprite-lab",
       "name": "sprite lab",
-      "articleCount": 3
+      "articleCount": 4
+    },
+    {
+      "slug": "variables",
+      "name": "variables",
+      "articleCount": 2
+    },
+    {
+      "slug": "counters",
+      "name": "counters",
+      "articleCount": 1
+    },
+    {
+      "slug": "location-block",
+      "name": "location block",
+      "articleCount": 1
+    },
+    {
+      "slug": "reuse-logic",
+      "name": "reuse logic",
+      "articleCount": 1
+    },
+    {
+      "slug": "coding",
+      "name": "coding",
+      "articleCount": 7
     },
     {
       "slug": "eduation",
@@ -24,11 +74,6 @@
       "slug": "blocks",
       "name": "blocks",
       "articleCount": 2
-    },
-    {
-      "slug": "coding",
-      "name": "coding",
-      "articleCount": 6
     },
     {
       "slug": "events",
@@ -59,11 +104,6 @@
       "slug": "education",
       "name": "education",
       "articleCount": 5
-    },
-    {
-      "slug": "variables",
-      "name": "variables",
-      "articleCount": 1
     },
     {
       "slug": "chat",

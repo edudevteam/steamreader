@@ -125,8 +125,15 @@ async function processArticle(fileName: string): Promise<ArticleWithRawRefs | nu
     // e.g., "2024-01-15-intro-to-robotics.md" -> "intro-to-robotics"
     const slug = fileName.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')
 
+    // Insert excerpt before Lesson Objectives heading if both exist
+    const excerpt = frontmatter.excerpt || generateExcerpt(content)
+    const lessonObjectivesRegex = /^(## .* ?Lesson Objectives)/m
+    const contentWithExcerpt = excerpt && lessonObjectivesRegex.test(content)
+      ? content.replace(lessonObjectivesRegex, `${excerpt}\n\n$1`)
+      : content
+
     // Extract table of contents from markdown before processing
-    const tableOfContents = extractTableOfContents(content)
+    const tableOfContents = extractTableOfContents(contentWithExcerpt)
 
     // Create a marked instance with custom heading renderer for IDs
     const markedWithIds = new Marked()
@@ -142,10 +149,10 @@ async function processArticle(fileName: string): Promise<ArticleWithRawRefs | nu
     )
 
     // Process markdown to HTML
-    const htmlContent = await markedWithIds.parse(content)
+    const htmlContent = await markedWithIds.parse(contentWithExcerpt)
 
     // Calculate reading time
-    const stats = readingTime(content)
+    const stats = readingTime(contentWithExcerpt)
 
     // Handle feature image - use as-is (local paths like /images/... or external URLs)
     const featureImageSrc = frontmatter.feature_image

@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import authorsData from 'data/authors.json'
 import type { ArticleMeta, Author } from 'types'
-import { filterPublishedArticles } from 'utils'
+import { filterPublishedArticles, parseDate } from 'utils'
 
 const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 const authors = authorsData.authors as Author[]
@@ -93,7 +93,7 @@ export default function AuthorPage() {
                   </h3>
                   <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
                   <div className="text-xs text-gray-500">
-                    {new Date(article.publishedAt).toLocaleDateString()}
+                    {parseDate(article.publishedAt).toLocaleDateString()}
                   </div>
                 </div>
               </Link>

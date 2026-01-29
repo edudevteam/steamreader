@@ -27,7 +27,16 @@ next: sprite-lab-lesson-2
 
 # Chatting with Sprites (Tutorial)
 
-## Tutorial
+## 📌 Lesson Objectives
+
+- Adding a `Background` to the `Stage/Canvas`
+- Adding a `Sprite` to the `Stage/Canvas`
+- How to capture `user input`
+- What is a `variable` and how to create one.
+- What is an `event` and how to trigger it.
+- Display Text above Sprite
+
+## 🚀 Tutorial
 
 For this first section you will be learn how to make it look like characters are chatting with you. This is an absolute beginner. You will learn how to add backgrounds, create something called variables and store information in the variable, re-use the variable, get a basic introduction to events, and learn how to use something called prompts.
 
@@ -97,7 +106,7 @@ For this first section you will be learn how to make it look like characters are
   <iframe width="560" height="315" src="https://www.youtube.com/embed/xgRu7Pm8xBU" frameborder="0" allowfullscreen></iframe>
 </figure>
 
-## Challenge
+## 🧩 Challenge
 
 Take the skills you just learned and create a scene where it looks like two sprites are chatting. You are required to set a background, add two sprites, have a user prompt, and display an output. Watch the video sample.
 

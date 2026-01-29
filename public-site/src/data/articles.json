@@ -1,6 +1,135 @@
 {
   "articles": [
     {
+      "id": "bbeed3a9-873b-41c1-a3c1-411356ed6b6c",
+      "slug": "sprite-lab-lesson-3",
+      "title": "Code.org - Sprite Lab Lesson 3",
+      "subtitle": "The Bug Catcher",
+      "excerpt": "Clean up your logic from Lesson 2 by adding functions to make your code easier to re-use. You will learn how to use IF statements to help your program make smart decisions, display messages to your players with print statements, and use variables to increase or decrease values like scores or health. We will also cover how to swap images to change how characters look, keep track of clicks using counters, and add exciting new assets to build your very own interactive story.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2026-01-22",
+      "category": {
+        "slug": "tutorial",
+        "name": "Tutorial"
+      },
+      "tags": [
+        {
+          "slug": "functions",
+          "name": "functions"
+        },
+        {
+          "slug": "show-hide",
+          "name": "show / hide"
+        },
+        {
+          "slug": "codeorg",
+          "name": "code.org"
+        },
+        {
+          "slug": "background-libarary",
+          "name": "background libarary"
+        },
+        {
+          "slug": "sprite-library",
+          "name": "sprite library"
+        },
+        {
+          "slug": "import",
+          "name": "import"
+        },
+        {
+          "slug": "sprite-lab",
+          "name": "sprite lab"
+        },
+        {
+          "slug": "variables",
+          "name": "variables"
+        },
+        {
+          "slug": "counters",
+          "name": "counters"
+        },
+        {
+          "slug": "location-block",
+          "name": "location block"
+        },
+        {
+          "slug": "reuse-logic",
+          "name": "reuse logic"
+        },
+        {
+          "slug": "coding",
+          "name": "coding"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/sprite-lab-lesson-3.png",
+        "alt": "The Bug Catcher",
+        "caption": "Re-using Functions"
+      },
+      "readingTime": 7,
+      "status": "published",
+      "tableOfContents": [
+        {
+          "id": "lesson-objectives",
+          "text": "📌 Lesson Objectives",
+          "level": 2
+        },
+        {
+          "id": "tutorial",
+          "text": "🚀 Tutorial",
+          "level": 2
+        },
+        {
+          "id": "import-backgrounds",
+          "text": "Import Backgrounds",
+          "level": 3
+        },
+        {
+          "id": "import-costumes",
+          "text": "Import Costumes",
+          "level": 3
+        },
+        {
+          "id": "set-the-stage",
+          "text": "Set the stage",
+          "level": 3
+        },
+        {
+          "id": "on-click-hide-sprite-event-block",
+          "text": "On-Click Hide Sprite - Event Block",
+          "level": 3
+        },
+        {
+          "id": "functions",
+          "text": "Functions",
+          "level": 3
+        },
+        {
+          "id": "challenge",
+          "text": "🧩 Challenge",
+          "level": 2
+        },
+        {
+          "id": "move-the-piggy",
+          "text": "Move the Piggy",
+          "level": 3
+        },
+        {
+          "id": "remove-print-blocks",
+          "text": "Remove Print Blocks",
+          "level": 3
+        }
+      ],
+      "previousArticle": {
+        "slug": "sprite-lab-lesson-2",
+        "title": "Code.org - Sprite Lab Lesson 2"
+      }
+    },
+    {
       "id": "165af792-a141-427f-a001-3b738f2361b4",
       "slug": "sprite-lab-lesson-2",
       "title": "Code.org - Sprite Lab Lesson 2",
@@ -66,12 +195,17 @@
         "alt": "Picture Swapping",
         "caption": "Picture Swapping"
       },
-      "readingTime": 6,
+      "readingTime": 7,
       "status": "published",
       "tableOfContents": [
         {
+          "id": "lesson-objectives",
+          "text": "📌 Lesson Objectives",
+          "level": 2
+        },
+        {
           "id": "tutorial",
-          "text": "Tutorial",
+          "text": "🚀 Tutorial",
           "level": 2
         },
         {
@@ -121,7 +255,7 @@
         },
         {
           "id": "challenges",
-          "text": "Challenges",
+          "text": "🧩 Challenges",
           "level": 2
         },
         {
@@ -138,6 +272,10 @@
       "previousArticle": {
         "slug": "sprite-lab-lesson-1",
         "title": "Code.org - Sprite Lab Lesson 1"
+      },
+      "nextArticle": {
+        "slug": "sprite-lab-lesson-3",
+        "title": "Code.org - Sprite Lab Lesson 3"
       }
     },
     {
@@ -198,8 +336,13 @@
       "status": "published",
       "tableOfContents": [
         {
+          "id": "lesson-objectives",
+          "text": "📌 Lesson Objectives",
+          "level": 2
+        },
+        {
           "id": "tutorial",
-          "text": "Tutorial",
+          "text": "🚀 Tutorial",
           "level": 2
         },
         {
@@ -229,7 +372,7 @@
         },
         {
           "id": "challenge",
-          "text": "Challenge",
+          "text": "🧩 Challenge",
           "level": 2
         }
       ],
@@ -609,6 +752,6 @@
       }
     }
   ],
-  "totalCount": 6,
-  "lastUpdated": "2026-01-25T00:48:08.689Z"
+  "totalCount": 7,
+  "lastUpdated": "2026-01-29T00:21:36.109Z"
 }

@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import tagsData from 'data/tags.json'
 import type { ArticleMeta } from 'types'
-import { filterPublishedArticles } from 'utils'
+import { filterPublishedArticles, parseDate } from 'utils'
 
 const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 const tags = tagsData.tags
@@ -75,7 +75,7 @@ export default function TagPage() {
                 </h3>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
                 <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {new Date(article.publishedAt).toLocaleDateString()}
+                  {article.author.name} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>
             </Link>

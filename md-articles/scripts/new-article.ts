@@ -74,7 +74,11 @@ next:
 
 # ${options.title}
 
-Start writing your article here...
+## 📌 Lesson Objectives
+
+## 🚀 Tutorial
+
+## 🧩 Challenge
 `
 }
 

@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import type { ArticleMeta } from 'types'
-import { filterPublishedArticles } from 'utils'
+import { filterPublishedArticles, parseDate } from 'utils'
 
 const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 
 // Get the latest 6 articles
 const getLatestArticles = () => {
   return [...articles]
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .sort((a, b) => parseDate(b.publishedAt).getTime() - parseDate(a.publishedAt).getTime())
     .slice(0, 6)
 }
 
@@ -49,7 +49,7 @@ export default function LatestPage() {
                 </h3>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
                 <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {new Date(article.publishedAt).toLocaleDateString()}
+                  {article.author.name} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>
             </Link>

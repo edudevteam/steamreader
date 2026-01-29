@@ -25,12 +25,22 @@ feature_image_caption: "Picture Swapping"
 excerpt: "Learn how to use IF statements to make decisions, display messages with print statements, increase or decrease values using variables, swap images, keep track of counters, and add new assets."
 status: published
 prev: sprite-lab-lesson-1
-next:
+next: sprite-lab-lesson-3
 ---
 
 # Picture Swap (Tutorial)
 
-## Tutorial
+## 📌 Lesson Objectives
+
+- Import costumes from the `Costume Library`
+- Assign numbers to `variables`
+- Working with multiple `events`
+- Change a `variable value` with `events`
+- Testing your logic with the `print` block
+- Appending and `concatenation`
+- What are conditionals? `IF Blocks`
+
+## 🚀 Tutorial
 
 Let's learn how to work more with Event Blocks, Add Custom Sprites, Change the value of variable, Print out our changes, work with IF Conditional logic.
 
@@ -164,7 +174,7 @@ Now let's learn about conditional logic also commonly referred to as `if` blocks
   <iframe width="560" height="315" src="https://www.youtube.com/embed/4Aqe2pchKRE" frameborder="0" allowfullscreen></iframe>
 </figure>
 
-## Challenges
+## 🧩 Challenges
 
 Apply the knowledge you learned so far which includes changing the number value of a variable using event blocks, swapping backgrounds, adding custom sprites, printing out the current value of a variable for testing, and using the IF conditional blocks.
 
