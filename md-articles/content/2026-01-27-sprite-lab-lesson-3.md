@@ -19,6 +19,7 @@ tags:
   - location block
   - reuse logic
   - coding
+  - tutorial
 
 feature_image: "/images/sprite-lab-lesson-3.png"
 feature_image_alt: "The Bug Catcher"
