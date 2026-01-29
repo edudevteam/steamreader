@@ -33,6 +33,7 @@ next:
 
 ## 📌 Lesson Objectives
 
+- `Functions`: Re-usable custom blocks
 - More practice with the `Location Block`
 - Import backgrounds from the `Background Library`
 - Learn how to `show / hide` a sprite
@@ -40,7 +41,6 @@ next:
 - Continue using the `Print` block for Testing
 - Keep track of a variable's `count`
 - More practice with `IF Blocks`
-- Functions: Re-usable custom blocks
 
 ## 🚀 Tutorial
 
