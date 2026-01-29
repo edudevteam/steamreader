@@ -61,6 +61,10 @@
     {
       "slug": "coding",
       "name": "coding"
+    },
+    {
+      "slug": "tutorial",
+      "name": "tutorial"
     }
   ],
   "featureImage": {

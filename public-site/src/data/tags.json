@@ -61,14 +61,14 @@
       "articleCount": 7
     },
     {
+      "slug": "tutorial",
+      "name": "tutorial",
+      "articleCount": 6
+    },
+    {
       "slug": "eduation",
       "name": "eduation",
       "articleCount": 1
-    },
-    {
-      "slug": "tutorial",
-      "name": "tutorial",
-      "articleCount": 5
     },
     {
       "slug": "blocks",

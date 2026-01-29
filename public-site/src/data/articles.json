@@ -63,6 +63,10 @@
         {
           "slug": "coding",
           "name": "coding"
+        },
+        {
+          "slug": "tutorial",
+          "name": "tutorial"
         }
       ],
       "featureImage": {
@@ -753,5 +757,5 @@
     }
   ],
   "totalCount": 7,
-  "lastUpdated": "2026-01-29T00:26:00.056Z"
+  "lastUpdated": "2026-01-29T00:31:35.007Z"
 }
