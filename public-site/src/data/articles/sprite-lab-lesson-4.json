@@ -1,0 +1,200 @@
+{
+  "id": "ad97e8e5-5b46-4e73-a803-d675a2243d95",
+  "slug": "sprite-lab-lesson-4",
+  "title": "Code.org - Sprite Lab Lesson 4",
+  "subtitle": "Behaviors, Conditions, and Interaction",
+  "excerpt": "In this tutorial, you’ll learn how to build a maze-style game while exploring some powerful programming ideas along the way. You’ll practice using behaviors and review how event blocks work, then learn how to make the most of the grid to design your game world. As you build, you’ll add conditional logic that lets sprites react when they interact with each other, display information on the screen, and play sounds at the right moments. You’ll also learn how logical operators help your game make smarter decisions, bringing everything together into a fun and interactive experience.",
+  "author": {
+    "slug": "ryan-jones",
+    "name": "Ryan Jones"
+  },
+  "publishedAt": "2026-01-30",
+  "category": {
+    "slug": "tutorial",
+    "name": "Tutorial"
+  },
+  "tags": [
+    {
+      "slug": "tutorial",
+      "name": "tutorial"
+    },
+    {
+      "slug": "codeorg",
+      "name": "code.org"
+    },
+    {
+      "slug": "sprite-lab",
+      "name": "sprite lab"
+    },
+    {
+      "slug": "functions",
+      "name": "functions"
+    },
+    {
+      "slug": "logical-operators",
+      "name": "logical operators"
+    },
+    {
+      "slug": "conditional-operators",
+      "name": "conditional operators"
+    },
+    {
+      "slug": "if-blocks",
+      "name": "if blocks"
+    },
+    {
+      "slug": "event-blocks",
+      "name": "event blocks"
+    },
+    {
+      "slug": "grid-mapping",
+      "name": "grid mapping"
+    },
+    {
+      "slug": "behaviors",
+      "name": "behaviors"
+    },
+    {
+      "slug": "game-development",
+      "name": "game development"
+    },
+    {
+      "slug": "costume-graphics",
+      "name": "costume graphics"
+    }
+  ],
+  "featureImage": {
+    "src": "/images/sprite-lab-lesson-4.png",
+    "alt": "Lesson 4 Maze Maker",
+    "caption": "Maze Maker"
+  },
+  "readingTime": 15,
+  "status": "published",
+  "content": "<h1 id=\"sprite-lab-lesson-4\">Sprite Lab Lesson 4</h1>\n<p>In this tutorial, you’ll learn how to build a maze-style game while exploring some powerful programming ideas along the way. You’ll practice using behaviors and review how event blocks work, then learn how to make the most of the grid to design your game world. As you build, you’ll add conditional logic that lets sprites react when they interact with each other, display information on the screen, and play sounds at the right moments. You’ll also learn how logical operators help your game make smarter decisions, bringing everything together into a fun and interactive experience.</p>\n<h2 id=\"lesson-objectives\">📌 Lesson Objectives</h2>\n<ul>\n<li><code>Logical Operators</code>: True, False, Equal, Not Equal, Greater Than, Less Than, etc.</li>\n<li><code>Behaviors</code>: Move a sprite around the Stage/Canvas with arrow keys</li>\n<li><code>Grids</code>: Make custom mazes</li>\n<li><code>Events</code>: Trigger actions when sprites interact with other sprites</li>\n<li><code>Custom Graphics</code>: Import Sprites and Modify Existing Ones.</li>\n<li><code>Review</code>: Functions, Variables, Events, and IF Blocks</li>\n</ul>\n<h2 id=\"tutorial-maze-level-1\">🚀 Tutorial - Maze Level 1</h2>\n<h3 id=\"maze-maker-game\">Maze Maker Game</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/JFwrgNe4naU\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol>\n<li><p>Create a new Sprite Lab project called: <code>Maze Maker</code></p>\n</li>\n<li><p>Snap a <code>set background to</code> block <code>Blocks &gt; World</code> under <code>when run</code> and choose the <code>grid</code> background.</p>\n</li>\n<li><p>Click on the <code>Costumes</code> button/tab above the <code>Stage/Canvas</code>.</p>\n</li>\n<li><p>In the popup select <code>Video Games</code> and scroll-down towards the bottom until you see the start button. Find two fully filled blocks that could be used as a background. They should contrast well. Easy to see the see the difference between the two.</p>\n</li>\n</ol>\n<h3 id=\"using-the-grid\">Using the Grid</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Gb8m65Wgs8o\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"5\">\n<li><p>From the <code>Blocks &gt; Sprites</code> add the block: <code>make sprite using grid</code></p>\n</li>\n<li><p>Change the sprite to the basic <code>gray block</code> sprite we imported.</p>\n</li>\n<li><p>To the right of the word <code>grid</code> is a grid block. Click this and click all of the boxes one-by-one.</p>\n</li>\n</ol>\n<h3 id=\"making-the-the-maze\">Making the the maze</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/FDC47JuPxds\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"8\">\n<li><p>Used the other costume we imported add another <code>make sprite using grid</code> block and create a simple maze.</p>\n</li>\n<li><p>This will place this block over the top of the first grid.</p>\n</li>\n<li><p>Create a simple path like video below or make your own path.</p>\n</li>\n</ol>\n<h3 id=\"create-player-sprite-function\">Create Player Sprite Function</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/RHY2O7x60zk\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"11\">\n<li><p>Let&#39;s create a reusable sprite function called <code>player</code>, don&#39;t add anything yet. Instead snap the new function block under the <code>make sprites using grid</code> with the brown clusters.</p>\n</li>\n<li><p>Now under Costumes add a new Character. I am using the <code>Elven Paladin</code> found in the <code>Fantasy Characters</code> collection.</p>\n</li>\n<li><p>Now below my function <code>Player</code> in the <code>Workspace</code> add the <code>make new sprite at</code> and the <code>set sprite size to</code> blocks. Change the sprite for both of these blocks to the character you selected: <code>Elven Paladin</code>.</p>\n</li>\n<li><p>Change the size of the sprite to <code>[30]</code></p>\n</li>\n<li><p>Click on the <code>location</code> block <code>pin</code> and move the sprite to the top-left to define the starting position.</p>\n</li>\n<li><p>Let&#39;s move these two blocks into the <code>player</code> function.</p>\n</li>\n<li><p>Right-click on the <code>make new sprite at</code> block and select <code>copy</code>. Then click on the <code>Edit</code> button the <code>player</code> function in the <code>Workspace</code>. Right-click in <code>Function Workspace</code> and select <code>paste</code>. Move the block into the function.</p>\n</li>\n<li><p>Close the <code>Function Workspace</code> and repeat step 17 for <code>set sprite size to</code> block.</p>\n</li>\n<li><p>Back in the <code>Main Workspace</code> remove the original blocks <code>make new sprite at</code> and <code>set sprite size to</code>. The function <code>player</code> should be positioned correctly.</p>\n</li>\n</ol>\n<h3 id=\"create-exit-sprite-function\">Create Exit Sprite Function</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/dmQ8DBu9eDY\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"20\">\n<li><p>Create a <code>custom costume sprite</code> by clicking on the <code>Costumes</code> button above the <code>Stage/Canvas</code>. Select the <code>Video Games</code> collection and scroll to the bottom.</p>\n</li>\n<li><p>Select the <code>Dark Wood</code> box and click <code>Done</code>.</p>\n</li>\n<li><p>In the Costume&#39;s Editor with our new costume selected, click on the tool <code>Filled Rectangle Tool</code>.</p>\n</li>\n<li><p>Then in the bottom-right of the sprite, click and drag-up about 2/3-rds towards the top-left making a black-hole in the sprite.</p>\n</li>\n<li><p>Change the color of the <code>foreground</code> to a similar <code>brown</code>. Using the the <code>Filled Rectangle Tool</code> again build three rectangles that look like steps.</p>\n</li>\n<li><p>Switch back to the <code>Code</code> Workspace and create a new function called: <code>exit</code></p>\n</li>\n<li><p>Let&#39;s repeat the process for positioning our new costume <code>stairs</code> sprite with a set size of <code>[50]</code> to the end of the path.</p>\n</li>\n<li><p>Now move the blocks for this into the <code>exit</code> function</p>\n</li>\n</ol>\n<blockquote>\n<p>Hint: If the function is snapped, you can actually switch to the <code>Function Workspace</code> and just add the blocks there first. Then within the function click on the location block and it lets you move the sprite around.</p>\n</blockquote>\n<h3 id=\"add-player-movement-with-behaviors\">Add Player Movement with Behaviors</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/yL1g77epR6Y\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"28\">\n<li><p>From the <code>Events</code> blocks add a <code>when up pressed</code> block to the <code>Workspace</code></p>\n</li>\n<li><p>From the <code>Behaviors</code> blocks add and snap in a <code>sprite begins</code> block under the <code>when up pressed</code> event block. - Change the sprite to our chosen character: <code>Eleven Paladin</code>.</p>\n</li>\n<li><p>From the <code>Behaviors</code> blocks add and snap the <code>moving with arrow keys</code> after the <code>begins</code> keyword.</p>\n</li>\n<li><p>Test it out. Click the <code>Run</code> button. Then click the <code>up</code> arrow once to activate the <code>event</code> block. Now move the sprite around with the arrow keys.</p>\n</li>\n</ol>\n<h3 id=\"create-health-points-and-visually-track\">Create Health Points and Visually Track</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/rV0tKbpWp44\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"32\">\n<li><p>Now that our sprite can move around. We want it to stay on the path. So let&#39;s add a negative effect if the player goes off the path.</p>\n</li>\n<li><p>In the <code>Blocks &gt; Variables</code> create a new variable called <code>health</code></p>\n</li>\n<li><p>Add the block <code>set mySprite to</code> under the <code>exit</code> function block and change it to <code>health</code>.</p>\n</li>\n<li><p>In the <code>Blocks &gt; Math</code> snap the <code>[0]</code> block to the <code>set health to</code> block and change the number to <code>3</code>.</p>\n</li>\n<li><p>We need a way to see our health points. We could use the <code>print block</code> but there is better solution for this. Under <code>Blocks &gt; Variables</code> find the <code>show variable counter at [(200,200)]</code> block and snap it under the <code>set health to [3]</code> block and change the <code>counter</code> to <code>health</code></p>\n</li>\n<li><p>Click the <code>pin</code> on the <code>location</code> block and move the <code>health: 3</code> display block to the bottom right. So it is not hiding the path.</p>\n</li>\n</ol>\n<h3 id=\"subtract-health-points\">Subtract Health Points</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/nkodoUNizMw\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"30\">\n<li><p>Let&#39;s add negative points for going off the path.</p>\n</li>\n<li><p>From <code>Blocks &gt; Events</code> add the block <code>when sprite touches sprite</code> to the <code>Workspace</code>.</p>\n</li>\n<li><p>Change the first sprite to your <code>player&#39;s sprite</code> costume and change the second sprite to the <code>brown block with green rocks</code> costume.</p>\n</li>\n<li><p>Under this block snap in a <code>Blocks &gt; Variables &gt; change counter by 1</code> block.</p>\n</li>\n<li><p>Change <code>counter</code> to <code>health</code> and from the <code>Blocks &gt; Math</code> snap in <code>[0]</code> block over the <code>[1]</code> and change the value to <code>[-1]</code></p>\n</li>\n<li><p>Run the code, press space bar, move the player with the arrow keys, try moving over the gray blocks with rocks, and watch the health decrease.</p>\n</li>\n</ol>\n<h3 id=\"can-you-exit-the-maze\">Can you Exit the Maze ?</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/7PBaXrXzU4k\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"36\">\n<li><p>For the player to exit their health needs to be above 0. So let&#39;s set a condition where the player must have at least a health point of 1 or greater.</p>\n</li>\n<li><p>From <code>Blocks &gt; Events</code> add another <code>when sprite touches sprite</code> block to the <code>Workspace</code></p>\n</li>\n<li><p>Set the first sprite to your <code>player&#39;s</code> costume and the second the sprite to the <code>target</code> costume.</p>\n</li>\n<li><p>Below this block, from the <code>Blocks &gt; Logic</code> add the block <code>if [] = [] do</code>.</p>\n</li>\n<li><p>Change the <code>=</code> sign to the <code>&gt;</code> which means greater than.</p>\n</li>\n<li><p>In the first empty block on the left, from the <code>Blocks &gt; Variables</code> snap in the <code>health</code> block.</p>\n</li>\n<li><p>In the second empty block on the right, from the <code>Blocks &gt; Math</code> snap in the <code>[0]</code> block and keep it at <code>[0]</code>.</p>\n</li>\n<li><p>Inside the if block after <code>do</code>:</p>\n</li>\n<li><p>From the <code>Sprite</code> blocks add a <code>remove sprite</code> and select your sprites costume.</p>\n</li>\n<li><p>From <code>World</code> blocks add the <code>play sound</code> block and select the second sound to the right in the top row.</p>\n</li>\n<li><p>Run the program, move the player, and if the health is above (greater than) 0, then the sound should play and the player will disappear into the next maze.</p>\n</li>\n</ol>\n<h2 id=\"challenge-1\">🧩 Challenge 1</h2>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/lXlyFiPe-c4\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol>\n<li><p>Create a new function called <code>level_1</code></p>\n</li>\n<li><p>Move the sprite grids, the function exit, and function player into <code>level_1</code> function</p>\n</li>\n<li><p>Put <code>level_1</code> under the <code>set background to</code> block on the <code>Workspace</code> replacing the blocks containing the grids with sprites and functions.</p>\n</li>\n</ol>\n<h2 id=\"tutorial-maze-level-2\">🚀 Tutorial - Maze Level 2</h2>\n<h3 id=\"design-maze-level-2\">Design Maze Level 2</h3>\n<blockquote>\n<p>We are going to speed up descriptions for topics that have already been covered.</p>\n</blockquote>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/o424rNVSP3w\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol>\n<li><p>Let&#39;s create a second maze level</p>\n</li>\n<li><p>Create a new function called <code>level_2</code> and close this.</p>\n</li>\n<li><p>Now on the <code>Workspace</code> below the <code>level_1</code> block, from the <code>Blocks &gt; Sprites</code> add two: <code>make sprites using grid</code> blocks.</p>\n</li>\n<li><p>Fill the first background by highlighting all the grid blocks and change the sprite to a different sprite block like water.</p>\n</li>\n<li><p>For the second block change the sprite to something else like <code>wood</code> which you can get from the <code>Custom</code> library.</p>\n</li>\n<li><p>Create a new maze field. There needs to be a start and endpoint.</p>\n</li>\n</ol>\n<h3 id=\"add-logic-to-level-2-function\">Add Logic to Level 2 Function</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/O4EvKIo14mQ\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"7\">\n<li><p>Once you have your new maze designed. Add the <code>exit</code> and <code>player</code> function blocks below the sprite grids. Put one in starting postion and the other in the ending postion.</p>\n</li>\n<li><p>Place the <code>level_2</code> function after the <code>level_1</code> function in the <code>Workspace</code></p>\n</li>\n<li><p>Now move all these new sprites and functions into the <code>level_2</code> function and remove all the sprites.</p>\n</li>\n</ol>\n<blockquote>\n<p>You can easily copy or cut a sprite by right-clicking on it and select cut or copy from the pop-up for faster development.</p>\n</blockquote>\n<h3 id=\"fixing-broken-sprite-positions\">Fixing Broken Sprite Positions</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/ZoT-UfFeEBs\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"11\">\n<li><p>We moved the sprite positions for the player and exit inside <code>level_2</code> and it looks okay. But... if we unsnap the <code>level_2</code> function it shows that it moved the sprites for <code>level_1</code> function also and this doesn&#39;t work!</p>\n</li>\n<li><p>To resolve this we need a way to keep track of which level is active. So, let&#39;s create a new variable called <code>level_count</code></p>\n</li>\n<li><p>Add the block <code>set counter to</code> the <code>Workspace</code> under the <code>set background to</code> block under <code>when run</code>.</p>\n</li>\n<li><p>Then add a <code>[0]</code> Math block and set it&#39;s value to <code>1</code>.</p>\n</li>\n<li><p>Make sure you change <code>counter</code> to <code>level_count</code></p>\n</li>\n<li><p>On our <code>Workspace</code> un-snap the <code>level_2</code> function and let it float around.</p>\n</li>\n<li><p>Now reset the Sprite location for the <code>player</code> and <code>exit</code> functions.</p>\n</li>\n<li><p>Let&#39;s add some conditional logic to both the <code>player</code> and <code>exit</code> functions to test if the <code>level_count</code> is on <code>map 1</code> or <code>map 2</code></p>\n</li>\n<li><p><code>Edit</code> the <code>player</code> function.</p>\n</li>\n<li><p>In the <code>player</code> function add the block <code>if counter = []</code>. Change <code>counter</code> to <code>level_count</code> and place a <code>Math</code> number block <code>[0]</code> to the right of the <code>=</code> equal sign in the empty block spot.</p>\n</li>\n<li><p>Change the number from <code>[0]</code> to <code>[1]</code></p>\n</li>\n<li><p>Move the <code>make new sprite at</code> and <code>set sprite size to [30]</code> blocks inside the <code>if level_select = [1]</code> block.</p>\n</li>\n<li><p>Duplicate the entire <code>if level_select = [1]</code> block with the code inside it and place it below. Then change the <code>[1]</code> to <code>[2]</code></p>\n</li>\n<li><p>Close the function editor. Back on the <code>Main Workspace</code> change the block <code>set level_count to [2]</code> and make sure the <code>level_2</code> function is snapped under <code>level_1</code>.</p>\n</li>\n<li><p><code>Edit</code> the <code>player</code> function again.</p>\n</li>\n<li><p>Click on the <code>pin location</code> on the <code>make new sprite at</code> block in the second <code>if</code> block and reposition the sprite like in the video.</p>\n</li>\n<li><p>Apply the same configuration for the <code>exit</code> function. You will need change the <code>set level_count to</code> block between <code>[1]</code> and <code>[2]</code> to correctly position.</p>\n</li>\n</ol>\n<h3 id=\"create-levels-swapping-function\">Create Levels Swapping Function</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/gw7hghxtBJE\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<blockquote>\n<p>Now that we have the sprites correctly positioned based on the <code>sprite_count</code> we need to make sure the correct maze level shows.</p>\n</blockquote>\n<ol start=\"28\">\n<li><p>Create a new function called <code>levels</code> and then click close.</p>\n</li>\n<li><p>Remove the function blocks: <code>level_1</code>, <code>level_2</code>, <code>player</code>, and <code>exit</code>.</p>\n</li>\n<li><p>Add the function block: <code>levels</code> and click on the <code>Edit</code> button.</p>\n</li>\n<li><p>Back in the <code>levels</code> Workspace click add two <code>if counter = []</code> blocks and change to the variable <code>level_count</code>.</p>\n</li>\n<li><p>Add a <code>Math</code> number block <code>[0]</code> to both.</p>\n</li>\n<li><p>Change the first <code>Math</code> number block to <code>[1]</code> and the second number block to <code>[2]</code></p>\n</li>\n<li><p>In the first <code>if</code> block add the function <code>level_1</code> and in the second <code>if</code> block add the fuction <code>level_2</code> and close.</p>\n</li>\n<li><p>Now, back on the <code>Main Workspace</code> switch number on the block <code>set level_count to</code> from 1 to 2. You should see the maps swap.</p>\n</li>\n</ol>\n<h3 id=\"change-maps-on-exit\">Change Maps on Exit</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/6wAA2ikLevc\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"36\">\n<li><p>In the <code>if</code> block under the <code>event</code> block <code>when sprite (character) touches sprite (exit)</code> from <code>Variables</code> add the block <code>change counter by [1]</code>.</p>\n</li>\n<li><p>Change <code>counter</code> to <code>level_count</code></p>\n</li>\n<li><p>Add a <code>Math</code> number block and set it to <code>[1]</code></p>\n</li>\n<li><p>Below this block snap a copy of the <code>levels</code> function block.</p>\n</li>\n</ol>\n<h3 id=\"map-2-bug-all-movement-is-bad\">Map 2 Bug - All Movement is bad 😱</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Vk9wgXUHD7U\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<blockquote>\n<p>You might notice that even though the maps switches, the player and exit sprites show up in the correct location, but when you move the player on Map 2, your health goes down. Why...?</p>\n</blockquote>\n<blockquote>\n<p>The reason is that we never removed the Map 1 field, it&#39;s just below Map 2 on the Stage/Canvas.</p>\n</blockquote>\n<ol start=\"30\">\n<li><p>Create a new function called <code>remove_level_1</code> and then inside of it place two <code>remove sprite</code> blocks.</p>\n</li>\n<li><p>Set first block to the <code>green rock</code> sprite and the second to the <code>gray path</code> sprite.</p>\n</li>\n<li><p>Now in the <code>levels</code> function inside the <code>if level_count = 2</code> block, just above <code>level_2</code> put the <code>remove_level_1</code> function block.</p>\n</li>\n</ol>\n<blockquote>\n<p>It must go above the level_2. So it clears out the sprites first.</p>\n</blockquote>\n<ol start=\"33\">\n<li>Now test the game again. it should work this time. Except Map 2 lets you travel anywhere with an issue.</li>\n</ol>\n<h3 id=\"map-2-bug-negative-water-everywhere\">Map 2 Bug - Negative Water Everywhere</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/NbCQlHWsfAE\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"34\">\n<li><p>Add a new <code>Event</code> block: <code>when sprite touch sprite</code> and include the block <code>change health by [-1]</code>.</p>\n</li>\n<li><p>Change the first sprite to your <code>character</code> and the second to the <code>water</code>.</p>\n</li>\n</ol>\n<blockquote>\n<p>Depending on how you setup the map it might work or it might have an issue like this example where you lose health even on the <code>Wood</code> sprites.</p>\n</blockquote>\n<ol start=\"36\">\n<li><p>Go back into your <code>level_2</code> sprites and modify your path so the wood is first and set to the full background.</p>\n</li>\n<li><p>Then change the water so that is goes on the outside forming the path we had before.</p>\n</li>\n</ol>\n<blockquote>\n<p>I&#39;d recommend watching the video for good example.</p>\n</blockquote>\n<h2 id=\"challenge-2\">🧩 Challenge 2</h2>\n<h3 id=\"add-health-points\">Add Health Points</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/KtmSGEyoLeA\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol>\n<li><p>Add a <code>Gold Coin</code> sprite onto Map Level 2 and place it to the bottom right of the map on the wood.</p>\n</li>\n<li><p>When the player sprite touches the <code>Gold Coin</code> sprite it should disappear, add 2 points to health, and make a positive sound (your choice).</p>\n</li>\n</ol>\n<h3 id=\"map-level-3\">Map Level 3</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/f6wieWFb6XU\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"3\">\n<li>Use all the knowledge you&#39;ve gained so far to create another map. So when the player reaches the exit on Level 2, Map Level 3 shows, Map Level 2 is removed, the sprites are moved to different locations and for this Map make it harder and include two bonus coins that each give plus two points of health.</li>\n</ol>\n<h3 id=\"bonus-challenge\">Bonus Challenge</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/UNpIC2yc7sU\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<ol start=\"4\">\n<li><p>Add a <code>Fire Spirit Sprite</code>to the Map Level 3 that uses the Behviors to automatically move around. If the <code>Fire Spirit</code> sprite touches the Player, the player loses 1 health point.</p>\n</li>\n<li><p>Set the <code>level_count</code> to <code>0</code>, add a Title, and a start button sprite. When I click the <code>Start</code> button, remove the title, remove the start button, the player can move, and map level 1 shows.</p>\n</li>\n<li><p>If the <code>health</code> is equal to or less than zero, change the stairs costume to a box blocking off the route and do something to let the player know they failed, like turning them into a wandering ghost.</p>\n</li>\n</ol>\n",
+  "tableOfContents": [
+    {
+      "id": "lesson-objectives",
+      "text": "📌 Lesson Objectives",
+      "level": 2
+    },
+    {
+      "id": "tutorial-maze-level-1",
+      "text": "🚀 Tutorial - Maze Level 1",
+      "level": 2
+    },
+    {
+      "id": "maze-maker-game",
+      "text": "Maze Maker Game",
+      "level": 3
+    },
+    {
+      "id": "using-the-grid",
+      "text": "Using the Grid",
+      "level": 3
+    },
+    {
+      "id": "making-the-the-maze",
+      "text": "Making the the maze",
+      "level": 3
+    },
+    {
+      "id": "create-player-sprite-function",
+      "text": "Create Player Sprite Function",
+      "level": 3
+    },
+    {
+      "id": "create-exit-sprite-function",
+      "text": "Create Exit Sprite Function",
+      "level": 3
+    },
+    {
+      "id": "add-player-movement-with-behaviors",
+      "text": "Add Player Movement with Behaviors",
+      "level": 3
+    },
+    {
+      "id": "create-health-points-and-visually-track",
+      "text": "Create Health Points and Visually Track",
+      "level": 3
+    },
+    {
+      "id": "subtract-health-points",
+      "text": "Subtract Health Points",
+      "level": 3
+    },
+    {
+      "id": "can-you-exit-the-maze",
+      "text": "Can you Exit the Maze ?",
+      "level": 3
+    },
+    {
+      "id": "challenge-1",
+      "text": "🧩 Challenge 1",
+      "level": 2
+    },
+    {
+      "id": "tutorial-maze-level-2",
+      "text": "🚀 Tutorial - Maze Level 2",
+      "level": 2
+    },
+    {
+      "id": "design-maze-level-2",
+      "text": "Design Maze Level 2",
+      "level": 3
+    },
+    {
+      "id": "add-logic-to-level-2-function",
+      "text": "Add Logic to Level 2 Function",
+      "level": 3
+    },
+    {
+      "id": "fixing-broken-sprite-positions",
+      "text": "Fixing Broken Sprite Positions",
+      "level": 3
+    },
+    {
+      "id": "create-levels-swapping-function",
+      "text": "Create Levels Swapping Function",
+      "level": 3
+    },
+    {
+      "id": "change-maps-on-exit",
+      "text": "Change Maps on Exit",
+      "level": 3
+    },
+    {
+      "id": "map-2-bug-all-movement-is-bad",
+      "text": "Map 2 Bug - All Movement is bad 😱",
+      "level": 3
+    },
+    {
+      "id": "map-2-bug-negative-water-everywhere",
+      "text": "Map 2 Bug - Negative Water Everywhere",
+      "level": 3
+    },
+    {
+      "id": "challenge-2",
+      "text": "🧩 Challenge 2",
+      "level": 2
+    },
+    {
+      "id": "add-health-points",
+      "text": "Add Health Points",
+      "level": 3
+    },
+    {
+      "id": "map-level-3",
+      "text": "Map Level 3",
+      "level": 3
+    },
+    {
+      "id": "bonus-challenge",
+      "text": "Bonus Challenge",
+      "level": 3
+    }
+  ],
+  "previousArticle": {
+    "slug": "sprite-lab-lesson-3",
+    "title": "Code.org - Sprite Lab Lesson 3"
+  }
+}

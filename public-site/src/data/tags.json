@@ -1,19 +1,69 @@
 {
   "tags": [
     {
+      "slug": "tutorial",
+      "name": "tutorial",
+      "articleCount": 7
+    },
+    {
+      "slug": "codeorg",
+      "name": "code.org",
+      "articleCount": 5
+    },
+    {
+      "slug": "sprite-lab",
+      "name": "sprite lab",
+      "articleCount": 5
+    },
+    {
       "slug": "functions",
       "name": "functions",
+      "articleCount": 2
+    },
+    {
+      "slug": "logical-operators",
+      "name": "logical operators",
+      "articleCount": 1
+    },
+    {
+      "slug": "conditional-operators",
+      "name": "conditional operators",
+      "articleCount": 1
+    },
+    {
+      "slug": "if-blocks",
+      "name": "if blocks",
+      "articleCount": 1
+    },
+    {
+      "slug": "event-blocks",
+      "name": "event blocks",
+      "articleCount": 1
+    },
+    {
+      "slug": "grid-mapping",
+      "name": "grid mapping",
+      "articleCount": 1
+    },
+    {
+      "slug": "behaviors",
+      "name": "behaviors",
+      "articleCount": 1
+    },
+    {
+      "slug": "game-development",
+      "name": "game development",
+      "articleCount": 1
+    },
+    {
+      "slug": "costume-graphics",
+      "name": "costume graphics",
       "articleCount": 1
     },
     {
       "slug": "show-hide",
       "name": "show / hide",
       "articleCount": 1
-    },
-    {
-      "slug": "codeorg",
-      "name": "code.org",
-      "articleCount": 4
     },
     {
       "slug": "background-libarary",
@@ -29,11 +79,6 @@
       "slug": "import",
       "name": "import",
       "articleCount": 1
-    },
-    {
-      "slug": "sprite-lab",
-      "name": "sprite lab",
-      "articleCount": 4
     },
     {
       "slug": "variables",
@@ -59,11 +104,6 @@
       "slug": "coding",
       "name": "coding",
       "articleCount": 7
-    },
-    {
-      "slug": "tutorial",
-      "name": "tutorial",
-      "articleCount": 6
     },
     {
       "slug": "eduation",

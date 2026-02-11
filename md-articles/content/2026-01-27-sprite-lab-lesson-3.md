@@ -27,7 +27,7 @@ feature_image_caption: "Re-using Functions"
 excerpt: "Clean up your logic from Lesson 2 by adding functions to make your code easier to re-use. You will learn how to use IF statements to help your program make smart decisions, display messages to your players with print statements, and use variables to increase or decrease values like scores or health. We will also cover how to swap images to change how characters look, keep track of clicks using counters, and add exciting new assets to build your very own interactive story."
 status: published
 prev: sprite-lab-lesson-2
-next:
+next: sprite-lab-lesson-4
 ---
 
 # The Bug Catcher

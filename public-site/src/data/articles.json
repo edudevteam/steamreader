@@ -1,6 +1,205 @@
 {
   "articles": [
     {
+      "id": "ad97e8e5-5b46-4e73-a803-d675a2243d95",
+      "slug": "sprite-lab-lesson-4",
+      "title": "Code.org - Sprite Lab Lesson 4",
+      "subtitle": "Behaviors, Conditions, and Interaction",
+      "excerpt": "In this tutorial, you’ll learn how to build a maze-style game while exploring some powerful programming ideas along the way. You’ll practice using behaviors and review how event blocks work, then learn how to make the most of the grid to design your game world. As you build, you’ll add conditional logic that lets sprites react when they interact with each other, display information on the screen, and play sounds at the right moments. You’ll also learn how logical operators help your game make smarter decisions, bringing everything together into a fun and interactive experience.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2026-01-30",
+      "category": {
+        "slug": "tutorial",
+        "name": "Tutorial"
+      },
+      "tags": [
+        {
+          "slug": "tutorial",
+          "name": "tutorial"
+        },
+        {
+          "slug": "codeorg",
+          "name": "code.org"
+        },
+        {
+          "slug": "sprite-lab",
+          "name": "sprite lab"
+        },
+        {
+          "slug": "functions",
+          "name": "functions"
+        },
+        {
+          "slug": "logical-operators",
+          "name": "logical operators"
+        },
+        {
+          "slug": "conditional-operators",
+          "name": "conditional operators"
+        },
+        {
+          "slug": "if-blocks",
+          "name": "if blocks"
+        },
+        {
+          "slug": "event-blocks",
+          "name": "event blocks"
+        },
+        {
+          "slug": "grid-mapping",
+          "name": "grid mapping"
+        },
+        {
+          "slug": "behaviors",
+          "name": "behaviors"
+        },
+        {
+          "slug": "game-development",
+          "name": "game development"
+        },
+        {
+          "slug": "costume-graphics",
+          "name": "costume graphics"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/sprite-lab-lesson-4.png",
+        "alt": "Lesson 4 Maze Maker",
+        "caption": "Maze Maker"
+      },
+      "readingTime": 15,
+      "status": "published",
+      "tableOfContents": [
+        {
+          "id": "lesson-objectives",
+          "text": "📌 Lesson Objectives",
+          "level": 2
+        },
+        {
+          "id": "tutorial-maze-level-1",
+          "text": "🚀 Tutorial - Maze Level 1",
+          "level": 2
+        },
+        {
+          "id": "maze-maker-game",
+          "text": "Maze Maker Game",
+          "level": 3
+        },
+        {
+          "id": "using-the-grid",
+          "text": "Using the Grid",
+          "level": 3
+        },
+        {
+          "id": "making-the-the-maze",
+          "text": "Making the the maze",
+          "level": 3
+        },
+        {
+          "id": "create-player-sprite-function",
+          "text": "Create Player Sprite Function",
+          "level": 3
+        },
+        {
+          "id": "create-exit-sprite-function",
+          "text": "Create Exit Sprite Function",
+          "level": 3
+        },
+        {
+          "id": "add-player-movement-with-behaviors",
+          "text": "Add Player Movement with Behaviors",
+          "level": 3
+        },
+        {
+          "id": "create-health-points-and-visually-track",
+          "text": "Create Health Points and Visually Track",
+          "level": 3
+        },
+        {
+          "id": "subtract-health-points",
+          "text": "Subtract Health Points",
+          "level": 3
+        },
+        {
+          "id": "can-you-exit-the-maze",
+          "text": "Can you Exit the Maze ?",
+          "level": 3
+        },
+        {
+          "id": "challenge-1",
+          "text": "🧩 Challenge 1",
+          "level": 2
+        },
+        {
+          "id": "tutorial-maze-level-2",
+          "text": "🚀 Tutorial - Maze Level 2",
+          "level": 2
+        },
+        {
+          "id": "design-maze-level-2",
+          "text": "Design Maze Level 2",
+          "level": 3
+        },
+        {
+          "id": "add-logic-to-level-2-function",
+          "text": "Add Logic to Level 2 Function",
+          "level": 3
+        },
+        {
+          "id": "fixing-broken-sprite-positions",
+          "text": "Fixing Broken Sprite Positions",
+          "level": 3
+        },
+        {
+          "id": "create-levels-swapping-function",
+          "text": "Create Levels Swapping Function",
+          "level": 3
+        },
+        {
+          "id": "change-maps-on-exit",
+          "text": "Change Maps on Exit",
+          "level": 3
+        },
+        {
+          "id": "map-2-bug-all-movement-is-bad",
+          "text": "Map 2 Bug - All Movement is bad 😱",
+          "level": 3
+        },
+        {
+          "id": "map-2-bug-negative-water-everywhere",
+          "text": "Map 2 Bug - Negative Water Everywhere",
+          "level": 3
+        },
+        {
+          "id": "challenge-2",
+          "text": "🧩 Challenge 2",
+          "level": 2
+        },
+        {
+          "id": "add-health-points",
+          "text": "Add Health Points",
+          "level": 3
+        },
+        {
+          "id": "map-level-3",
+          "text": "Map Level 3",
+          "level": 3
+        },
+        {
+          "id": "bonus-challenge",
+          "text": "Bonus Challenge",
+          "level": 3
+        }
+      ],
+      "previousArticle": {
+        "slug": "sprite-lab-lesson-3",
+        "title": "Code.org - Sprite Lab Lesson 3"
+      }
+    },
+    {
       "id": "bbeed3a9-873b-41c1-a3c1-411356ed6b6c",
       "slug": "sprite-lab-lesson-3",
       "title": "Code.org - Sprite Lab Lesson 3",
@@ -131,6 +330,10 @@
       "previousArticle": {
         "slug": "sprite-lab-lesson-2",
         "title": "Code.org - Sprite Lab Lesson 2"
+      },
+      "nextArticle": {
+        "slug": "sprite-lab-lesson-4",
+        "title": "Code.org - Sprite Lab Lesson 4"
       }
     },
     {
@@ -756,6 +959,6 @@
       }
     }
   ],
-  "totalCount": 7,
-  "lastUpdated": "2026-01-29T00:31:35.007Z"
+  "totalCount": 8,
+  "lastUpdated": "2026-02-11T23:31:14.819Z"
 }

@@ -130,5 +130,9 @@
   "previousArticle": {
     "slug": "sprite-lab-lesson-2",
     "title": "Code.org - Sprite Lab Lesson 2"
+  },
+  "nextArticle": {
+    "slug": "sprite-lab-lesson-4",
+    "title": "Code.org - Sprite Lab Lesson 4"
   }
 }
