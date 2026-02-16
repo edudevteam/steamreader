@@ -2,12 +2,15 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import articlesData from 'data/articles.json'
 import categoriesData from 'data/categories.json'
-import type { ArticleMeta } from 'types'
+import coursesData from 'data/courses.json'
+import type { ArticleMeta, CourseMeta } from 'types'
 import { filterPublishedArticles } from 'utils'
 import ArticleCarousel from 'components/ArticleCarousel'
+import CourseCarousel from 'components/CourseCarousel'
 
 const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
 const categories = categoriesData.categories
+const courses = coursesData.courses as CourseMeta[]
 
 const quotes = [
   {
@@ -155,14 +158,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Latest Articles */}
-      <ArticleCarousel
-        articles={latestArticles}
-        title="Latest Articles"
-        count={3}
-        viewAllLink="/latest"
-        viewAllText="View all articles"
-      />
+      {/* Courses */}
+      {courses.length > 0 && (
+        <CourseCarousel
+          courses={courses}
+          title="Courses"
+          subtitle="Structured learning paths to build your skills"
+        />
+      )}
 
       {/* Quote */}
       <section className="my-16 py-8 text-center">
@@ -176,6 +179,18 @@ export default function HomePage() {
         </blockquote>
       </section>
 
+      {/* Latest Articles */}
+      <div className="mt-16">
+        <ArticleCarousel
+          articles={latestArticles}
+          title="Latest Articles"
+          count={3}
+          viewAllLink="/latest"
+          viewAllText="View all articles"
+          limit={3}
+        />
+      </div>
+
       {/* The Learning Lab - Tutorials */}
       {tutorialArticles.length > 0 && (
         <div className="mt-16">
@@ -187,6 +202,7 @@ export default function HomePage() {
             variant="tutorial"
             viewAllLink="/tag/tutorial"
             viewAllText="View all tutorials"
+            limit={3}
           />
         </div>
       )}

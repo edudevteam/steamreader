@@ -1,0 +1,21 @@
+{
+  "courses": [
+    {
+      "slug": "sprite-lab",
+      "title": "Sprite Lab",
+      "description": "Learn to build interactive stories and games using Code.org's Sprite Lab. Start with the basics and work your way up to creating your own storyboarded project.",
+      "featureImage": {
+        "src": "/images/sprite-lab.png",
+        "alt": "Code.org Sprite Lab"
+      },
+      "articles": [
+        "sprite-lab-new-project",
+        "sprite-lab-lesson-1",
+        "sprite-lab-lesson-2",
+        "sprite-lab-lesson-3",
+        "sprite-lab-lesson-4",
+        "sprite-lab-lesson-5"
+      ]
+    }
+  ]
+}

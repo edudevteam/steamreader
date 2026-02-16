@@ -22,6 +22,7 @@ import UpdatePasswordPage from 'pages/UpdatePassword'
 import AccountPage from 'pages/Account'
 import EmailConfirmedPage from 'pages/EmailConfirmed'
 import TermsPage from 'pages/Terms'
+import CoursePage from 'pages/Course'
 
 export const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
       {
         path: 'author/:slug',
         element: <AuthorPage />
+      },
+      {
+        path: 'course/:slug',
+        element: <CoursePage />
       },
       {
         path: 'search',

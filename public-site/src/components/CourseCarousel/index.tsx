@@ -1,35 +1,28 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import type { ArticleMeta } from 'types'
-import { parseDate } from 'utils'
+import type { CourseMeta } from 'types'
 
-interface ArticleCarouselProps {
-  articles: ArticleMeta[]
+interface CourseCarouselProps {
+  courses: CourseMeta[]
   title: string
   subtitle?: string
   count?: number
   limit?: number
-  variant?: 'default' | 'tutorial'
-  viewAllLink?: string
-  viewAllText?: string
 }
 
-export default function ArticleCarousel({
-  articles,
+export default function CourseCarousel({
+  courses,
   title,
   subtitle,
   count = 3,
   limit,
-  variant = 'default',
-  viewAllLink,
-  viewAllText = 'View all',
-}: ArticleCarouselProps) {
+}: CourseCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [currentPage, setCurrentPage] = useState(0)
 
-  const limitedArticles = limit ? articles.slice(0, limit) : articles
-  const totalPages = Math.ceil(limitedArticles.length / count)
-  const displayedArticles = limitedArticles.slice(currentPage * count, (currentPage + 1) * count)
+  const limitedCourses = limit ? courses.slice(0, limit) : courses
+  const totalPages = Math.ceil(limitedCourses.length / count)
+  const paginatedCourses = limitedCourses.slice(currentPage * count, (currentPage + 1) * count)
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -51,18 +44,10 @@ export default function ArticleCarousel({
     setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))
   }
 
-  const cardClasses = variant === 'tutorial'
-    ? 'group overflow-hidden rounded-xl border-2 border-brand-100 bg-gradient-to-br from-brand-50 to-white shadow-md transition-all hover:border-brand-200 hover:shadow-lg'
-    : 'group overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg'
+  if (limitedCourses.length === 0) return null
 
-  const badgeClasses = variant === 'tutorial'
-    ? 'rounded-full bg-brand-100 px-2 py-1 text-xs font-medium text-brand-700'
-    : 'rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600'
-
-  const badgeText = (article: ArticleMeta) =>
-    variant === 'tutorial' ? 'Tutorial' : article.category.name
-
-  if (limitedArticles.length === 0) return null
+  const cardClasses =
+    'group overflow-hidden rounded-xl border-2 border-teal-100 bg-gradient-to-br from-teal-50 to-white shadow-md transition-all hover:border-teal-200 hover:shadow-lg'
 
   return (
     <section>
@@ -74,19 +59,10 @@ export default function ArticleCarousel({
             <p className="mt-1 text-sm text-gray-600">{subtitle}</p>
           )}
         </div>
-        {viewAllLink && (
-          <Link
-            to={viewAllLink}
-            className="text-sm font-medium text-brand-600 hover:text-brand-700"
-          >
-            {viewAllText} &rarr;
-          </Link>
-        )}
       </div>
 
       {/* Mobile Carousel */}
       <div className="relative md:hidden">
-        {/* Left Arrow */}
         <button
           onClick={scrollLeft}
           className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition-colors hover:bg-white"
@@ -97,47 +73,42 @@ export default function ArticleCarousel({
           </svg>
         </button>
 
-        {/* Scrollable Container */}
         <div
           ref={scrollRef}
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-8 pb-4 scrollbar-hide"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {limitedArticles.map((article) => (
+          {limitedCourses.map((course) => (
             <Link
-              key={article.slug}
-              to={`/article/${article.slug}`}
+              key={course.slug}
+              to={`/course/${course.slug}`}
               className={`w-[85vw] flex-shrink-0 snap-center ${cardClasses}`}
             >
               <div className="aspect-video w-full overflow-hidden">
                 <img
-                  src={article.featureImage.src}
-                  alt={article.featureImage.alt}
+                  src={course.featureImage.src}
+                  alt={course.featureImage.alt}
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
                 <div className="mb-2 flex items-center gap-2">
-                  <span className={badgeClasses}>
-                    {badgeText(article)}
+                  <span className="rounded-full bg-teal-100 px-2 py-1 text-xs font-medium text-teal-700">
+                    Course
                   </span>
                   <span className="text-xs text-gray-500">
-                    {article.readingTime} min
+                    {course.articles.length} lesson{course.articles.length !== 1 ? 's' : ''}
                   </span>
                 </div>
-                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
-                  {article.title}
+                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-teal-600">
+                  {course.title}
                 </h3>
-                <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
-                <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
-                </div>
+                <p className="line-clamp-2 text-sm text-gray-600">{course.description}</p>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Right Arrow */}
         <button
           onClick={scrollRight}
           className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition-colors hover:bg-white"
@@ -152,35 +123,32 @@ export default function ArticleCarousel({
       {/* Desktop Grid */}
       <div className="hidden md:block">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {displayedArticles.map((article) => (
+          {paginatedCourses.map((course) => (
             <Link
-              key={article.slug}
-              to={`/article/${article.slug}`}
+              key={course.slug}
+              to={`/course/${course.slug}`}
               className={cardClasses}
             >
               <div className="aspect-video w-full overflow-hidden">
                 <img
-                  src={article.featureImage.src}
-                  alt={article.featureImage.alt}
+                  src={course.featureImage.src}
+                  alt={course.featureImage.alt}
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
                 <div className="mb-2 flex items-center gap-2">
-                  <span className={badgeClasses}>
-                    {badgeText(article)}
+                  <span className="rounded-full bg-teal-100 px-2 py-1 text-xs font-medium text-teal-700">
+                    Course
                   </span>
                   <span className="text-xs text-gray-500">
-                    {article.readingTime} min
+                    {course.articles.length} lesson{course.articles.length !== 1 ? 's' : ''}
                   </span>
                 </div>
-                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
-                  {article.title}
+                <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-teal-600">
+                  {course.title}
                 </h3>
-                <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
-                <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
-                </div>
+                <p className="line-clamp-2 text-sm text-gray-600">{course.description}</p>
               </div>
             </Link>
           ))}
@@ -192,7 +160,7 @@ export default function ArticleCarousel({
             <button
               onClick={goToPrevPage}
               disabled={currentPage === 0}
-              className="text-sm font-medium text-gray-600 transition-colors hover:text-brand-600 disabled:cursor-not-allowed disabled:text-gray-300"
+              className="text-sm font-medium text-gray-600 transition-colors hover:text-teal-600 disabled:cursor-not-allowed disabled:text-gray-300"
             >
               &larr; Previous
             </button>
@@ -202,7 +170,7 @@ export default function ArticleCarousel({
                   key={i}
                   onClick={() => setCurrentPage(i)}
                   className={`h-2 w-2 rounded-full transition-colors ${
-                    i === currentPage ? 'bg-brand-600' : 'bg-gray-300 hover:bg-gray-400'
+                    i === currentPage ? 'bg-teal-600' : 'bg-gray-300 hover:bg-gray-400'
                   }`}
                   aria-label={`Go to page ${i + 1}`}
                 />
@@ -211,7 +179,7 @@ export default function ArticleCarousel({
             <button
               onClick={goToNextPage}
               disabled={currentPage === totalPages - 1}
-              className="text-sm font-medium text-gray-600 transition-colors hover:text-brand-600 disabled:cursor-not-allowed disabled:text-gray-300"
+              className="text-sm font-medium text-gray-600 transition-colors hover:text-teal-600 disabled:cursor-not-allowed disabled:text-gray-300"
             >
               Next &rarr;
             </button>
