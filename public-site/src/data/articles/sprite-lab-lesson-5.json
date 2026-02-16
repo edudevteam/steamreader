@@ -1,0 +1,127 @@
+{
+  "id": "e2b5a490-7aa6-4d91-b278-f3e56008e5db",
+  "slug": "sprite-lab-lesson-5",
+  "title": "Code.org - Sprite Lab Lesson 5",
+  "subtitle": "Story Boarding",
+  "excerpt": "Learn how to plan your ideas using storyboards, then put your skills to the test by building your own interactive Sprite Lab story from scratch.",
+  "author": {
+    "slug": "ryan-jones",
+    "name": "Ryan Jones"
+  },
+  "publishedAt": "2026-02-02",
+  "category": {
+    "slug": "tutorial",
+    "name": "Tutorial"
+  },
+  "tags": [
+    {
+      "slug": "tutorial",
+      "name": "tutorial"
+    },
+    {
+      "slug": "codeorg",
+      "name": "code.org"
+    },
+    {
+      "slug": "sprite-lab",
+      "name": "sprite lab"
+    },
+    {
+      "slug": "storyboard",
+      "name": "storyboard"
+    },
+    {
+      "slug": "story-board",
+      "name": "story board"
+    }
+  ],
+  "featureImage": {
+    "src": "/images/sprite-lab-lesson-5.png",
+    "alt": "Story Boarding",
+    "caption": "Story Boarding"
+  },
+  "readingTime": 3,
+  "status": "published",
+  "content": "<h1 id=\"sprite-lab-lesson-5\">Sprite Lab Lesson 5</h1>\n<p>Learn how to plan your ideas using storyboards, then put your skills to the test by building your own interactive Sprite Lab story from scratch.</p>\n<h2 id=\"lesson-objectives\">📌 Lesson Objectives</h2>\n<ul>\n<li>Decide on an Idea</li>\n<li>Create a Storyboard</li>\n<li>Storyboard to Sprite Lab</li>\n<li>Test, validate, repeat, and package</li>\n</ul>\n<h2 id=\"tutorial\">🚀 Tutorial</h2>\n<h3 id=\"what-is-story-boarding\">What is Story Boarding</h3>\n<p>Think of a <strong>storyboard</strong> like a comic strip for a movie or a book. It&#39;s a way to plan out a story using pictures before you start filming or writing the final version.</p>\n<h4 id=\"here-is-how-it-works\">Here is how it works:</h4>\n<ul>\n<li><p><strong>Drawing the Action:</strong> You draw a series of boxes. Inside each box, you sketch what is happening in that part of the story.</p>\n</li>\n<li><p><strong>Adding Details:</strong> Under each drawing, you write a quick note about what the characters are saying or what sounds are playing.</p>\n</li>\n<li><p><strong>Checking the Flow:</strong> By looking at all the boxes in a row, you can see if your story makes sense from beginning to end.</p>\n</li>\n</ul>\n<h3 id=\"why-do-people-use-storyboards\">Why do people use Storyboards ?</h3>\n<ol>\n<li><p><strong>To Save Time:</strong> It&#39;s easier to fix a drawing than to re-film a whole movie scene!</p>\n</li>\n<li><p><strong>To Share Ideas:</strong> It helps show other people exactly what you are thinking.</p>\n</li>\n<li><p><strong>To Be Organized:</strong> It acts like a map so you don&#39;t get lost while telling your story.</p>\n</li>\n</ol>\n<h3 id=\"tools-for-story-boarding\">🧰 Tools for Story Boarding</h3>\n<h4 id=\"storyboard-traditional-tools\">Storyboard Traditional Tools</h4>\n<ul>\n<li>A sheet of paper</li>\n<li>A white board</li>\n</ul>\n<h3 id=\"storyboard-online-tools\">Storyboard Online Tools</h3>\n<p>The following tools work for creating an online storyboard. These are not the only tools but they are good tools.</p>\n<h3 id=\"excalidraw\">Excalidraw</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/UDmnQUOqmYw\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<h3 id=\"canva\">Canva</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/4V3EMKMMLns\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<h3 id=\"milanote\">Milanote</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/vk_cifQVg_M\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<h3 id=\"storytribeappcom\">StoryTribeApp.com</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/qQvKB1EYIIk\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<h3 id=\"google-gemini\">Google Gemini</h3>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/bZQt4t6Sz78\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<h3 id=\"storyboard-sample\">Storyboard Sample</h3>\n<img src=\"/images/StoryBoardGoogleGemini.png\" />\n\n<h2 id=\"challenge\">🧩 Challenge</h2>\n<h3 id=\"overview\">Overview</h3>\n<p>This is a a two part challenge.</p>\n<ul>\n<li><p><strong>Part 1</strong>: decide on a topic for your story and storyboard it out. This can be on a piece of paper, whiteboard, or online tool.</p>\n</li>\n<li><p><strong>Part 2</strong>: convert your story into a Sprite Lab App. You will need to apply all the skills you learned in lessons 1 - 4.</p>\n</li>\n</ul>\n<h3 id=\"requirements\">Requirements</h3>\n<ol>\n<li>Come up with an idea for a story</li>\n<li>Storyboard the idea out. You need a start screen, end screen, and three interactive screens in between.</li>\n<li>This story can be as simple or as complex as you like.</li>\n<li>Your completed Sprite Lab project must include the following blocks. You are not limited to only these blocks but these blocks must be used somewhere in your project.<ul>\n<li>☑️ Sprites</li>\n<li>☑️ Variables</li>\n<li>☑️ If Blocks</li>\n<li>☑️ Events</li>\n<li>☑️ Functions</li>\n<li>☑️ Behaviors</li>\n<li>☑️ Math Blocks</li>\n<li>☑️ Location Blocks</li>\n<li>☑️ Audio Blocks</li>\n</ul>\n</li>\n</ol>\n",
+  "tableOfContents": [
+    {
+      "id": "lesson-objectives",
+      "text": "📌 Lesson Objectives",
+      "level": 2
+    },
+    {
+      "id": "tutorial",
+      "text": "🚀 Tutorial",
+      "level": 2
+    },
+    {
+      "id": "what-is-story-boarding",
+      "text": "What is Story Boarding",
+      "level": 3
+    },
+    {
+      "id": "why-do-people-use-storyboards",
+      "text": "Why do people use Storyboards ?",
+      "level": 3
+    },
+    {
+      "id": "tools-for-story-boarding",
+      "text": "🧰 Tools for Story Boarding",
+      "level": 3
+    },
+    {
+      "id": "storyboard-online-tools",
+      "text": "Storyboard Online Tools",
+      "level": 3
+    },
+    {
+      "id": "excalidraw",
+      "text": "Excalidraw",
+      "level": 3
+    },
+    {
+      "id": "canva",
+      "text": "Canva",
+      "level": 3
+    },
+    {
+      "id": "milanote",
+      "text": "Milanote",
+      "level": 3
+    },
+    {
+      "id": "storytribeappcom",
+      "text": "StoryTribeApp.com",
+      "level": 3
+    },
+    {
+      "id": "google-gemini",
+      "text": "Google Gemini",
+      "level": 3
+    },
+    {
+      "id": "storyboard-sample",
+      "text": "Storyboard Sample",
+      "level": 3
+    },
+    {
+      "id": "challenge",
+      "text": "🧩 Challenge",
+      "level": 2
+    },
+    {
+      "id": "overview",
+      "text": "Overview",
+      "level": 3
+    },
+    {
+      "id": "requirements",
+      "text": "Requirements",
+      "level": 3
+    }
+  ],
+  "previousArticle": {
+    "slug": "sprite-lab-lesson-4",
+    "title": "Code.org - Sprite Lab Lesson 4"
+  }
+}

@@ -3,17 +3,27 @@
     {
       "slug": "tutorial",
       "name": "tutorial",
-      "articleCount": 7
+      "articleCount": 8
     },
     {
       "slug": "codeorg",
       "name": "code.org",
-      "articleCount": 5
+      "articleCount": 6
     },
     {
       "slug": "sprite-lab",
       "name": "sprite lab",
-      "articleCount": 5
+      "articleCount": 6
+    },
+    {
+      "slug": "storyboard",
+      "name": "storyboard",
+      "articleCount": 1
+    },
+    {
+      "slug": "story-board",
+      "name": "story board",
+      "articleCount": 1
     },
     {
       "slug": "functions",

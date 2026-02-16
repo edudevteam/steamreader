@@ -1,6 +1,132 @@
 {
   "articles": [
     {
+      "id": "e2b5a490-7aa6-4d91-b278-f3e56008e5db",
+      "slug": "sprite-lab-lesson-5",
+      "title": "Code.org - Sprite Lab Lesson 5",
+      "subtitle": "Story Boarding",
+      "excerpt": "Learn how to plan your ideas using storyboards, then put your skills to the test by building your own interactive Sprite Lab story from scratch.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2026-02-02",
+      "category": {
+        "slug": "tutorial",
+        "name": "Tutorial"
+      },
+      "tags": [
+        {
+          "slug": "tutorial",
+          "name": "tutorial"
+        },
+        {
+          "slug": "codeorg",
+          "name": "code.org"
+        },
+        {
+          "slug": "sprite-lab",
+          "name": "sprite lab"
+        },
+        {
+          "slug": "storyboard",
+          "name": "storyboard"
+        },
+        {
+          "slug": "story-board",
+          "name": "story board"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/sprite-lab-lesson-5.png",
+        "alt": "Story Boarding",
+        "caption": "Story Boarding"
+      },
+      "readingTime": 3,
+      "status": "published",
+      "tableOfContents": [
+        {
+          "id": "lesson-objectives",
+          "text": "📌 Lesson Objectives",
+          "level": 2
+        },
+        {
+          "id": "tutorial",
+          "text": "🚀 Tutorial",
+          "level": 2
+        },
+        {
+          "id": "what-is-story-boarding",
+          "text": "What is Story Boarding",
+          "level": 3
+        },
+        {
+          "id": "why-do-people-use-storyboards",
+          "text": "Why do people use Storyboards ?",
+          "level": 3
+        },
+        {
+          "id": "tools-for-story-boarding",
+          "text": "🧰 Tools for Story Boarding",
+          "level": 3
+        },
+        {
+          "id": "storyboard-online-tools",
+          "text": "Storyboard Online Tools",
+          "level": 3
+        },
+        {
+          "id": "excalidraw",
+          "text": "Excalidraw",
+          "level": 3
+        },
+        {
+          "id": "canva",
+          "text": "Canva",
+          "level": 3
+        },
+        {
+          "id": "milanote",
+          "text": "Milanote",
+          "level": 3
+        },
+        {
+          "id": "storytribeappcom",
+          "text": "StoryTribeApp.com",
+          "level": 3
+        },
+        {
+          "id": "google-gemini",
+          "text": "Google Gemini",
+          "level": 3
+        },
+        {
+          "id": "storyboard-sample",
+          "text": "Storyboard Sample",
+          "level": 3
+        },
+        {
+          "id": "challenge",
+          "text": "🧩 Challenge",
+          "level": 2
+        },
+        {
+          "id": "overview",
+          "text": "Overview",
+          "level": 3
+        },
+        {
+          "id": "requirements",
+          "text": "Requirements",
+          "level": 3
+        }
+      ],
+      "previousArticle": {
+        "slug": "sprite-lab-lesson-4",
+        "title": "Code.org - Sprite Lab Lesson 4"
+      }
+    },
+    {
       "id": "ad97e8e5-5b46-4e73-a803-d675a2243d95",
       "slug": "sprite-lab-lesson-4",
       "title": "Code.org - Sprite Lab Lesson 4",
@@ -197,6 +323,10 @@
       "previousArticle": {
         "slug": "sprite-lab-lesson-3",
         "title": "Code.org - Sprite Lab Lesson 3"
+      },
+      "nextArticle": {
+        "slug": "sprite-lab-lesson-5",
+        "title": "Code.org - Sprite Lab Lesson 5"
       }
     },
     {
@@ -959,6 +1089,6 @@
       }
     }
   ],
-  "totalCount": 8,
-  "lastUpdated": "2026-02-11T23:31:14.819Z"
+  "totalCount": 9,
+  "lastUpdated": "2026-02-16T00:39:40.957Z"
 }
