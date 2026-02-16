@@ -1,8 +1,4 @@
 import { Link } from 'react-router-dom'
-import categoriesData from 'data/categories.json'
-import type { Category } from 'types'
-
-const categories = categoriesData.categories as Category[]
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -26,22 +22,44 @@ export default function Footer() {
 
         {/* Mobile: 3 columns for links */}
         <div className="grid grid-cols-3 gap-4 md:hidden">
-          {/* Categories */}
+          {/* Explore */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-900">
-              Categories
+              Explore
             </h3>
             <ul className="mt-3 space-y-2">
-              {categories.map((category) => (
-                <li key={category.slug}>
-                  <Link
-                    to={`/category/${category.slug}`}
-                    className="text-xs text-gray-600 transition-colors hover:text-brand-600"
-                  >
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link
+                  to="/categories"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Categories
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/tags"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Tags
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/latest"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Latest
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/random"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Random
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -69,18 +87,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/contact"
+                  to="/support"
                   className="text-xs text-gray-600 transition-colors hover:text-brand-600"
                 >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/newsletter"
-                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
-                >
-                  Newsletter
+                  Support
                 </Link>
               </li>
               <li>
@@ -141,22 +151,44 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Categories */}
+          {/* Explore */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900">
-              Categories
+              Explore
             </h3>
             <ul className="mt-4 space-y-2">
-              {categories.map((category) => (
-                <li key={category.slug}>
-                  <Link
-                    to={`/category/${category.slug}`}
-                    className="text-sm text-gray-600 transition-colors hover:text-brand-600"
-                  >
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link
+                  to="/categories"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Categories
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/tags"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Tags
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/latest"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Latest
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/random"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Random
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -184,18 +216,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/contact"
+                  to="/support"
                   className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/newsletter"
-                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
-                >
-                  Newsletter
+                  Support
                 </Link>
               </li>
               <li>

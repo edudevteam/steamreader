@@ -1,5 +1,33 @@
 [
   {
+    "version": "1.5.0",
+    "date": "2026-02-16",
+    "title": "Google Tag Manager",
+    "description": "Integrated Google Tag Manager (GTM) for analytics tracking across the site.",
+    "type": "feature"
+  },
+  {
+    "version": "1.4.0",
+    "date": "2026-02-16",
+    "title": "New Support Page",
+    "description": "Combined the Newsletter page and Contact page into a single Support page. Newsletter info, social links, and community channels are now all in one place.",
+    "type": "improvement"
+  },
+  {
+    "version": "1.3.1",
+    "date": "2026-02-16",
+    "title": "Article Navigation & Scroll Improvements",
+    "description": "Added compact previous/next article links at the top of each article. Articles now always scroll to the top when navigated to. Added a floating back-to-top button that appears as you scroll down.",
+    "type": "improvement"
+  },
+  {
+    "version": "1.3.0",
+    "date": "2026-02-16",
+    "title": "Footer Redesign",
+    "description": "Replaced the Categories column in the footer with a new Explore section linking to Categories, Tags, Latest, and Random pages.",
+    "type": "improvement"
+  },
+  {
     "version": "1.2.0",
     "date": "2026-02-15",
     "title": "Courses & Carousel Limits",

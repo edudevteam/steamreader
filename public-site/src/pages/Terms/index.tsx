@@ -74,10 +74,10 @@ export default function TermsPage() {
           any changes constitutes acceptance of the new terms.
         </p>
 
-        <h2>10. Contact</h2>
+        <h2>10. Support</h2>
         <p>
-          If you have any questions about these Terms and Conditions, please contact us
-          through our contact page.
+          If you have any questions about these Terms and Conditions, please reach out
+          through our support page.
         </p>
       </div>
     </div>

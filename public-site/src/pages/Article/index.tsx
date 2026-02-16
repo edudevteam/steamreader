@@ -11,7 +11,16 @@ export default function ArticlePage() {
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showBackToTop, setShowBackToTop] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     async function loadArticle() {
@@ -26,6 +35,7 @@ export default function ArticlePage() {
     }
 
     if (slug) {
+      window.scrollTo(0, 0)
       loadArticle()
     }
   }, [slug])
@@ -198,6 +208,38 @@ export default function ArticlePage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+      {/* Previous / Next Navigation - Top (compact) */}
+      {(article.previousArticle || article.nextArticle) && (
+        <nav className="mb-6 flex items-center justify-between gap-4 border-b border-gray-200 pb-4">
+          {article.previousArticle ? (
+            <Link
+              to={`/article/${article.previousArticle.slug}`}
+              className="group flex min-w-0 items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-brand-600"
+            >
+              <svg className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span className="truncate">{article.previousArticle.title}</span>
+            </Link>
+          ) : (
+            <div />
+          )}
+          {article.nextArticle ? (
+            <Link
+              to={`/article/${article.nextArticle.slug}`}
+              className="group flex min-w-0 items-center gap-1.5 text-sm text-gray-500 text-right transition-colors hover:text-brand-600"
+            >
+              <span className="truncate">{article.nextArticle.title}</span>
+              <svg className="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          ) : (
+            <div />
+          )}
+        </nav>
+      )}
+
       {/* Social Share - Top */}
       <div className="mb-6">
         <SocialShareButtons />
@@ -333,6 +375,19 @@ export default function ArticlePage() {
       <div className="mt-8 border-t border-gray-200 pt-8">
         <SocialShareButtons />
       </div>
+
+      {/* Back to Top Button - positioned above the TOC floating button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className={`fixed bottom-24 right-7 z-40 rounded-full bg-gray-700 p-2.5 text-white shadow-lg transition-all hover:bg-gray-800 ${
+          showBackToTop ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0 pointer-events-none'
+        }`}
+        aria-label="Back to top"
+      >
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
     </article>
   )
 }

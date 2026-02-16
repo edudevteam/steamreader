@@ -11,8 +11,7 @@ import TagPage from 'pages/Tag'
 import AuthorPage from 'pages/Author'
 import SearchPage from 'pages/Search'
 import AboutPage from 'pages/About'
-import ContactPage from 'pages/Contact'
-import NewsletterPage from 'pages/Newsletter'
+import SupportPage from 'pages/Support'
 import ValidationProcessPage from 'pages/ValidationProcess'
 import NotFoundPage from 'pages/NotFound'
 import LoginPage from 'pages/Login'
@@ -79,12 +78,8 @@ export const router = createBrowserRouter([
         element: <AboutPage />
       },
       {
-        path: 'contact',
-        element: <ContactPage />
-      },
-      {
-        path: 'newsletter',
-        element: <NewsletterPage />
+        path: 'support',
+        element: <SupportPage />
       },
       {
         path: 'validation-process',

@@ -1,4 +1,6 @@
-export default function ContactPage() {
+import { Link } from 'react-router-dom'
+
+export default function SupportPage() {
   const socialLinks = [
     {
       name: 'Reddit',
@@ -44,7 +46,7 @@ export default function ContactPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-4 text-4xl font-bold text-gray-900">Contact Us</h1>
+      <h1 className="mb-4 text-4xl font-bold text-gray-900">Support</h1>
 
       <p className="mb-8 text-lg text-gray-600">
         Have questions, feedback, or just want to connect? Find us on these platforms.
@@ -68,6 +70,117 @@ export default function ContactPage() {
         ))}
       </div>
 
+      <hr className="my-12 border-gray-200" />
+
+      <div>
+        <div className="flex items-center gap-3">
+          <svg
+            className="h-8 w-8 text-brand-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
+          <h2 className="text-2xl font-bold text-gray-900">Newsletter</h2>
+        </div>
+
+        <div className="mt-6 rounded-lg bg-brand-50 p-8">
+          <h3 className="text-xl font-semibold text-gray-900">
+            How to Join the Newsletter
+          </h3>
+          <p className="mt-3 text-gray-600">
+            To join the newsletter, simply{' '}
+            <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-500 underline">
+              create an account
+            </Link>
+            . All new accounts are automatically subscribed to the newsletter — no extra steps needed!
+          </p>
+        </div>
+
+        <div className="mt-6 space-y-6">
+          <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-6">
+            <div className="flex items-start gap-3">
+              <svg
+                className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <div>
+                <h3 className="font-medium text-yellow-800">Check Your Spam Folder</h3>
+                <p className="mt-1 text-sm text-yellow-700">
+                  Your first newsletter email may land in your spam or junk folder. If you don't see it
+                  in your inbox, be sure to check there and mark it as "not spam" so future emails arrive
+                  in your inbox.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-6">
+            <div className="flex items-start gap-3">
+              <svg
+                className="mt-0.5 h-5 w-5 flex-shrink-0 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728A9 9 0 015.636 5.636"
+                />
+              </svg>
+              <div>
+                <h3 className="font-medium text-gray-900">Unsubscribing</h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  Every newsletter email includes an unsubscribe link at the bottom. If you'd like to
+                  stop receiving the newsletter, simply click the unsubscribe link in any email you receive.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-6">
+            <div className="flex items-start gap-3">
+              <svg
+                className="mt-0.5 h-5 w-5 flex-shrink-0 text-brand-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
+              <div>
+                <h3 className="font-medium text-gray-900">Re-subscribing</h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  Changed your mind? If you've previously unsubscribed and would like to start receiving
+                  the newsletter again, reach out to us and we'll get you back on the list.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
