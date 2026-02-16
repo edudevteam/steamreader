@@ -83,6 +83,14 @@ export default function Footer() {
                   Newsletter
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/changelog"
+                  className="text-xs text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Changelog
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -188,6 +196,14 @@ export default function Footer() {
                   className="text-sm text-gray-600 transition-colors hover:text-brand-600"
                 >
                   Newsletter
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/changelog"
+                  className="text-sm text-gray-600 transition-colors hover:text-brand-600"
+                >
+                  Changelog
                 </Link>
               </li>
             </ul>

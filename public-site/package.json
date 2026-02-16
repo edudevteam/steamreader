@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "node scripts/generate-changelog-assets.mjs && tsc && vite build",
+    "changelog:generate": "node scripts/generate-changelog-assets.mjs",
     "serve": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",

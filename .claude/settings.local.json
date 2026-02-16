@@ -27,7 +27,8 @@
       "Bash(pnpm tsc:*)",
       "Bash(curl:*)",
       "Bash(dig:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(node scripts/generate-changelog-assets.mjs:*)"
     ]
   }
 }

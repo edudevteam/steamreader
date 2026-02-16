@@ -33,5 +33,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# generated changelog assets
+/public/version.json
+/public/rss.xml
+
 # vercel
 .vercel

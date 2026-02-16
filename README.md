@@ -10,6 +10,7 @@ A markdown-powered blog site for Science, Technology, Engineering, Arts, and Mat
 - **Social Sharing** - Share buttons for Twitter, Facebook, LinkedIn, and Email
 - **Responsive Design** - Mobile-friendly with collapsible navigation
 - **CLI Tool** - Manage articles from the command line
+- **Changelog System** - Public changelog page, RSS feed, and version endpoint
 
 ## Tech Stack
 
@@ -56,16 +57,20 @@ public-site/
 │       └── YYYY-MM-DD-article-slug/
 │           ├── index.md             # Article content
 │           └── images/              # Article images
-├── scripts/                         # CLI tools
+├── scripts/                         # CLI & build tools
+│   └── generate-changelog-assets.mjs
 ├── src/
 │   ├── components/
 │   │   └── layout/                  # Header, Footer, PageLayout
 │   ├── pages/                       # Route pages
 │   ├── data/                        # Generated JSON (from CLI)
+│   │   └── changelog.json           # Changelog entries (edit manually)
 │   ├── types/                       # TypeScript interfaces
 │   └── router/                      # Route configuration
 └── public/
-    └── images/articles/             # Processed images
+    ├── images/articles/             # Processed images
+    ├── version.json                 # Generated — latest changelog entry
+    └── rss.xml                      # Generated — RSS feed
 ```
 
 ## Writing Articles
@@ -164,6 +169,79 @@ pnpm articles:delete article-slug
 | `/tag/:slug` | Articles filtered by tag |
 | `/author/:slug` | Articles by author |
 | `/search` | Search page with filters |
+| `/changelog` | Public changelog of site updates |
+
+## Changelog & Versioning
+
+The site includes a changelog system that tracks public-facing changes. It is powered by a single JSON file and generates static assets at build time.
+
+### How It Works
+
+```
+src/data/changelog.json   (you edit this manually)
+        │
+        ├──→  /changelog page       (React renders it at runtime)
+        ├──→  public/version.json   (generated at build time)
+        └──→  public/rss.xml        (generated at build time)
+```
+
+- **`/changelog`** — A page listing all changes, visible to users
+- **`/version.json`** — Contains the latest version entry; used for in-app banners and Telegram bot checks
+- **`/rss.xml`** — Standard RSS 2.0 feed for external subscribers
+
+### Adding a Changelog Entry
+
+Edit `src/data/changelog.json` and prepend a new entry at the top of the array:
+
+```json
+[
+  {
+    "version": "1.3.0",
+    "date": "2026-03-01",
+    "title": "Short title of the change",
+    "description": "A sentence or two describing what changed and why.",
+    "type": "feature"
+  }
+]
+```
+
+**Entry fields:**
+
+| Field | Required | Values |
+|-------|----------|--------|
+| `version` | Yes | Semver string (e.g. `"1.3.0"`) |
+| `date` | Yes | ISO date (`"YYYY-MM-DD"`) |
+| `title` | Yes | Short title for the change |
+| `description` | Yes | One or two sentences describing the change |
+| `type` | Yes | `"feature"`, `"content"`, `"fix"`, or `"improvement"` |
+
+### Generating Assets
+
+The build script automatically generates `version.json` and `rss.xml` before each production build. You can also run it manually:
+
+```bash
+pnpm changelog:generate
+```
+
+To customize the site URL used in the RSS feed, set the `SITE_URL` environment variable:
+
+```bash
+SITE_URL=https://yourdomain.com pnpm build
+```
+
+### Consuming version.json
+
+**In-app banner example:**
+
+```js
+const res = await fetch('/version.json')
+const { version, title } = await res.json()
+// Compare with last-known version to decide whether to show a banner
+```
+
+**Telegram bot check:**
+
+Poll `/version.json` periodically and send a message when the version changes.
 
 ## Customization
 
@@ -198,7 +276,8 @@ colors: {
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Start development server |
-| `pnpm build` | Production build |
+| `pnpm build` | Generate changelog assets + production build |
+| `pnpm changelog:generate` | Generate version.json and rss.xml from changelog |
 | `pnpm serve` | Preview production build |
 | `pnpm typecheck` | Run TypeScript type checking |
 | `pnpm lint` | Run ESLint |

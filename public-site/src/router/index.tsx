@@ -23,6 +23,7 @@ import AccountPage from 'pages/Account'
 import EmailConfirmedPage from 'pages/EmailConfirmed'
 import TermsPage from 'pages/Terms'
 import CoursePage from 'pages/Course'
+import ChangelogPage from 'pages/Changelog'
 
 export const router = createBrowserRouter([
   {
@@ -116,6 +117,10 @@ export const router = createBrowserRouter([
       {
         path: 'terms',
         element: <TermsPage />
+      },
+      {
+        path: 'changelog',
+        element: <ChangelogPage />
       },
       {
         path: '*',

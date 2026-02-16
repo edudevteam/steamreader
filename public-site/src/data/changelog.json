@@ -1,0 +1,23 @@
+[
+  {
+    "version": "1.2.0",
+    "date": "2026-02-15",
+    "title": "Courses & Carousel Limits",
+    "description": "Added course pages and set a display limit on the homepage carousel for a cleaner browsing experience.",
+    "type": "feature"
+  },
+  {
+    "version": "1.1.0",
+    "date": "2026-02-12",
+    "title": "Sprite Lab Lessons 3-5",
+    "description": "Published Sprite Lab lessons 3 through 5, including the tag tutorial for lesson 3.",
+    "type": "content"
+  },
+  {
+    "version": "1.0.0",
+    "date": "2026-02-01",
+    "title": "Initial Launch",
+    "description": "Launched STEAM Reader with article browsing, search, category and tag filtering, author pages, and user accounts.",
+    "type": "feature"
+  }
+]
