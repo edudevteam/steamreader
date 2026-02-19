@@ -1,86 +1,96 @@
 # Quiz 3: The Bug Catcher (Lesson 3)
 
-**Topics:** Functions, Location Block, Background Library, Show/Hide Sprites, Multiple Event Listeners, Print Block for Testing, Counter Tracking, IF Blocks
+**Topics:** Functions, Positioning with Coordinates, Showing and Hiding Sprites, Multiple Event Listeners, Debugging with Print, Counter Variables, IF Blocks
 
 ---
 
-**1. A function in Sprite Lab is best described as:**
+**1. What is a function in coding?**
 
-- a) A type of sprite
-- b) A reusable container of blocks that can be called multiple times
-- c) A background image
-- d) A variable that stores numbers
+- a) A type of background
+- b) A reusable set of instructions that can be called by name
+- c) A variable that counts clicks
+- d) An event that runs once
 
 ---
 
-**2. What is the main benefit of using functions instead of repeating the same blocks over and over?**
+**2. What is the biggest benefit of using a function?**
 
 - a) It makes the program run slower
-- b) It makes your code reusable and easier to organize
-- c) It changes the background automatically
-- d) It creates new variables
+- b) It lets you reuse the same code without writing it over and over
+- c) It creates new sprites automatically
+- d) It deletes old variables
 
 ---
 
-**3. Where do you find and import new backgrounds into your project?**
+**3. What does it mean to "hide" or "remove" a sprite?**
 
-- a) Blocks > World
-- b) Costumes tab
-- c) Backgrounds tab above the Stage/Canvas
-- d) Variables menu
-
----
-
-**4. Which block would you use to make a sprite disappear from the Stage/Canvas?**
-
-- a) set background to
-- b) remove [sprite]
-- c) change variable by
-- d) print
+- a) The sprite moves to a new location
+- b) The sprite is no longer visible on the screen
+- c) The sprite changes its name
+- d) The sprite gets bigger
 
 ---
 
-**5. True or False: You can have multiple "when [sprite] clicked" event blocks in the same project, each listening for clicks on different sprites.**
+**4. A program has three different sprites. Each one does something different when clicked. How many event blocks does the program need?**
 
-- True
-- False
-
----
-
-**6. If a counter variable starts at 0 and you click 3 bugs (each adding 1 to the counter), what is the counter value?**
-
-Answer: __________
+- a) 1
+- b) 2
+- c) 3
+- d) 0
 
 ---
 
-**7. Inside a function called `scene_2`, you have an IF block: `if counter = 1`. When will the code inside this IF block execute?**
+**5. A counter variable starts at 0. A player clicks three bugs, and each click adds 1 to the counter. What is the counter value now?**
 
-- a) When the counter equals 0
-- b) When the counter equals 1
-- c) Every time the function runs
-- d) Never
+- a) 0
+- b) 1
+- c) 2
+- d) 3
 
 ---
 
-**8. Why is the `print` block useful during development/testing?**
+**6. A function called `scene_2` has an IF block: "if counter = 1." When does the code inside this IF block run?**
 
-- a) It makes sprites move
-- b) It lets you see the current value of variables on screen
-- c) It saves your project
+- a) When counter equals 0
+- b) When counter equals 1
+- c) Every time the function is called
+- d) Only when the program first starts
+
+---
+
+**7. Why is the print block helpful when testing your code?**
+
+- a) It makes sprites move faster
+- b) It lets you see the current value of a variable on the screen
+- c) It saves your project to a file
 - d) It imports new costumes
 
 ---
 
-**9. True or False: The Location block lets you place a sprite at a specific position using coordinates instead of a random location.**
+**8. What do coordinates (like x and y values) help you do in a program?**
 
-- True
-- False
+- a) Change the color of a sprite
+- b) Place a sprite at a specific spot on the screen
+- c) Delete a variable
+- d) Create a new event
 
 ---
 
-**10. If you create 5 functions (scene_1 through scene_5), each with an IF block checking counter values 0 through 4, how many backgrounds can your program cycle through?**
+**9. You have 5 functions named scene_1 through scene_5. Each one checks if the counter matches a different number (0 through 4). How many different scenes can this program show?**
 
-Answer: __________
+- a) 1
+- b) 4
+- c) 5
+- d) 10
+
+---
+
+**10. A counter is at 2. There are IF blocks checking for counter values 0, 1, 2, and 3. How many IF blocks will run their code?**
+
+- a) 0
+- b) 1
+- c) 2
+- d) 4
 
 ---
 
@@ -88,13 +98,13 @@ Answer: __________
 
 | # | Answer |
 |---|--------|
-| 1 | b) A reusable container of blocks that can be called multiple times |
-| 2 | b) It makes your code reusable and easier to organize |
-| 3 | c) Backgrounds tab above the Stage/Canvas |
-| 4 | b) remove [sprite] |
-| 5 | True |
-| 6 | 3 |
-| 7 | b) When the counter equals 1 |
-| 8 | b) It lets you see the current value of variables on screen |
-| 9 | True |
-| 10 | 5 |
+| 1 | b) A reusable set of instructions that can be called by name |
+| 2 | b) It lets you reuse the same code without writing it over and over |
+| 3 | b) The sprite is no longer visible on the screen |
+| 4 | c) 3 |
+| 5 | d) 3 |
+| 6 | b) When counter equals 1 |
+| 7 | b) It lets you see the current value of a variable on the screen |
+| 8 | b) Place a sprite at a specific spot on the screen |
+| 9 | c) 5 |
+| 10 | b) 1 |

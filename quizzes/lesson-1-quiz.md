@@ -1,92 +1,96 @@
 # Quiz 1: Chatting with Sprites (Lesson 1)
 
-**Topics:** Backgrounds, Sprites, User Input, Variables, Events, Display Text
+**Topics:** Backgrounds, Sprites, User Input, Variables, Events, Displaying Text, Concatenation
 
 ---
 
-**1. What is the name of the area where your sprites and backgrounds are displayed?**
+**1. What is a sprite in a coding project?**
 
-- a) Blocks Toolbar
-- b) Workspace
-- c) Stage/Canvas
-- d) Code Editor
-
----
-
-**2. Which category in the Blocks toolbar contains the "set background to" block?**
-
-- a) Sprites
-- b) Events
-- c) Variables
-- d) World
+- a) A background image
+- b) A character or object that appears on the screen
+- c) A type of variable
+- d) A block of code
 
 ---
 
-**3. True or False: A sprite is a character or object you place on the Stage/Canvas.**
-
-- True
-- False
-
----
-
-**4. What does the "prompt user for variable" block do?**
-
-- a) Deletes a variable
-- b) Asks the user a question and stores the answer
-- c) Changes the background
-- d) Moves a sprite
-
----
-
-**5. A variable is best described as:**
+**2. What is a variable in coding?**
 
 - a) A type of sprite
 - b) A named container that stores information
 - c) A background image
-- d) A block category
+- d) A button you click to run a program
 
 ---
 
-**6. Which Blocks category do you use to create a new variable?**
+**3. What is the stage or canvas in a coding project?**
 
-- a) World
-- b) Sprites
-- c) Events
-- d) Variables
+- a) The menu where you find code blocks
+- b) The area where sprites and backgrounds are displayed
+- c) A place to save your work
+- d) A list of variables
 
 ---
 
-**7. What is an event in Sprite Lab?**
+**4. What is user input?**
 
-- a) A background image
+- a) The background of a project
+- b) A type of event
+- c) Information that a person types or gives to the program
+- d) A block that moves a sprite
+
+---
+
+**5. If a program asks "What is your name?" and the user types "Alex," where does the answer get saved?**
+
+- a) In the background
+- b) In a variable
+- c) In the sprite
+- d) It does not get saved
+
+---
+
+**6. What is an event in coding?**
+
+- a) A picture used as a background
 - b) Something that triggers an action to happen
-- c) A type of variable
-- d) A text block
+- c) A container that holds a number
+- d) A tool for drawing sprites
 
 ---
 
-**8. To make a sprite display a message, which block would you use?**
+**7. What does it mean to concatenate two pieces of text?**
 
-- a) set background to
-- b) prompt user
-- c) [sprite] say [text]
-- d) print
-
----
-
-**9. If you want to combine the text "Hi " with a variable called `player_name`, which Blocks category contains the double-quotes joining block?**
-
-- a) Variables
-- b) Math
-- c) Text
-- d) Events
+- a) Delete them both
+- b) Join them together into one piece of text
+- c) Change their color
+- d) Move them to a new location
 
 ---
 
-**10. True or False: The "when [variable] answered" block runs its code immediately when the program starts, before the user types anything.**
+**8. If a variable called `player_name` stores the word "Jordan," what would joining "Hello " and `player_name` display?**
 
-- True
-- False
+- a) Hello player_name
+- b) Hello Jordan
+- c) Jordan Hello
+- d) player_name Jordan
+
+---
+
+**9. A program has these steps in order: set a background, add a sprite, then ask for a name. What coding idea does this show?**
+
+- a) Events
+- b) Variables
+- c) Sequence (steps running in order)
+- d) Concatenation
+
+---
+
+**10. What happens when an event block runs in a program?**
+
+- a) The program saves your project
+- b) The program waits for something to happen, then runs the code inside
+- c) The program deletes all sprites
+- d) The program changes the background to white
 
 ---
 
@@ -94,13 +98,13 @@
 
 | # | Answer |
 |---|--------|
-| 1 | c) Stage/Canvas |
-| 2 | d) World |
-| 3 | True |
-| 4 | b) Asks the user a question and stores the answer |
-| 5 | b) A named container that stores information |
-| 6 | d) Variables |
-| 7 | b) Something that triggers an action to happen |
-| 8 | c) [sprite] say [text] |
-| 9 | c) Text |
-| 10 | False |
+| 1 | b) A character or object that appears on the screen |
+| 2 | b) A named container that stores information |
+| 3 | b) The area where sprites and backgrounds are displayed |
+| 4 | c) Information that a person types or gives to the program |
+| 5 | b) In a variable |
+| 6 | b) Something that triggers an action to happen |
+| 7 | b) Join them together into one piece of text |
+| 8 | b) Hello Jordan |
+| 9 | c) Sequence (steps running in order) |
+| 10 | b) The program waits for something to happen, then runs the code inside |

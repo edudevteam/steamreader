@@ -20,11 +20,11 @@ ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
 -- Users can read their own profile
 CREATE POLICY "Users can view own profile" ON profiles
-  FOR SELECT USING (auth.uid() = id);
+  FOR SELECT USING ((select auth.uid()) = id);
 
 -- Users can update their own profile
 CREATE POLICY "Users can update own profile" ON profiles
-  FOR UPDATE USING (auth.uid() = id);
+  FOR UPDATE USING ((select auth.uid()) = id);
 
 -- ============================================
 -- CREATE PROFILE ON EMAIL CONFIRMATION
@@ -47,7 +47,7 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = '';
 
 -- Trigger on auth.users UPDATE (when email is confirmed)
 CREATE OR REPLACE TRIGGER on_auth_user_confirmed
@@ -99,11 +99,11 @@ CREATE POLICY "Public read access" ON article_votes
 
 -- Users can insert their own votes
 CREATE POLICY "Users can vote" ON article_votes
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+  FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
 
 -- Users can delete their own votes
 CREATE POLICY "Users can remove votes" ON article_votes
-  FOR DELETE USING (auth.uid() = user_id);
+  FOR DELETE USING ((select auth.uid()) = user_id);
 
 -- ============================================
 -- AUTO-READ VOTE TRIGGER
@@ -114,13 +114,13 @@ CREATE OR REPLACE FUNCTION auto_insert_read_vote()
 RETURNS TRIGGER AS $$
 BEGIN
   IF NEW.vote_type != 'read' THEN
-    INSERT INTO article_votes (article_id, user_id, vote_type)
+    INSERT INTO public.article_votes (article_id, user_id, vote_type)
     VALUES (NEW.article_id, NEW.user_id, 'read')
     ON CONFLICT (article_id, user_id, vote_type) DO NOTHING;
   END IF;
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SET search_path = '';
 
 CREATE OR REPLACE TRIGGER trigger_auto_read_vote
   AFTER INSERT ON article_votes
@@ -130,7 +130,8 @@ CREATE OR REPLACE TRIGGER trigger_auto_read_vote
 -- ============================================
 -- VOTE AGGREGATION VIEW
 -- ============================================
-CREATE OR REPLACE VIEW article_vote_counts AS
+CREATE OR REPLACE VIEW article_vote_counts
+WITH (security_invoker = on) AS
 SELECT
   a.id AS article_id,
   a.slug AS article_slug,

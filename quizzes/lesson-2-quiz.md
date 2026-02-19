@@ -1,74 +1,28 @@
 # Quiz 2: Picture Swap (Lesson 2)
 
-**Topics:** Costume Library, Variable Assignment, Multiple Events, Changing Variable Values, Print Block, Concatenation, IF Conditional Blocks
+**Topics:** Variable Assignment, Multiple Events, Changing Variable Values, Debugging with Print, Concatenation, IF Conditional Blocks
 
 ---
 
-**1. Where do you go to import new costumes (custom sprites) into your project?**
+**1. When you create a variable and set its starting value to 0, what is this called?**
 
-- a) Blocks toolbar
-- b) Costumes tab above the Stage/Canvas
-- c) Variables menu
-- d) Events menu
-
----
-
-**2. When you create a variable called `page_number` and set it to `0`, what is the initial value stored in that variable?**
-
-Answer: __________
+- a) Concatenation
+- b) Initializing a variable
+- c) Creating an event
+- d) Debugging
 
 ---
 
-**3. What does the `print` block do in Sprite Lab?**
+**2. What does a conditional (IF block) do in a program?**
 
-- a) Sends a document to a printer
-- b) Displays text at the top of the Stage/Canvas for testing
-- c) Creates a new sprite
-- d) Saves the project
-
----
-
-**4. If `page_number` starts at 0 and you use a `change page_number by -1` block, what is the new value?**
-
-Answer: __________
+- a) It always runs the code inside it
+- b) It checks if something is true, and only runs the code inside when it is
+- c) It deletes a variable
+- d) It changes the background every time
 
 ---
 
-**5. Concatenation means:**
-
-- a) Deleting a variable
-- b) Joining two or more pieces of text together
-- c) Creating a new event
-- d) Changing a background
-
----
-
-**6. How many event blocks do you need if you want both a left-arrow click and a right-arrow click to do different things?**
-
-Answer: __________
-
----
-
-**7. True or False: An IF block checks whether a condition is true, and only runs the code inside it when the condition is met.**
-
-- True
-- False
-
----
-
-**8. In the block `if page_number = 2`, what must the value of `page_number` be for the code inside the IF block to run?**
-
-Answer: __________
-
----
-
-**9. If you have three IF blocks checking for `page_number` values 1, 2, and 3, and the current value is 2, how many of those IF blocks will run their inside code?**
-
-Answer: __________
-
----
-
-**10. To make the right arrow increase the page number and the left arrow decrease it, which value do you use with the `change variable by` block for the left arrow?**
+**3. A variable called `page_number` starts at 0. If the program changes it by -1, what is the new value?**
 
 - a) 1
 - b) 0
@@ -77,17 +31,80 @@ Answer: __________
 
 ---
 
+**4. Why would a coder use a print block while building a program?**
+
+- a) To print a paper copy of the code
+- b) To test and see what value a variable holds
+- c) To add a new sprite
+- d) To save the project
+
+---
+
+**5. A program needs the left arrow to do one thing and the right arrow to do something different. How many event blocks does the program need?**
+
+- a) 1
+- b) 2
+- c) 3
+- d) 0
+
+---
+
+**6. What does concatenation mean?**
+
+- a) Removing a variable from the program
+- b) Joining two or more pieces of text together
+- c) Making a sprite disappear
+- d) Changing a number to a bigger number
+
+---
+
+**7. A program has an IF block that says: "if page_number = 2." When does the code inside this IF block run?**
+
+- a) When page_number is 0
+- b) When page_number is 1
+- c) When page_number is 2
+- d) Every time the program runs
+
+---
+
+**8. There are three IF blocks checking if `page_number` equals 1, 2, or 3. The current value is 2. How many of those IF blocks will run their code?**
+
+- a) 0
+- b) 1
+- c) 2
+- d) 3
+
+---
+
+**9. To make a right arrow button increase a number by 1 and a left arrow button decrease it by 1, what value do you use for the left arrow?**
+
+- a) 1
+- b) 0
+- c) -1
+- d) 2
+
+---
+
+**10. A variable called `score` is set to 5. The program changes it by 1. What is the new value?**
+
+- a) 4
+- b) 5
+- c) 6
+- d) 1
+
+---
+
 ## Answer Key
 
 | # | Answer |
 |---|--------|
-| 1 | b) Costumes tab above the Stage/Canvas |
-| 2 | 0 |
-| 3 | b) Displays text at the top of the Stage/Canvas for testing |
-| 4 | -1 |
-| 5 | b) Joining two or more pieces of text together |
-| 6 | 2 |
-| 7 | True |
-| 8 | 2 |
-| 9 | 1 |
-| 10 | c) -1 |
+| 1 | b) Initializing a variable |
+| 2 | b) It checks if something is true, and only runs the code inside when it is |
+| 3 | c) -1 |
+| 4 | b) To test and see what value a variable holds |
+| 5 | b) 2 |
+| 6 | b) Joining two or more pieces of text together |
+| 7 | c) When page_number is 2 |
+| 8 | b) 1 |
+| 9 | c) -1 |
+| 10 | c) 6 |
