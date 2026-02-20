@@ -1,6 +1,6 @@
 ---
 id: "bbeed3a9-873b-41c1-a3c1-411356ed6b6c"
-title: "Code.org - Sprite Lab Lesson 3"
+title: "Code.org - Sprite Lab Excercise 3"
 subtitle: "The Bug Catcher"
 author: "Ryan Jones"
 author_slug: "ryan-jones"

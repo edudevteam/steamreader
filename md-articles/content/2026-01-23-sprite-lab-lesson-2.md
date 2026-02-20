@@ -1,6 +1,6 @@
 ---
 id: "165af792-a141-427f-a001-3b738f2361b4"
-title: "Code.org - Sprite Lab Lesson 2"
+title: "Code.org - Sprite Lab Excercise 2"
 subtitle: "Picture Swap"
 author: "Ryan Jones"
 author_slug: "ryan-jones"

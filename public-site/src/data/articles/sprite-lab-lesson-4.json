@@ -1,7 +1,7 @@
 {
   "id": "ad97e8e5-5b46-4e73-a803-d675a2243d95",
   "slug": "sprite-lab-lesson-4",
-  "title": "Code.org - Sprite Lab Lesson 4",
+  "title": "Code.org - Sprite Lab Excercise 4",
   "subtitle": "Behaviors, Conditions, and Interaction",
   "excerpt": "In this tutorial, you’ll learn how to build a maze-style game while exploring some powerful programming ideas along the way. You’ll practice using behaviors and review how event blocks work, then learn how to make the most of the grid to design your game world. As you build, you’ll add conditional logic that lets sprites react when they interact with each other, display information on the screen, and play sounds at the right moments. You’ll also learn how logical operators help your game make smarter decisions, bringing everything together into a fun and interactive experience.",
   "author": {
@@ -195,10 +195,10 @@
   ],
   "previousArticle": {
     "slug": "sprite-lab-lesson-3",
-    "title": "Code.org - Sprite Lab Lesson 3"
+    "title": "Code.org - Sprite Lab Excercise 3"
   },
   "nextArticle": {
     "slug": "sprite-lab-lesson-5",
-    "title": "Code.org - Sprite Lab Lesson 5"
+    "title": "Code.org - Sprite Lab Excercise 5"
   }
 }
