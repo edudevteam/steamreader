@@ -3,7 +3,7 @@
     {
       "id": "e2b5a490-7aa6-4d91-b278-f3e56008e5db",
       "slug": "sprite-lab-lesson-5",
-      "title": "Code.org - Sprite Lab Excercise 5",
+      "title": "Code.org - Sprite Lab Lesson 5",
       "subtitle": "Story Boarding",
       "excerpt": "Learn how to plan your ideas using storyboards, then put your skills to the test by building your own interactive Sprite Lab story from scratch.",
       "author": {
@@ -123,13 +123,13 @@
       ],
       "previousArticle": {
         "slug": "sprite-lab-lesson-4",
-        "title": "Code.org - Sprite Lab Excercise 4"
+        "title": "Code.org - Sprite Lab Lesson 4"
       }
     },
     {
       "id": "ad97e8e5-5b46-4e73-a803-d675a2243d95",
       "slug": "sprite-lab-lesson-4",
-      "title": "Code.org - Sprite Lab Excercise 4",
+      "title": "Code.org - Sprite Lab Lesson 4",
       "subtitle": "Behaviors, Conditions, and Interaction",
       "excerpt": "In this tutorial, you’ll learn how to build a maze-style game while exploring some powerful programming ideas along the way. You’ll practice using behaviors and review how event blocks work, then learn how to make the most of the grid to design your game world. As you build, you’ll add conditional logic that lets sprites react when they interact with each other, display information on the screen, and play sounds at the right moments. You’ll also learn how logical operators help your game make smarter decisions, bringing everything together into a fun and interactive experience.",
       "author": {
@@ -322,17 +322,17 @@
       ],
       "previousArticle": {
         "slug": "sprite-lab-lesson-3",
-        "title": "Code.org - Sprite Lab Excercise 3"
+        "title": "Code.org - Sprite Lab Lesson 3"
       },
       "nextArticle": {
         "slug": "sprite-lab-lesson-5",
-        "title": "Code.org - Sprite Lab Excercise 5"
+        "title": "Code.org - Sprite Lab Lesson 5"
       }
     },
     {
       "id": "bbeed3a9-873b-41c1-a3c1-411356ed6b6c",
       "slug": "sprite-lab-lesson-3",
-      "title": "Code.org - Sprite Lab Excercise 3",
+      "title": "Code.org - Sprite Lab Lesson 3",
       "subtitle": "The Bug Catcher",
       "excerpt": "Clean up your logic from Lesson 2 by adding functions to make your code easier to re-use. You will learn how to use IF statements to help your program make smart decisions, display messages to your players with print statements, and use variables to increase or decrease values like scores or health. We will also cover how to swap images to change how characters look, keep track of clicks using counters, and add exciting new assets to build your very own interactive story.",
       "author": {
@@ -459,17 +459,17 @@
       ],
       "previousArticle": {
         "slug": "sprite-lab-lesson-2",
-        "title": "Code.org - Sprite Lab Excercise 2"
+        "title": "Code.org - Sprite Lab Lesson 2"
       },
       "nextArticle": {
         "slug": "sprite-lab-lesson-4",
-        "title": "Code.org - Sprite Lab Excercise 4"
+        "title": "Code.org - Sprite Lab Lesson 4"
       }
     },
     {
       "id": "165af792-a141-427f-a001-3b738f2361b4",
       "slug": "sprite-lab-lesson-2",
-      "title": "Code.org - Sprite Lab Excercise 2",
+      "title": "Code.org - Sprite Lab Lesson 2",
       "subtitle": "Picture Swap",
       "excerpt": "Learn how to use IF statements to make decisions, display messages with print statements, increase or decrease values using variables, swap images, keep track of counters, and add new assets.",
       "author": {
@@ -608,17 +608,17 @@
       ],
       "previousArticle": {
         "slug": "sprite-lab-lesson-1",
-        "title": "Code.org - Sprite Lab Exercise 1"
+        "title": "Code.org - Sprite Lab Lesson 1"
       },
       "nextArticle": {
         "slug": "sprite-lab-lesson-3",
-        "title": "Code.org - Sprite Lab Excercise 3"
+        "title": "Code.org - Sprite Lab Lesson 3"
       }
     },
     {
       "id": "606374b8-f8ba-4e0f-9148-5ca337774470",
       "slug": "sprite-lab-lesson-1",
-      "title": "Code.org - Sprite Lab Exercise 1",
+      "title": "Code.org - Sprite Lab Lesson 1",
       "subtitle": "Chatting with Sprites",
       "excerpt": "Learn how to add backgrounds and sprites, ask users for input, save their responses with variables, and make things happen using events.",
       "author": {
@@ -719,7 +719,7 @@
       },
       "nextArticle": {
         "slug": "sprite-lab-lesson-2",
-        "title": "Code.org - Sprite Lab Excercise 2"
+        "title": "Code.org - Sprite Lab Lesson 2"
       }
     },
     {
@@ -810,7 +810,7 @@
       ],
       "nextArticle": {
         "slug": "sprite-lab-lesson-1",
-        "title": "Code.org - Sprite Lab Exercise 1"
+        "title": "Code.org - Sprite Lab Lesson 1"
       }
     },
     {
@@ -1090,5 +1090,5 @@
     }
   ],
   "totalCount": 9,
-  "lastUpdated": "2026-02-20T20:27:11.110Z"
+  "lastUpdated": "2026-02-20T20:41:06.917Z"
 }

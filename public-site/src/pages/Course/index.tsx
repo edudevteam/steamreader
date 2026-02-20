@@ -78,7 +78,7 @@ export default function CoursePage() {
               <div className="p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <span className="rounded-full bg-teal-100 px-2 py-1 text-xs font-medium text-teal-700">
-                    Lesson {index + 1}
+                    Part {index + 1}
                   </span>
                   <span className="text-xs text-gray-500">{article.readingTime} min</span>
                 </div>

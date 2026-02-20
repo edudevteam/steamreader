@@ -1,6 +1,6 @@
 ---
 id: "606374b8-f8ba-4e0f-9148-5ca337774470"
-title: "Code.org - Sprite Lab Exercise 1"
+title: "Code.org - Sprite Lab Lesson 1"
 subtitle: "Chatting with Sprites"
 author: "Ryan Jones"
 author_slug: "ryan-jones"

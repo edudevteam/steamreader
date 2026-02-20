@@ -1,6 +1,6 @@
 ---
 id: "ad97e8e5-5b46-4e73-a803-d675a2243d95"
-title: "Code.org - Sprite Lab Excercise 4"
+title: "Code.org - Sprite Lab Lesson 4"
 subtitle: "Behaviors, Conditions, and Interaction"
 author: "Ryan Jones"
 author_slug: "ryan-jones"

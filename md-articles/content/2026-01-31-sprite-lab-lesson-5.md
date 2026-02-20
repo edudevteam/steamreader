@@ -1,6 +1,6 @@
 ---
 id: "e2b5a490-7aa6-4d91-b278-f3e56008e5db"
-title: "Code.org - Sprite Lab Excercise 5"
+title: "Code.org - Sprite Lab Lesson 5"
 subtitle: "Story Boarding"
 author: "Ryan Jones"
 author_slug: "ryan-jones"
