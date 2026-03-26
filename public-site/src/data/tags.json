@@ -1,6 +1,71 @@
 {
   "tags": [
     {
+      "slug": "vite",
+      "name": "vite",
+      "articleCount": 1
+    },
+    {
+      "slug": "react",
+      "name": "react",
+      "articleCount": 1
+    },
+    {
+      "slug": "pnpm",
+      "name": "pnpm",
+      "articleCount": 1
+    },
+    {
+      "slug": "google-ai-studio",
+      "name": "google ai studio",
+      "articleCount": 1
+    },
+    {
+      "slug": "cloudflare-pages",
+      "name": "cloudflare pages",
+      "articleCount": 1
+    },
+    {
+      "slug": "github",
+      "name": "github",
+      "articleCount": 1
+    },
+    {
+      "slug": "github-desktop",
+      "name": "github desktop",
+      "articleCount": 1
+    },
+    {
+      "slug": "claude-ai",
+      "name": "claude ai",
+      "articleCount": 1
+    },
+    {
+      "slug": "claude-cli",
+      "name": "claude cli",
+      "articleCount": 1
+    },
+    {
+      "slug": "claude-code",
+      "name": "claude code",
+      "articleCount": 1
+    },
+    {
+      "slug": "website",
+      "name": "website",
+      "articleCount": 1
+    },
+    {
+      "slug": "ai-development",
+      "name": "ai development",
+      "articleCount": 1
+    },
+    {
+      "slug": "prompt-design",
+      "name": "prompt design",
+      "articleCount": 1
+    },
+    {
       "slug": "tutorial",
       "name": "tutorial",
       "articleCount": 8

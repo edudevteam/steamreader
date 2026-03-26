@@ -1,6 +1,100 @@
 {
   "articles": [
     {
+      "id": "23da6d2e-9c9c-44cd-8181-d1751f1e4185",
+      "slug": "build-your-first-website-for-free-with-ai",
+      "title": "Build Your First Website for Free (With AI!)",
+      "subtitle": "Follow step-by-step to design, build, and share your website—just a little GitHub experience helps!",
+      "excerpt": "Learn how to design, build, and host a website for free using Google AI Studio, Claude Code, GitHub, and Cloudflare Pages — no web development experience required.",
+      "author": {
+        "slug": "ryan-jones",
+        "name": "Ryan Jones"
+      },
+      "publishedAt": "2026-03-25",
+      "category": {
+        "slug": "tutorial",
+        "name": "Tutorial"
+      },
+      "tags": [
+        {
+          "slug": "vite",
+          "name": "vite"
+        },
+        {
+          "slug": "react",
+          "name": "react"
+        },
+        {
+          "slug": "pnpm",
+          "name": "pnpm"
+        },
+        {
+          "slug": "google-ai-studio",
+          "name": "google ai studio"
+        },
+        {
+          "slug": "cloudflare-pages",
+          "name": "cloudflare pages"
+        },
+        {
+          "slug": "github",
+          "name": "github"
+        },
+        {
+          "slug": "github-desktop",
+          "name": "github desktop"
+        },
+        {
+          "slug": "claude-ai",
+          "name": "claude ai"
+        },
+        {
+          "slug": "claude-cli",
+          "name": "claude cli"
+        },
+        {
+          "slug": "claude-code",
+          "name": "claude code"
+        },
+        {
+          "slug": "website",
+          "name": "website"
+        },
+        {
+          "slug": "ai-development",
+          "name": "ai development"
+        },
+        {
+          "slug": "prompt-design",
+          "name": "prompt design"
+        }
+      ],
+      "featureImage": {
+        "src": "/images/articles/vibe-code-a-website-google-to-claude-to-cloudflare-pages.png",
+        "alt": "Build Your First Website for Free (With AI!)",
+        "caption": "Think it, design it, vibe it out — from Google AI Studio to Claude Code to free hosting on Cloudflare Pages."
+      },
+      "readingTime": 4,
+      "status": "published",
+      "tableOfContents": [
+        {
+          "id": "lesson-objectives",
+          "text": "📌 Lesson Objectives",
+          "level": 2
+        },
+        {
+          "id": "project-requirements",
+          "text": "Project Requirements",
+          "level": 2
+        },
+        {
+          "id": "tutorial",
+          "text": "🚀 Tutorial",
+          "level": 2
+        }
+      ]
+    },
+    {
       "id": "e2b5a490-7aa6-4d91-b278-f3e56008e5db",
       "slug": "sprite-lab-lesson-5",
       "title": "Code.org - Sprite Lab Lesson 5",
@@ -1089,6 +1183,6 @@
       }
     }
   ],
-  "totalCount": 9,
-  "lastUpdated": "2026-02-20T20:41:06.917Z"
+  "totalCount": 10,
+  "lastUpdated": "2026-03-26T23:57:27.210Z"
 }
