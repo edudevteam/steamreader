@@ -21,7 +21,7 @@ tags:
   - ai development
   - prompt design
 
-feature_image: "/images/articles/vibe-code-a-website-google-to-claude-to-cloudflare-pages.png"
+feature_image: "/images/vibe-code-a-website-google-to-claude-to-cloudflare-pages.png"
 feature_image_alt: "Build Your First Website for Free (With AI!)"
 feature_image_caption: "Think it, design it, vibe it out — from Google AI Studio to Claude Code to free hosting on Cloudflare Pages."
 excerpt: "Learn how to design, build, and host a website for free using Google AI Studio, Claude Code, GitHub, and Cloudflare Pages — no web development experience required."
