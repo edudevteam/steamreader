@@ -1,6 +1,61 @@
 {
   "tags": [
     {
+      "slug": "education",
+      "name": "education",
+      "articleCount": 11
+    },
+    {
+      "slug": "electronics",
+      "name": "electronics",
+      "articleCount": 6
+    },
+    {
+      "slug": "circuits",
+      "name": "circuits",
+      "articleCount": 6
+    },
+    {
+      "slug": "electricity",
+      "name": "electricity",
+      "articleCount": 6
+    },
+    {
+      "slug": "energy",
+      "name": "energy",
+      "articleCount": 6
+    },
+    {
+      "slug": "ohms-law",
+      "name": "ohms law",
+      "articleCount": 8
+    },
+    {
+      "slug": "restance",
+      "name": "restance",
+      "articleCount": 5
+    },
+    {
+      "slug": "rgb-led",
+      "name": "rgb led",
+      "articleCount": 1
+    },
+    {
+      "slug": "breadboard",
+      "name": "breadboard",
+      "articleCount": 3
+    },
+    {
+      "slug": "potentiometer",
+      "name": "potentiometer",
+      "articleCount": 1
+    },
+    {
+      "slug": "led",
+      "name": "led",
+      "articleCount": 4
+    },
+    {
       "slug": "vite",
       "name": "vite",
       "articleCount": 1
@@ -214,11 +269,6 @@
       "slug": "location",
       "name": "location",
       "articleCount": 1
-    },
-    {
-      "slug": "education",
-      "name": "education",
-      "articleCount": 5
     },
     {
       "slug": "chat",

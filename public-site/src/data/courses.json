@@ -16,6 +16,23 @@
         "sprite-lab-lesson-4",
         "sprite-lab-lesson-5"
       ]
+    },
+    {
+      "slug": "tinkercad-circuits",
+      "title": "Tinkercad Circuits Lab",
+      "description": "Learn to send electricity around a loop and keep your lights safe with resistors. Then learn to use buttons and knobs to turn your lights on, dim them, and mix your own colors!",
+      "featureImage": {
+        "src": "/images/TinkerCAD-Circuits-Course.png",
+        "alt": "TinkerCAD Circuits Lab"
+      },
+      "articles": [
+        "tinkercad-circuits-lesson-1",
+        "tinkercad-circuits-lesson-2",
+        "tinkercad-circuits-lesson-3",
+        "tinkercad-circuits-lesson-4",
+        "tinkercad-circuits-lesson-5",
+        "tinkercad-circuits-lesson-6"
+      ]
     }
   ]
 }

@@ -1,0 +1,102 @@
+{
+  "id": "4a863e63-175e-41d5-9d80-eca868be43bd",
+  "slug": "tinkercad-circuits-lesson-4",
+  "title": "TinkerCAD Circuits Lesson 4",
+  "subtitle": "Battery Optimization Challenge",
+  "excerpt": "Let's learn how to slow down a battery that pushes too hard, and how to build your own battery pack that pushes just right. Then you'll test it in Tinkercad, where nothing really pops!",
+  "author": {
+    "slug": "ryan-jones",
+    "name": "Ryan Jones"
+  },
+  "publishedAt": "2026-07-13",
+  "category": {
+    "slug": "tutorial",
+    "name": "Tutorial"
+  },
+  "tags": [
+    {
+      "slug": "education",
+      "name": "education"
+    },
+    {
+      "slug": "electronics",
+      "name": "electronics"
+    },
+    {
+      "slug": "circuits",
+      "name": "circuits"
+    },
+    {
+      "slug": "electricity",
+      "name": "electricity"
+    },
+    {
+      "slug": "energy",
+      "name": "energy"
+    },
+    {
+      "slug": "ohms-law",
+      "name": "ohms law"
+    },
+    {
+      "slug": "restance",
+      "name": "restance"
+    },
+    {
+      "slug": "led",
+      "name": "led"
+    },
+    {
+      "slug": "breadboard",
+      "name": "breadboard"
+    }
+  ],
+  "featureImage": {
+    "src": "/images/Tinkercad-Circuits-Lesson-4.png",
+    "alt": "TinkerCAD Circuits Lesson 4",
+    "caption": "TinkerCAD Circuits Lesson 4"
+  },
+  "readingTime": 4,
+  "status": "published",
+  "content": "<h1 id=\"tinkercad-circuits-lesson-4\">TinkerCAD Circuits Lesson 4</h1>\n<p>Let&#39;s learn how to slow down a battery that pushes too hard, and how to build your own battery pack that pushes just right. Then you&#39;ll test it in Tinkercad, where nothing really pops!</p>\n<h2 id=\"lesson-objectives\">📌 Lesson Objectives</h2>\n<p>By the end of this lesson, the student will be able to:</p>\n<ol>\n<li>Recalculate resistor values for a 9V power source to protect multiple LEDs.</li>\n<li>Demonstrate how to build a custom power source by combining smaller batteries to improve efficiency.</li>\n</ol>\n<h2 id=\"tutorial\">🚀 Tutorial</h2>\n<h3 id=\"activity-1-recap-and-build-the-9v-challenge\">Activity 1: Recap and Build (The 9V Challenge)</h3>\n<ul>\n<li><strong>Concept</strong>: Recall that components have specific &quot;needs.&quot; An LED needs a specific &quot;push&quot; (voltage) and &quot;flow&quot; (current) to shine brightly without burning out.</li>\n</ul>\n<img src=\"/images/TinkerCAD-Circuits-L03-ohms-law-resistance.png\" alt=\"Resistance equation for ohm's law\" />\n\n<ul>\n<li><strong>Activity</strong>:<ol>\n<li>Build a circuit on your breadboard with a <strong>9V battery</strong>, a <strong>resistor</strong>, and <strong>two LEDs</strong> (one Red, one Green).</li>\n<li>Use your notes from Lesson 3 to find the voltage requirement for each LED.</li>\n<li>Calculate and place the correct resistor to get each LED to its maximum brightness without damaging them.</li>\n<li>Use the <strong>Multimeter</strong> to verify your &quot;flow&quot; (current) is within the safe range.</li>\n</ol>\n</li>\n</ul>\n<h3 id=\"activity-2-engineers-detective-resources\">Activity 2: Engineer's Detective Resources</h3>\n<ul>\n<li><strong>Concept</strong>: When you encounter a new part, don&#39;t guess its requirements—research them! Use these professional databases to find the &quot;datasheets&quot; (recipe cards) for your components:<ul>\n<li><a href=\"https://www.alldatasheet.com\">AllDatasheet</a></li>\n<li><a href=\"https://www.datasheets.com\">Datasheets.com</a></li>\n<li><a href=\"https://www.ultralibrarian.com\">Ultra Librarian</a></li>\n</ul>\n</li>\n</ul>\n<table>\n<thead>\n<tr>\n<th align=\"left\">LED Color</th>\n<th align=\"left\">Typical <em>Forward Voltage</em> (Vf)</th>\n</tr>\n</thead>\n<tbody><tr>\n<td align=\"left\"><span style=\"color: red;\"><strong>Red</strong></span></td>\n<td align=\"left\">1.8V – 2.2V</td>\n</tr>\n<tr>\n<td align=\"left\"><strong>Orange</strong></td>\n<td align=\"left\">2.0V – 2.2V</td>\n</tr>\n<tr>\n<td align=\"left\"><strong>Yellow</strong></td>\n<td align=\"left\">2.0V – 2.4V</td>\n</tr>\n<tr>\n<td align=\"left\"><span style=\"color: green;\"><strong>Green</strong></span></td>\n<td align=\"left\">2.9V – 3.5V</td>\n</tr>\n<tr>\n<td align=\"left\"><strong>Blue</strong></td>\n<td align=\"left\">3.0V – 3.5V</td>\n</tr>\n<tr>\n<td align=\"left\"><strong>White</strong></td>\n<td align=\"left\">3.0V – 3.5V</td>\n</tr>\n</tbody></table>\n<h3 id=\"activity-3-the-overkill-question-and-custom-power\">Activity 3: The \"Overkill\" Question and Custom Power</h3>\n<ul>\n<li><strong>Problem</strong>: Is a 9V battery always necessary? Sometimes, 9V is like using a firehose to water a tiny houseplant. It is &quot;too much&quot; energy, which forces us to use a huge resistor to waste all that extra power.</li>\n<li><strong>Activity</strong>:<ol>\n<li>Watch the short video on how to use the <strong>1.5V Battery</strong> component in Tinkercad.</li>\n</ol>\n</li>\n</ul>\n<iframe\n  src=\"https://www.youtube.com/embed/yoLxg3HGOSY\"\n  title=\"L04 Battery 1 5v up to 6v\"\n  width=\"100%\"\n  style=\"max-width: 900px; aspect-ratio: 16 / 9; height: auto; border-radius: 8px;\"\n  frameborder=\"0\"\n  allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\"\n  allowfullscreen>\n</iframe>\n\n<ol start=\"2\">\n<li>Learn how to &quot;stack&quot; (copy/paste) these batteries to create exactly the amount of voltage you need (e.g., 3V, 4.5V, or 6V).</li>\n<li><strong>The Challenge</strong>: Replace your 9V battery with a smaller, custom-built power pack. Recalculate your resistor value to match this new, lower voltage.</li>\n</ol>\n<h3 id=\"activity-4-simulator-safety-and-component-verification\">Activity 4: Simulator Safety and Component Verification</h3>\n<ul>\n<li><p><strong>Concept</strong>: Tinkercad is a &quot;pretend world&quot; on the computer. It is a safe place to test your ideas. If you give a part a little too much current, a small info sign (ℹ️) pops up to tell you the part is getting stressed. If you give it <em>way</em> too much, some parts will show a pop or explosion sign (💥) to show they would break. But don&#39;t worry — nothing really breaks in the pretend world! In the real world, a part like an LED can truly pop and stop working forever. That is why real engineers are extra careful.</p>\n</li>\n<li><p><strong>Activity</strong>: The Simulator &quot;Stress Test&quot;</p>\n<ol>\n<li><strong>Setup</strong>: Place a <strong>Power Supply</strong> and a <strong>Green LED</strong> on the workspace.</li>\n<li><strong>Configuration</strong>:<ul>\n<li>Set the <strong>Power Supply</strong> to <strong>0V</strong> and <strong>5A</strong>.</li>\n</ul>\n</li>\n<li><strong>Wiring</strong>:<ul>\n<li>Connect the <strong>Red (positive)</strong> wire from the Power Supply directly to the <strong>Anode (positive leg)</strong> of the LED.</li>\n<li>Connect the <strong>Black (negative)</strong> wire from the Power Supply directly to the <strong>Cathode (negative leg)</strong> of the LED.</li>\n</ul>\n</li>\n</ol>\n</li>\n</ul>\n<img style=\"width: 500px;\" src=\"/images/TinkerCAD-Circuits-L04-PowerSupply-Testing-GreenLED-InitialSetup.png\" alt=\"\" />\n\n<ol start=\"4\">\n<li><strong>Discovery</strong>: Slowly increase the voltage on the Power Supply until the LED reaches its ideal brightness. Observe the <strong>Amperage</strong> readout directly on the Power Supply display and record the exact voltage and amperage in your Engineer&#39;s Notebook.</li>\n</ol>\n<img src=\"/images/TinkerCAD-Circuits-L04-PowerSupply-Testing-GreenLED-PeakBrightness-Voltage.png\" alt=\"\" />\n",
+  "tableOfContents": [
+    {
+      "id": "lesson-objectives",
+      "text": "📌 Lesson Objectives",
+      "level": 2
+    },
+    {
+      "id": "tutorial",
+      "text": "🚀 Tutorial",
+      "level": 2
+    },
+    {
+      "id": "activity-1-recap-and-build-the-9v-challenge",
+      "text": "Activity 1: Recap and Build (The 9V Challenge)",
+      "level": 3
+    },
+    {
+      "id": "activity-2-engineers-detective-resources",
+      "text": "Activity 2: Engineer's Detective Resources",
+      "level": 3
+    },
+    {
+      "id": "activity-3-the-overkill-question-and-custom-power",
+      "text": "Activity 3: The \"Overkill\" Question and Custom Power",
+      "level": 3
+    },
+    {
+      "id": "activity-4-simulator-safety-and-component-verification",
+      "text": "Activity 4: Simulator Safety and Component Verification",
+      "level": 3
+    }
+  ],
+  "previousArticle": {
+    "slug": "tinkercad-circuits-lesson-3",
+    "title": "TinkerCAD Circuits Lesson 3"
+  },
+  "nextArticle": {
+    "slug": "tinkercad-circuits-lesson-5",
+    "title": "TinkerCAD Circuits Lesson 5"
+  }
+}
