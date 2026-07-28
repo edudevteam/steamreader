@@ -67,7 +67,7 @@ By the end of this lesson, the student will be able to:
 
 ### Activity 3: The "Overkill" Question and Custom Power
 
-- **Problem**: Is a 9V battery always necessary? Sometimes, 9V is like using a firehose to water a tiny houseplant. It is "too much" energy, which forces us to use a huge resistor to waste all that extra power.
+- **Problem**: Is a 9V battery always necessary? Sometimes, 9V is like putting a giant pusher on your bead loop when the tiny LED only needs a gentle nudge. It is "too much" energy, which forces us to use a huge resistor to waste all that extra power.
 - **Activity**:
   1. Watch the short video on how to use the **1.5V Battery** component in Tinkercad.
 

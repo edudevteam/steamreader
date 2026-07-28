@@ -84,7 +84,7 @@ By the end of this lesson, the student will be able to:
 
 ### Activity 3: The Battery’s "Toll Booths" (Voltage Drop)
 
-- **Instructor Note**: Move beyond the "squeezed pipe" to explain that a resistor doesn't just block flow in one spot—it changes the "speed" of the entire circuit. Also, introduce the idea that every component (LEDs) "takes" a specific amount of voltage as it works.
+- **Instructor Note**: Move beyond the "bumpy section of the bead tube" to explain that a resistor doesn't just block flow in one spot—it changes the "speed" of the entire circuit. Also, introduce the idea that every component (LEDs) "takes" a specific amount of voltage as it works.
 
 - **Concept**: Think of the 9V battery as a car trip with 9 units of energy.
   - If you just connect a wire, the "current" flows too fast and "crashes" the circuit.

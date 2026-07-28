@@ -5,7 +5,7 @@
       "slug": "tinkercad-circuits-lesson-6",
       "title": "TinkerCAD Circuits Lesson 6",
       "subtitle": "Mastering Light with Potentiometers",
-      "excerpt": "Let's learn how to use a knob called a potentiometer to make your light slowly get brighter and dimmer, just like a faucet controls water. Then you'll use three knobs at once to mix your very own rainbow colors!",
+      "excerpt": "Let's learn how to use a knob called a potentiometer to make your light slowly get brighter and dimmer by adding or removing bumps in the path the electricity takes. Then you'll use three knobs at once to mix your very own rainbow colors!",
       "author": {
         "slug": "ryan-jones",
         "name": "Ryan Jones"
@@ -477,7 +477,7 @@
         "alt": "TinkerCAD Circuits Lesson 2",
         "caption": "TinkerCAD Circuits Lesson 2"
       },
-      "readingTime": 4,
+      "readingTime": 5,
       "status": "published",
       "tableOfContents": [
         {
@@ -491,8 +491,8 @@
           "level": 2
         },
         {
-          "id": "the-water-pipe-analogy",
-          "text": "The Water Pipe Analogy",
+          "id": "the-closed-loop-tube-analogy",
+          "text": "The Closed-Loop Tube Analogy",
           "level": 3
         },
         {
@@ -1799,5 +1799,5 @@
     }
   ],
   "totalCount": 16,
-  "lastUpdated": "2026-07-25T21:26:14.734Z"
+  "lastUpdated": "2026-07-28T22:50:03.688Z"
 }

@@ -22,7 +22,7 @@ tags:
 feature_image: "/images/Tinkercad-Circuits-Lesson-6.png"
 feature_image_alt: "TinkerCAD Circuits Lesson 6"
 feature_image_caption: "TinkerCAD Circuits Lesson 6"
-excerpt: "Let's learn how to use a knob called a potentiometer to make your light slowly get brighter and dimmer, just like a faucet controls water. Then you'll use three knobs at once to mix your very own rainbow colors!"
+excerpt: "Let's learn how to use a knob called a potentiometer to make your light slowly get brighter and dimmer by adding or removing bumps in the path the electricity takes. Then you'll use three knobs at once to mix your very own rainbow colors!"
 status: published
 prev: tinkercad-circuits-lesson-5
 next: tinkercad-circuits-lesson-7
@@ -43,7 +43,7 @@ By the end of this lesson, the student will be able to:
 ## 🎓 Did You Know?
 
 **What is a "Potentiometer"?**
-Think of a Potentiometer (or "Pot") like a water faucet. A switch can only turn the water "on" or "off." A faucet lets you turn the handle to decide exactly how much water comes out. A Potentiometer lets you turn a knob to decide exactly how much electricity flows through your circuit—making your light dimmer or brighter!
+Remember the tube packed with beads? A resistor is a bumpy section that the beads have to squeeze through. A Potentiometer (or "Pot") is a bumpy section you can _change_ with a knob. A switch can only turn the flow "on" or "off." Turning the knob on a Potentiometer adds more bumps or fewer bumps, which decides exactly how much electricity flows through your circuit—making your light dimmer or brighter!
 
 **Pro Tip for TinkerCAD:** When you click on your Potentiometer, you might see a setting for Resistance. Don't worry about this—just set it to **10kΩ** (the most common size) and leave it there!
 
@@ -158,6 +158,6 @@ The answer is **no**, because of how the electricity flows and whether the circu
 - **Series vs. Parallel Circuits**:
   - In a **series circuit**, components are connected along a single path, one after another, so the current must flow through every component sequentially.
   - In a **parallel circuit**, the electricity leaves the battery and splits into multiple independent branches or paths, allowing the current to flow through each component separately before merging back together.
-- **The Water Pipe Analogy (Series)**: If you put three narrow pipe sections _in a row_ in a single path (like a series circuit), the water has to squeeze through three tight spots back-to-back, causing the resistance to add up.
-- **The Splitting River (Parallel)**: In this parallel circuit, electricity leaves the battery and splits into **three separate, independent paths** (one for Red, one for Green, and one for Blue).
+- **The Bead Tube Analogy (Series)**: If you put three bumpy sections _in a row_ in a single path (like a series circuit), the beads have to squeeze through three tight spots back-to-back, causing the resistance to add up.
+- **The Splitting Path (Parallel)**: In this parallel circuit, electricity leaves the battery and splits into **three separate, independent paths** (one for Red, one for Green, and one for Blue).
 - **No Pile-Up**: The electricity flowing down the Red path only goes through the Red resistor. It never squeezes through the Green or Blue resistors. Because these paths run side-by-side instead of back-to-back, each individual color handles its own safety limit independently without multiplying the resistance together!

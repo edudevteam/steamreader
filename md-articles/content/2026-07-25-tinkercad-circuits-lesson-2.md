@@ -37,13 +37,20 @@ By the end of this lesson, the student will be able to:
 
 ## 🚀 Tutorial
 
-### The Water Pipe Analogy
+In this lesson we are going to meet a new part called a **resistor**. A resistor slows down how much electric energy moves through a circuit. Slowing the energy down keeps the other parts safe — especially a tiny light called an **LED**.
 
-Before we start, let's look at a new way to think about electricity. Imagine electricity is water flowing through a pipe.
+### The Closed-Loop Tube Analogy
 
-- **Resistor as a Pipe Sizer:** Instead of a "kink," think of a resistor as a pipe sizer. By changing the diameter of the entire pipe, it forces the water (current) to flow at a safe, steady speed all the way around the loop.
-- **Wider Pipe (Low Resistance):** The water flows fast and easily.
-- **Narrower Pipe (High Resistance):** It is harder for the water to get through, slowing down the flow for the entire circuit.
+Before we build, let's imagine something. Picture a clear plastic tube that bends all the way around into a circle, like a donut. The tube is packed full of tiny beads, from one end to the other, with no empty spaces.
+
+The battery is the **pusher**. It pushes on the beads so every bead moves around and around the loop together. Those moving beads are the **current** — the electricity flowing through your circuit.
+
+Now let's swap out one small piece of the tube for a piece that is stuffed with bumps and narrow gaps. That bumpy piece is the **resistor**. The beads have to bump, squeeze, and wiggle their way through it. Squeezing through slows down _every_ bead in the whole loop, so fewer beads go past you each second. That is exactly what resistance does to electric current!
+
+- **A Resistor is the Bumpy Part:** It does not push or pull. It just makes the beads work harder to get through, which sets a safe, steady speed for the entire loop.
+- **A Few Bumps (Low Resistance):** The beads slide through easily and lots of energy reaches the LED.
+- **Lots of Bumps (High Resistance):** The beads have a hard time squeezing through, so the whole loop slows down and less energy reaches the LED.
+- **No Bumps at All (No Resistor):** The beads race around so fast that the LED cannot handle it — and it pops!
 
 ![A closed LED circuit without Resistor](/images/TinkerCAD-Circuits-L02-Circuit-without-Resistor.png)
 
@@ -51,7 +58,7 @@ Before we start, let's look at a new way to think about electricity. Imagine ele
 
 ### Activity 1: The "Pop" (The Danger of Too Much Power)
 
-- **Concept**: LEDs are very sensitive components and cannot handle the full pressure (Voltage) of a 9V battery. They need a "safety guard."
+- **Concept**: LEDs are very sensitive components and cannot handle the full push (Voltage) of a 9V battery. They need a "safety guard."
 - **Activity**:
   1.  Place a 9V battery and a Red LED in Tinkercad Circuits.
   2.  Connect the Red (Positive) wire directly to the LED's Anode (bent leg).
@@ -71,7 +78,7 @@ Before we start, let's look at a new way to think about electricity. Imagine ele
 
 ### Activity 2: Introducing the Resistor (The Gatekeeper)
 
-- **Concept**: A resistor acts as a pipe sizer, changing the diameter of the path to slow down the flow of electricity (Current). It acts as a gatekeeper for the sensitive LED.
+- **Concept**: A resistor is the bumpy part of the loop. The beads (Current) have to squeeze through it, which slows the flow down for the whole circuit. It acts as a gatekeeper for the sensitive LED.
 - **Activity**:
   1. Click "Stop Simulation."
   2. Add a Resistor to your workspace.
@@ -95,7 +102,7 @@ Before we start, let's look at a new way to think about electricity. Imagine ele
 - **Activity**:
   1.  Click on the resistor and change its value to **100 Ω**. Click "Start Simulation." (The LED is very bright).
   2.  Stop the simulation and change the resistor value to **10,000Ω (10k)**. Click "Start Simulation." (The LED is very dim).
-- **Conclusion**: The higher the number of Ohms, the more the resistor restricts the flow (making the pipe narrower), and the dimmer the LED becomes.
+- **Conclusion**: The higher the number of Ohms, the more the resistor slows the flow (like adding more bumps for the beads to squeeze through), and the dimmer the LED becomes.
 
 <iframe
   src="https://www.youtube.com/embed/cK-tKitN_hE"
@@ -114,10 +121,10 @@ Before we start, let's look at a new way to think about electricity. Imagine ele
   - **m** = Milli (Thousandths). **1m&Omega;** is **0.001 &Omega;**.
   - **&mu;** = Micro (Millionths). **1&mu;&Omega;** is **0.000001 &Omega;**.
 - **Activity**: Look at the dropdown menu in Tinkercad.
-  - If you see **M&Omega;** (Mega), that is a **Million**. That pipe is so tight that almost no electricity can get through!
+  - If you see **M&Omega;** (Mega), that is a **Million**. That part of the tube is so packed with bumps that almost no beads can get through!
 - **The Rule**:
-  - **Bigger letters (M, G, k)** = More resistance (The pipe is getting tighter).
-  - **Little letters (m, &mu;, n, p)** = Less resistance (The pipe is getting wider).
+  - **Bigger letters (M, G, k)** = More resistance (More bumps and tighter gaps).
+  - **Little letters (m, &mu;, n, p)** = Less resistance (Fewer bumps and more open space).
 
 | Prefix   | Name  | Symbol      | Value (&Omega;)        |
 | :------- | :---- | :---------- | :--------------------- |
