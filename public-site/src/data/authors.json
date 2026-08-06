@@ -1,6 +1,11 @@
 {
   "authors": [
     {
+      "slug": "ryan-and-amira",
+      "name": "Ryan and Amira",
+      "articleCount": 1
+    },
+    {
       "slug": "ryan-jones",
       "name": "Ryan Jones",
       "articleCount": 16

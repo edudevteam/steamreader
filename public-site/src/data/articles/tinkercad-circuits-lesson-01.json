@@ -1,0 +1,46 @@
+{
+  "id": "c0a87c33-cea4-4060-94bb-98246168a827",
+  "slug": "tinkercad-circuits-lesson-01",
+  "title": "tinkercad-circuits-lesson-0",
+  "subtitle": "How to use this course",
+  "excerpt": "",
+  "author": {
+    "slug": "ryan-and-amira",
+    "name": "Ryan and Amira"
+  },
+  "publishedAt": "2026-08-06",
+  "category": {
+    "slug": "tutorial",
+    "name": "Tutorial"
+  },
+  "tags": [],
+  "featureImage": {
+    "src": "/images/Tinkercad-Circuits-Lesson-0.png",
+    "alt": "Circuits Lesson 0",
+    "caption": ""
+  },
+  "readingTime": 1,
+  "status": "published",
+  "content": "<h1 id=\"tinkercad-circuits-lesson-0-whats-needed\">TinkerCAD Circuits Lesson 0: What's needed</h1>\n<h2 id=\"lesson-objectives\">📌 Lesson Objectives</h2>\n<h2 id=\"tutorial\">🚀 Tutorial</h2>\n<h2 id=\"challenge\">🧩 Challenge</h2>\n",
+  "tableOfContents": [
+    {
+      "id": "lesson-objectives",
+      "text": "📌 Lesson Objectives",
+      "level": 2
+    },
+    {
+      "id": "tutorial",
+      "text": "🚀 Tutorial",
+      "level": 2
+    },
+    {
+      "id": "challenge",
+      "text": "🧩 Challenge",
+      "level": 2
+    }
+  ],
+  "nextArticle": {
+    "slug": "tinkercad-circuits-lesson-1",
+    "title": "TinkerCAD Circuits Lesson 1"
+  }
+}
