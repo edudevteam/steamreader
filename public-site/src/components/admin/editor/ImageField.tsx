@@ -4,8 +4,9 @@ import { Alert, Button, Field, Input } from '../ui'
 import type { FeatureImage } from 'types'
 
 /**
- * Feature image picker. Accepts an upload or a path typed by hand, because the
- * existing articles reference images already sitting in `/public/images`.
+ * Feature image picker. Accepts an upload or a URL typed by hand -- older
+ * articles carry URLs that were rewritten during the move to R2, and editors
+ * sometimes paste one across from another article.
  */
 export default function ImageField({
   value,
@@ -84,12 +85,12 @@ export default function ImageField({
 
       <Field
         label="Image path or URL"
-        hint="Use /images/… for files already in the public folder."
+        hint="Paste a full URL, or upload above to get one."
       >
         <Input
           value={value.src}
           onChange={(e) => onChange({ ...value, src: e.target.value })}
-          placeholder="/images/my-article-banner.png"
+          placeholder="https://cdn.steamreader.com/feature/my-article-banner.png"
         />
       </Field>
 

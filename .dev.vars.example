@@ -1,0 +1,14 @@
+# Local values for the Pages Function in /functions, read by `wrangler pages dev`.
+# Copy to .dev.vars (gitignored) and fill in. These mirror the plain-text
+# variables set on the Pages project; the R2 bucket itself comes from the
+# --r2 flag in `pnpm dev:functions`, not from here.
+
+# Same names the browser bundle uses. The VITE_ prefix means nothing to
+# Cloudflare -- the Function reads these through `env` like any other variable.
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJ...your-anon-key...
+
+# Where uploaded images are served from. Locally this can stay pointed at the
+# production bucket domain -- `wrangler pages dev --r2` writes to a local
+# simulated bucket, so URLs it returns will 404 until you upload for real.
+R2_PUBLIC_BASE_URL=https://cdn.steamreader.com

@@ -1,2 +1,11 @@
 NOTES.md
 supabase/.temp/
+
+# Local values for the Pages Function -- see .dev.vars.example
+.dev.vars
+
+# wrangler pages dev state (local R2 simulation, caches). It runs from the repo
+# root to find functions/, and drops miniflare state in a node_modules/.mf here
+# even though there is no package.json at this level.
+.wrangler/
+node_modules/

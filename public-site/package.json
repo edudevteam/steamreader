@@ -6,8 +6,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:functions": "cd .. && wrangler pages dev public-site/dist --r2 ARTICLE_IMAGES --port 8788",
     "build": "node scripts/generate-changelog-assets.mjs && tsc && vite build",
     "changelog:generate": "node scripts/generate-changelog-assets.mjs",
+    "migrate:r2:supabase": "node scripts/migrate-supabase-images-to-r2.mjs",
+    "migrate:r2:public": "node scripts/migrate-public-images-to-r2.mjs",
     "serve": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -52,6 +55,7 @@
     "@types/turndown": "^5.0.6",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "aws4fetch": "^1.0.20",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "@vitest/ui": "^1.6.1",
     "autoprefixer": "^10.4.23",
@@ -69,7 +73,8 @@
     "typescript": "^5.9.3",
     "vite": "^5.4.21",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^1.6.1"
+    "vitest": "^1.6.1",
+    "wrangler": "^3.114.14"
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
