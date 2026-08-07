@@ -89,12 +89,15 @@ export default function HomePage() {
     [allArticles]
   )
 
-  const latestArticles = useMemo(
+  const featuredArticles = useMemo(
     () =>
-      [...articles].sort(
-        (a, b) =>
-          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      ),
+      [...articles]
+        .filter((a) => !a.tags.some((t) => t.slug === 'tutorial'))
+        .sort(
+          (a, b) =>
+            new Date(b.publishedAt).getTime() -
+            new Date(a.publishedAt).getTime()
+        ),
     [articles]
   )
 
@@ -189,18 +192,6 @@ export default function HomePage() {
           </blockquote>
         </section>
 
-        {/* Latest Articles */}
-        <div className="mt-16">
-          <ArticleCarousel
-            articles={latestArticles}
-            title="Latest Articles"
-            count={3}
-            viewAllLink="/latest"
-            viewAllText="View all articles"
-            limit={3}
-          />
-        </div>
-
         {/* The Learning Lab - Tutorials */}
         {tutorialArticles.length > 0 && (
           <div className="mt-16">
@@ -212,6 +203,21 @@ export default function HomePage() {
               variant="tutorial"
               viewAllLink="/tag/tutorial"
               viewAllText="View all tutorials"
+              limit={3}
+            />
+          </div>
+        )}
+
+        {/* Stories & Discoveries - non-tutorial articles */}
+        {featuredArticles.length > 0 && (
+          <div className="mt-16">
+            <ArticleCarousel
+              articles={featuredArticles}
+              title="Stories & Discoveries"
+              subtitle="Fresh reads from across science, technology, engineering, arts, and math"
+              count={3}
+              viewAllLink="/latest"
+              viewAllText="View all articles"
               limit={3}
             />
           </div>
