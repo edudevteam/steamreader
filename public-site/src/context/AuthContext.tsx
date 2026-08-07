@@ -76,69 +76,73 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Fetch user profile from profiles table
   const fetchProfile = async (userId: string) => {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select(PROFILE_COLUMNS)
-      .eq('id', userId)
-      .single()
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select(PROFILE_COLUMNS)
+        .eq('id', userId)
+        .single()
 
-    if (error) {
+      if (error) {
+        console.error('Error fetching profile:', error)
+        return null
+      }
+      return data as UserProfile
+    } catch (error) {
       console.error('Error fetching profile:', error)
       return null
     }
-    return data as UserProfile
   }
 
   useEffect(() => {
-    // Get initial session with timeout safeguard
-    const initializeAuth = async () => {
-      // Set a timeout to prevent infinite loading
-      const timeout = setTimeout(() => {
-        console.warn('Auth initialization timed out')
-        setLoading(false)
-      }, 5000)
+    let active = true
+    // Only the newest resolve may publish. Signing out and back in quickly, or
+    // a token refresh landing mid-fetch, would otherwise let a stale profile
+    // response overwrite a newer one.
+    let latest = 0
 
-      try {
-        const {
-          data: { session }
-        } = await supabase.auth.getSession()
-        clearTimeout(timeout)
-        setSession(session)
-        setUser(session?.user ?? null)
-        if (session?.user) {
-          const profile = await fetchProfile(session.user.id)
-          setProfile(profile)
-        }
-      } catch (error) {
-        console.error('Error getting session:', error)
-        clearTimeout(timeout)
-      } finally {
-        setLoading(false)
-      }
-    }
+    /**
+     * Publishes a session and the profile row that belongs to it.
+     *
+     * Must run *outside* the onAuthStateChange callback. auth-js invokes those
+     * callbacks while holding its Web Locks token lock, and every PostgREST
+     * query needs that same lock to read the access token -- so awaiting a
+     * query inside the callback deadlocks the callback and every concurrent
+     * getSession() with it. That hangs the whole app behind a loading screen.
+     */
+    const resolveSession = async (session: Session | null) => {
+      const ticket = ++latest
 
-    initializeAuth()
-
-    // Listen for auth changes
-    const {
-      data: { subscription }
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session)
       setUser(session?.user ?? null)
-      if (session?.user) {
-        try {
-          // Profile is created by database trigger on email confirmation
-          const profile = await fetchProfile(session.user.id)
-          setProfile(profile)
-        } catch (error) {
-          console.error('Error fetching profile:', error)
-        }
-      } else {
-        setProfile(null)
-      }
+
+      // Profile is created by a database trigger on email confirmation.
+      const nextProfile = session?.user
+        ? await fetchProfile(session.user.id)
+        : null
+
+      if (!active || ticket !== latest) return
+
+      setProfile(nextProfile)
+      // Settles even when the profile could not be read, so a failed lookup
+      // surfaces as "no access" rather than an endless spinner.
+      setLoading(false)
+    }
+
+    // Fires INITIAL_SESSION on subscribe, so this covers first load too and no
+    // separate getSession() call is needed.
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setTimeout(() => {
+        if (active) void resolveSession(session)
+      }, 0)
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      active = false
+      subscription.unsubscribe()
+    }
   }, [])
 
   const signUp = async (

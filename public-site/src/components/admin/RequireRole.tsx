@@ -17,12 +17,15 @@ export default function RequireRole({
   minimum: Role
   children: React.ReactNode
 }) {
-  const { user, profile, loading, hasRole } = useAuth()
+  const { user, loading, hasRole } = useAuth()
   const location = useLocation()
 
-  // Wait for both the session and the profile row; checking too early would
-  // bounce a legitimate admin to the login page on refresh.
-  if (loading || (user && !profile)) {
+  // `loading` stays true until the session *and* its profile row have settled,
+  // so checking here cannot bounce a legitimate admin on refresh. Waiting on
+  // `profile` as well would hang forever whenever the row cannot be read --
+  // an unreadable profile falls back to the 'user' role and lands on
+  // /admin/no-access instead, which is at least visible and actionable.
+  if (loading) {
     return <LoadingBlock label="Checking permissions…" />
   }
 
