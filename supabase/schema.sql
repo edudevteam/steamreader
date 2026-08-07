@@ -49,6 +49,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = '';
 
+-- A trigger function, not an RPC endpoint: Postgres checks EXECUTE when the
+-- trigger is created, not when it fires, so revoking keeps it off
+-- /rest/v1/rpc/* without stopping the trigger.
+REVOKE ALL ON FUNCTION public.handle_user_confirmed() FROM PUBLIC, anon, authenticated;
+
 -- Trigger on auth.users UPDATE (when email is confirmed)
 CREATE OR REPLACE TRIGGER on_auth_user_confirmed
   AFTER UPDATE ON auth.users

@@ -62,6 +62,11 @@ export default function AdminArticlesPage() {
       return (
         row.title.toLowerCase().includes(term) ||
         row.slug.toLowerCase().includes(term) ||
+        // Searching an author's name should find work they co-wrote, not only
+        // the articles they lead.
+        (row.authors ?? []).some((person) =>
+          (person.name ?? '').toLowerCase().includes(term)
+        ) ||
         (row.author_name ?? '').toLowerCase().includes(term)
       )
     })
@@ -252,6 +257,16 @@ export default function AdminArticlesPage() {
                     {isEditor && scope === 'all' && (
                       <td className="px-4 py-3 text-gray-600">
                         {row.author_name ?? '—'}
+                        {(row.authors ?? []).length > 1 && (
+                          <span
+                            className="ml-1 text-xs text-gray-400"
+                            title={(row.authors ?? [])
+                              .map((person) => person.name)
+                              .join(', ')}
+                          >
+                            +{row.authors.length - 1}
+                          </span>
+                        )}
                       </td>
                     )}
                     <td className="px-4 py-3 text-gray-600">

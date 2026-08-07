@@ -14,3 +14,16 @@ export function filterPublishedArticles<T extends { publishedAt: string }>(artic
   const now = new Date()
   return articles.filter((article) => parseDate(article.publishedAt) <= now)
 }
+
+/**
+ * Renders a byline as prose: "Ada", "Ada and Alan", "Ada, Alan and Grace".
+ *
+ * Card layouts have no room for three linked names, so they use this while the
+ * article page links each author individually.
+ */
+export function formatByline(authors: { name: string }[]): string {
+  const names = authors.map((author) => author.name).filter(Boolean)
+  if (names.length === 0) return 'Unknown'
+  if (names.length === 1) return names[0]
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+}

@@ -23,7 +23,10 @@ export default function AuthorPage() {
     [allArticles]
   )
   const author = authors.find((a) => a.slug === slug)
-  const authorArticles = articles.filter((a) => a.author.slug === slug)
+  // Co-authored work belongs on the page too, not just articles they led.
+  const authorArticles = articles.filter((a) =>
+    a.authors.some((person) => person.slug === slug)
+  )
 
   const loading = articlesLoading || authorsLoading
   const error = articlesError ?? authorsError

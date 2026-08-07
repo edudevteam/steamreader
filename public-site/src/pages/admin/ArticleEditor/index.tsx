@@ -117,11 +117,12 @@ export default function ArticleEditorPage() {
     listArticles()
       .then(setSiblings)
       .catch(() => setSiblings([]))
-    if (isEditor)
-      listContributors()
-        .then(setContributors)
-        .catch(() => setContributors([]))
-  }, [isEditor])
+    // Not gated on isEditor: a writer needs the roster to pick co-authors, and
+    // RLS already limits `profiles` reads to contributor rows and safe columns.
+    listContributors()
+      .then(setContributors)
+      .catch(() => setContributors([]))
+  }, [])
 
   // Warn before losing unsaved work to a tab close or refresh.
   useEffect(() => {
@@ -139,6 +140,30 @@ export default function ArticleEditorPage() {
     },
     []
   )
+
+  // The byline and its sharing switch belong to the primary author. A
+  // co-author editing a shared draft sees both, read-only.
+  const canManageAuthors =
+    isEditor || (!!draft.author_id && draft.author_id === user?.id)
+
+  // The primary author is already the first byline; offering them again would
+  // let the same person be credited twice.
+  const coAuthorChoices = useMemo(
+    () => contributors.filter((person) => person.id !== draft.author_id),
+    [contributors, draft.author_id]
+  )
+
+  const toggleCoAuthor = (personId: string) => {
+    setDraft((previous) => ({
+      ...previous,
+      co_author_ids: previous.co_author_ids.includes(personId)
+        ? previous.co_author_ids.filter((id) => id !== personId)
+        : // Append rather than insert: selection order is byline order.
+          [...previous.co_author_ids, personId]
+    }))
+    setDirty(true)
+    setNotice(null)
+  }
 
   // A new article's slug tracks the title until the author edits it directly.
   const handleTitleChange = (title: string) => {
@@ -182,7 +207,9 @@ export default function ArticleEditorPage() {
         return
       }
 
-      const result = await saveArticle(next)
+      const result = await saveArticle(next, {
+        syncCoAuthors: canManageAuthors
+      })
       setDraft({ ...next, id: result.id, slug: result.slug })
       setDirty(false)
       setNotice(
@@ -404,6 +431,89 @@ export default function ArticleEditorPage() {
                     ))}
                   </Select>
                 </Field>
+
+                <Field
+                  label="Co-authors"
+                  hint={
+                    canManageAuthors
+                      ? 'Credited alongside the primary author, in the order you tick them.'
+                      : 'Only the primary author or an editor can change the byline.'
+                  }
+                >
+                  {coAuthorChoices.length === 0 ? (
+                    <p className="text-sm text-gray-500">
+                      No other contributors to credit yet.
+                    </p>
+                  ) : (
+                    <div className="max-h-56 space-y-1 overflow-y-auto rounded-lg p-1 ring-1 ring-inset ring-gray-300">
+                      {coAuthorChoices.map((person) => {
+                        const position = draft.co_author_ids.indexOf(person.id)
+                        return (
+                          <label
+                            key={person.id}
+                            className={classNames(
+                              'flex items-center gap-3 rounded-md px-2 py-1.5 text-sm',
+                              canManageAuthors
+                                ? 'cursor-pointer hover:bg-gray-50'
+                                : 'cursor-not-allowed opacity-70'
+                            )}
+                          >
+                            <input
+                              type="checkbox"
+                              className="size-4 rounded border-gray-300 text-brand-600 focus:ring-brand-600"
+                              checked={position !== -1}
+                              disabled={!canManageAuthors}
+                              onChange={() => toggleCoAuthor(person.id)}
+                            />
+                            <span className="text-gray-900">
+                              {person.display_name ?? person.slug ?? person.id}
+                            </span>
+                            {position !== -1 && (
+                              <span className="ml-auto text-xs text-gray-500">
+                                #{position + 2} in byline
+                              </span>
+                            )}
+                          </label>
+                        )
+                      })}
+                    </div>
+                  )}
+                </Field>
+
+                {draft.co_author_ids.length > 0 && (
+                  <Field
+                    label="Co-author editing"
+                    hint="Publishing always stays with editors and admins."
+                  >
+                    <label
+                      className={classNames(
+                        'flex items-start gap-3 rounded-lg p-3 text-sm ring-1 ring-inset ring-gray-300',
+                        canManageAuthors
+                          ? 'cursor-pointer hover:bg-gray-50'
+                          : 'cursor-not-allowed opacity-70'
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 size-4 rounded border-gray-300 text-brand-600 focus:ring-brand-600"
+                        checked={draft.co_authors_can_edit}
+                        disabled={!canManageAuthors}
+                        onChange={(e) =>
+                          update('co_authors_can_edit', e.target.checked)
+                        }
+                      />
+                      <span>
+                        <span className="font-medium text-gray-900">
+                          Let co-authors edit this article
+                        </span>
+                        <span className="mt-0.5 block text-xs text-gray-500">
+                          Off by default — co-authors are credited in the byline
+                          but cannot open the draft.
+                        </span>
+                      </span>
+                    </label>
+                  </Field>
+                )}
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field

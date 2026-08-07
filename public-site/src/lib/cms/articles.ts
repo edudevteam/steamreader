@@ -33,8 +33,6 @@ export async function listArticles(
 ): Promise<ArticleRow[]> {
   let query = supabase.from('article_list').select('*')
 
-  if (options.mine && options.authorId)
-    query = query.eq('author_id', options.authorId)
   if (options.status && options.status !== 'all')
     query = query.eq('status', options.status)
   if (options.search) query = query.ilike('title', `%${options.search}%`)
@@ -43,7 +41,21 @@ export async function listArticles(
   const { data, error } = await query.order('updated_at', { ascending: false })
 
   if (error) throw error
-  return (data ?? []) as ArticleRow[]
+  const rows = (data ?? []) as ArticleRow[]
+
+  // "Mine" covers co-authored work too, so it cannot be a column filter -- the
+  // byline lives in a jsonb array. RLS has already narrowed the set to what
+  // this account may see, so filtering the rest here costs nothing.
+  if (options.mine && options.authorId) {
+    const id = options.authorId
+    return rows.filter(
+      (row) =>
+        row.author_id === id ||
+        (row.authors ?? []).some((person) => person.id === id)
+    )
+  }
+
+  return rows
 }
 
 export async function getArticle(id: string): Promise<ArticleDetailRow | null> {
@@ -68,6 +80,10 @@ export function rowToDraft(row: ArticleDetailRow): ArticleDraft {
     status: row.status,
     published_at: row.published_at,
     author_id: row.author_id,
+    co_author_ids: (row.authors ?? [])
+      .filter((person) => !person.is_primary)
+      .map((person) => person.id),
+    co_authors_can_edit: row.co_authors_can_edit ?? false,
     category_id: row.category_id,
     tags: row.tags ?? [],
     feature_image: (row.feature_image as ArticleDraft['feature_image']) ?? {
@@ -120,9 +136,52 @@ async function syncArticleTags(
   if (error) throw error
 }
 
+/**
+ * Rewrites the co-author list, preserving the order the editor put them in.
+ *
+ * Only the primary author and staff may touch `article_authors`, so callers
+ * gate this behind `syncCoAuthors` -- a co-author saving a shared draft would
+ * otherwise hit a 42501 on every save.
+ */
+async function syncCoAuthors(
+  articleId: string,
+  primaryId: string | null,
+  coAuthorIds: string[]
+): Promise<void> {
+  // A stale row naming the primary author would double their byline.
+  const ids = coAuthorIds.filter((id) => id && id !== primaryId)
+
+  const { error: deleteError } = await supabase
+    .from('article_authors')
+    .delete()
+    .eq('article_id', articleId)
+
+  if (deleteError) throw translateError(deleteError)
+  if (ids.length === 0) return
+
+  const { error } = await supabase.from('article_authors').insert(
+    ids.map((author_id, index) => ({
+      article_id: articleId,
+      author_id,
+      sort_order: index
+    }))
+  )
+
+  if (error) throw translateError(error)
+}
+
 export interface SaveResult {
   id: string
   slug: string
+}
+
+export interface SaveOptions {
+  /**
+   * Whether this account may rewrite the co-author list -- true for the
+   * primary author and for staff. False for a co-author editing a shared
+   * draft, whose save must leave the byline alone.
+   */
+  syncCoAuthors?: boolean
 }
 
 /**
@@ -130,7 +189,10 @@ export interface SaveResult {
  * contents and reading time are derived here so readers never pay for a
  * markdown parse and the stored HTML matches the build pipeline exactly.
  */
-export async function saveArticle(draft: ArticleDraft): Promise<SaveResult> {
+export async function saveArticle(
+  draft: ArticleDraft,
+  options: SaveOptions = {}
+): Promise<SaveResult> {
   const title = draft.title.trim() || 'Untitled'
   const slug = (draft.slug.trim() || generateSlug(title)).toLowerCase()
   const excerpt =
@@ -154,6 +216,7 @@ export async function saveArticle(draft: ArticleDraft): Promise<SaveResult> {
         ? draft.published_at ?? new Date().toISOString()
         : draft.published_at,
     author_id: draft.author_id,
+    co_authors_can_edit: draft.co_authors_can_edit,
     category_id: draft.category_id,
     feature_image: draft.feature_image,
     previous_slug: draft.previous_slug || null,
@@ -181,6 +244,9 @@ export async function saveArticle(draft: ArticleDraft): Promise<SaveResult> {
   }
 
   await syncArticleTags(articleId!, await resolveTagIds(draft.tags))
+
+  if (options.syncCoAuthors !== false)
+    await syncCoAuthors(articleId!, draft.author_id, draft.co_author_ids)
 
   // Public pages cache the article index; a save must show up immediately.
   invalidateContent()
@@ -232,11 +298,19 @@ function translateError(error: { code?: string; message: string }): Error {
   if (error.code === '23505')
     return new Error('That slug is already in use by another article.')
   if (error.code === '42501') {
-    return new Error(
-      error.message.includes('publish')
-        ? 'Only editors and admins can publish. Submit for review instead.'
-        : 'You do not have permission to change this article.'
-    )
+    if (error.message.includes('publish'))
+      return new Error(
+        'Only editors and admins can publish. Submit for review instead.'
+      )
+    if (error.message.includes('reassign'))
+      return new Error(
+        'Only the primary author or an editor can reassign this article.'
+      )
+    if (error.message.includes('co-author'))
+      return new Error(
+        'Only the primary author or an editor can change who may edit this article.'
+      )
+    return new Error('You do not have permission to change this article.')
   }
   return new Error(error.message)
 }

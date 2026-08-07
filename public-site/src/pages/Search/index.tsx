@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import ContentState from 'components/ContentState'
 import { useArticles, useCategories } from 'hooks/useContent'
-import { filterPublishedArticles } from 'utils'
+import { filterPublishedArticles, formatByline } from 'utils'
 
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -176,7 +176,7 @@ export default function SearchPage() {
                       {article.excerpt}
                     </p>
                     <div className="text-xs text-gray-500">
-                      {article.author.name} &#8226;{' '}
+                      {formatByline(article.authors)} &#8226;{' '}
                       {new Date(article.publishedAt).toLocaleDateString()}
                     </div>
                   </div>

@@ -50,7 +50,10 @@ export interface ArticleMeta {
   title: string
   subtitle?: string
   excerpt: string
+  /** The primary author. Always the first entry of `authors`. */
   author: AuthorRef
+  /** Full byline: primary author first, then co-authors in their set order. */
+  authors: AuthorRef[]
   publishedAt: string
   updatedAt?: string
   category: CategoryRef

@@ -303,13 +303,26 @@ export default function ArticlePage() {
           <p className="mb-4 text-xl text-gray-600">{article.subtitle}</p>
         )}
 
-        <div className="flex items-center gap-4 text-sm text-gray-600">
-          <Link
-            to={`/author/${article.author.slug}`}
-            className="font-medium hover:text-brand-600"
-          >
-            {article.author.name}
-          </Link>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600">
+          {/* Each author is linked separately, so the separators are rendered
+              between them rather than baked into one formatted string. */}
+          <span className="flex flex-wrap items-center gap-x-1">
+            {article.authors.map((person, index) => (
+              <span key={`${person.slug}-${index}`}>
+                {index > 0 && (
+                  <span className="text-gray-400">
+                    {index === article.authors.length - 1 ? ' and ' : ', '}
+                  </span>
+                )}
+                <Link
+                  to={`/author/${person.slug}`}
+                  className="font-medium hover:text-brand-600"
+                >
+                  {person.name}
+                </Link>
+              </span>
+            ))}
+          </span>
           <span>&#8226;</span>
           <time dateTime={article.publishedAt}>
             {parseDate(article.publishedAt).toLocaleDateString('en-US', {

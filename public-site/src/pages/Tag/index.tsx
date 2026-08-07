@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import ContentState from 'components/ContentState'
 import { useArticles, useTags } from 'hooks/useContent'
-import { filterPublishedArticles, parseDate } from 'utils'
+import { filterPublishedArticles, formatByline, parseDate } from 'utils'
 
 export default function TagPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -104,7 +104,7 @@ export default function TagPage() {
                   {article.excerpt}
                 </p>
                 <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226;{' '}
+                  {formatByline(article.authors)} &#8226;{' '}
                   {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>

@@ -22,10 +22,28 @@ In the Supabase SQL editor, run the two files in this order:
   `editor`
 - widens the existing `articles` table **in place**, so article votes survive
 - adds `categories`, `tags`, `article_tags`, `courses`, `course_articles`
+- adds `article_authors` for co-author bylines
 - creates the `article_list`, `article_detail`, `public_authors`,
   `category_counts` and `tag_counts` views the site reads from
 - enables row-level security on everything
 - creates the public `article-images` storage bucket
+
+### Existing databases
+
+`cms-schema.sql` is the fresh-install path — everything below is already folded
+into it. A database that predates these changes takes the numbered patches
+instead, **in order**:
+
+| File | What it does |
+| --- | --- |
+| `fix-01-byline-access.sql` | Lets readers resolve article bylines |
+| `fix-02-multi-author.sql` | Co-authors, and the per-article editing toggle |
+| `fix-03-authors-view-invoker.sql` | `public_authors` runs as invoker |
+| `fix-04-advisor-warnings.sql` | Security Advisor cleanups |
+| `fix-05-private-helpers.sql` | Moves the security helpers out of the API schema |
+
+Order matters between 02 and 05: `fix-02` adds its helpers to `public`, and
+`fix-05` is what relocates them to `private`.
 
 ## 2. Deploy the user-management function
 

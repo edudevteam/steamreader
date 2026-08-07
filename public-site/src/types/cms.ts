@@ -68,6 +68,17 @@ export interface ManagedUser extends Profile {
   article_count: number
 }
 
+/**
+ * One entry of an article's byline, as built by the `article_list` view.
+ * Exactly one entry per article has `is_primary`, and it always sorts first.
+ */
+export interface ArticleAuthorRef {
+  id: string
+  slug: string | null
+  name: string | null
+  is_primary: boolean
+}
+
 /** Row shape of the `article_list` / `article_detail` database views. */
 export interface ArticleRow {
   id: string
@@ -87,6 +98,8 @@ export interface ArticleRow {
   author_id: string | null
   author_slug: string | null
   author_name: string | null
+  authors: ArticleAuthorRef[]
+  co_authors_can_edit: boolean
   category_id: string | null
   category_slug: string | null
   category_name: string | null
@@ -110,6 +123,10 @@ export interface ArticleDraft {
   status: ArticleStatus
   published_at: string | null
   author_id: string | null
+  /** Co-authors, in byline order. Never contains `author_id`. */
+  co_author_ids: string[]
+  /** Off by default: co-authors are a credit, not a grant of write access. */
+  co_authors_can_edit: boolean
   category_id: string | null
   tags: TagRef[]
   feature_image: FeatureImage
@@ -141,6 +158,8 @@ export function emptyDraft(authorId: string | null): ArticleDraft {
     status: 'draft',
     published_at: null,
     author_id: authorId,
+    co_author_ids: [],
+    co_authors_can_edit: false,
     category_id: null,
     tags: [],
     feature_image: { src: '', alt: '' },

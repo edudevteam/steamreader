@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { ArticleMeta } from 'types'
-import { parseDate } from 'utils'
+import { formatByline, parseDate } from 'utils'
 
 interface ArticleCarouselProps {
   articles: ArticleMeta[]
@@ -130,7 +130,7 @@ export default function ArticleCarousel({
                 </h3>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
                 <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
+                  {formatByline(article.authors)} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>
             </Link>
@@ -179,7 +179,7 @@ export default function ArticleCarousel({
                 </h3>
                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
                 <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
+                  {formatByline(article.authors)} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>
             </Link>

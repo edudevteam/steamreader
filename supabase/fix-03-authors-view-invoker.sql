@@ -1,0 +1,31 @@
+-- ============================================================================
+-- Fix 03 — make `public_authors` a security invoker view
+-- ============================================================================
+-- Symptom: Supabase Security Advisor reports one ERROR,
+--   security_definer_view: View `public.public_authors` is defined with the
+--   SECURITY DEFINER property
+--
+-- Cause: the view predates fix-01. Back then anon had no access to `profiles`
+-- at all, so the view ran as its creator and hard-coded a safe column list --
+-- that was the only way an author page could load. Every other view in the
+-- schema (`article_list`, `article_detail`, `category_counts`, `tag_counts`)
+-- already runs with security_invoker = on; this one was the odd one out.
+--
+-- Fix: flip it to invoker. fix-01 granted anon SELECT on exactly the byline
+-- columns and added the "Public can view contributor profiles" row policy, so
+-- the caller's own permissions now reach everything the view needs:
+--   * profiles         -- column grant + contributor-row policy, and that
+--                         policy's predicate is the view's WHERE clause, so
+--                         the visible rows are unchanged
+--   * articles         -- "Public read published" is consistent with the
+--                         subquery's own status = 'published' filter, so the
+--                         article_count is unchanged for every caller
+--   * article_authors  -- granted to anon with a USING (true) read policy
+-- `email` and `birthdate` remain revoked from anon and authenticated, so they
+-- are no more reachable than before.
+--
+-- Safe to re-run. Already folded into cms-schema.sql and fix-02 for fresh
+-- installs.
+-- ============================================================================
+
+ALTER VIEW public.public_authors SET (security_invoker = on);

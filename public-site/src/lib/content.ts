@@ -38,6 +38,15 @@ function toMeta(row: ArticleRow): ArticleMeta {
       slug: row.author_slug ?? '',
       name: row.author_name ?? 'Unknown'
     },
+    // The view already sorts primary-first; map rather than re-sort. An article
+    // with no author at all still needs one entry so bylines never render blank.
+    authors:
+      row.authors && row.authors.length > 0
+        ? row.authors.map((person) => ({
+            slug: person.slug ?? '',
+            name: person.name ?? 'Unknown'
+          }))
+        : [{ slug: row.author_slug ?? '', name: row.author_name ?? 'Unknown' }],
     // The site formats dates from a bare YYYY-MM-DD; `parseDate` in utils
     // depends on that, so trim the timestamp rather than passing an ISO string.
     publishedAt: (row.published_at ?? row.created_at).slice(0, 10),

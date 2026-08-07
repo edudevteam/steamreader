@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import type { ArticleMeta } from 'types'
 import ContentState from 'components/ContentState'
 import { useArticles, useCourses } from 'hooks/useContent'
-import { filterPublishedArticles, parseDate } from 'utils'
+import { filterPublishedArticles, formatByline, parseDate } from 'utils'
 
 export default function CoursePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -124,7 +124,7 @@ export default function CoursePage() {
                   {article.excerpt}
                 </p>
                 <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226;{' '}
+                  {formatByline(article.authors)} &#8226;{' '}
                   {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>

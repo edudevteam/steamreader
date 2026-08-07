@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from 'context/AuthContext'
 import { listArticles } from 'lib/cms/articles'
@@ -34,6 +34,14 @@ export default function AdminDashboardPage() {
       .finally(() => setLoading(false))
   }, [])
 
+  /** "Mine" means anything I am credited on, led or co-written. */
+  const isMine = useCallback(
+    (row: ArticleRow) =>
+      row.author_id === user?.id ||
+      (row.authors ?? []).some((person) => person.id === user?.id),
+    [user?.id]
+  )
+
   const stats = useMemo(() => {
     const tally = (status: ArticleStatus) =>
       rows.filter((row) => row.status === status).length
@@ -41,9 +49,9 @@ export default function AdminDashboardPage() {
       published: tally('published'),
       drafts: tally('draft'),
       inReview: tally('in_review'),
-      mine: rows.filter((row) => row.author_id === user?.id).length
+      mine: rows.filter(isMine).length
     }
-  }, [rows, user?.id])
+  }, [rows, isMine])
 
   const recent = useMemo(() => rows.slice(0, 6), [rows])
 
@@ -52,10 +60,8 @@ export default function AdminDashboardPage() {
     () =>
       isEditor
         ? rows.filter((row) => row.status === 'in_review')
-        : rows.filter(
-            (row) => row.author_id === user?.id && row.status !== 'published'
-          ),
-    [rows, isEditor, user?.id]
+        : rows.filter((row) => isMine(row) && row.status !== 'published'),
+    [rows, isEditor, isMine]
   )
 
   if (loading) return <LoadingBlock label="Loading dashboard…" />
