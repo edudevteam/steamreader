@@ -100,3 +100,17 @@ By the end of this lesson, the student will be able to:
 - **Color Coding**: Use **Red** for Positive (+) and **Black** for Negative (-).
 - **Prediction**: Before clicking "Start Simulation," ask the student, "What do you think will happen?"
 - **Analogy**: Think of the circuit as a water pipe; the button is a valve that can stop or start the flow.
+
+---
+
+## Change Up notes
+
+Target Age without Instructor: 3rd-grade +
+
+Create a lesson 0:
+
+- How to use this course. How to navigate
+- Needed tools:
+  - TinkerCAD Free Account
+  - Active Internet Connection
+  - Standard Notebook or Google Doc

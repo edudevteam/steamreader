@@ -38,6 +38,12 @@ export interface FeatureImage {
   height?: number
 }
 
+/**
+ * `in_review` and `archived` only ever appear inside the CMS -- the public
+ * views filter them out before they reach a reader.
+ */
+export type ArticleStatus = 'draft' | 'in_review' | 'published' | 'archived'
+
 export interface ArticleMeta {
   id?: string
   slug: string
@@ -51,7 +57,7 @@ export interface ArticleMeta {
   tags: TagRef[]
   featureImage: FeatureImage
   readingTime: number
-  status: 'published' | 'draft'
+  status: ArticleStatus
   previousArticle?: ArticleRef
   nextArticle?: ArticleRef
   validation?: ValidationBadges

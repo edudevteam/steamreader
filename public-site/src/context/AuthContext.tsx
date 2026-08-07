@@ -1,28 +1,69 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode
+} from 'react'
 import { User, Session } from '@supabase/supabase-js'
 import { supabase } from 'lib/supabase'
+import { ROLE_RANK, type Role } from 'types/cms'
 
-interface UserProfile {
+/**
+ * The caller's own profile row.
+ *
+ * `email` and `birthdate` are deliberately absent: PostgREST is not granted
+ * those columns for any browser role, so selecting them fails. Read the address
+ * from `user.email` on the auth session instead, which is where it actually
+ * belongs.
+ */
+export interface UserProfile {
   id: string
-  email: string | null
   display_name: string | null
-  birthdate: string | null
-  role: 'admin' | 'manager' | 'user'
+  role: Role
+  slug: string | null
+  bio: string | null
+  avatar_url: string | null
+  social: Record<string, string> | null
+  is_active: boolean
   created_at: string
   updated_at: string
 }
+
+// Kept in sync with UserProfile -- `select('*')` would hit the revoked columns.
+const PROFILE_COLUMNS =
+  'id, display_name, role, slug, bio, avatar_url, social, is_active, created_at, updated_at'
+
+type EditableProfileFields = Pick<
+  UserProfile,
+  'display_name' | 'bio' | 'avatar_url' | 'social'
+>
 
 interface AuthContextType {
   user: User | null
   profile: UserProfile | null
   session: Session | null
   loading: boolean
-  signUp: (email: string, password: string, birthdate: Date, displayName?: string) => Promise<{ error: Error | null }>
+  /** True once the profile row has been resolved, so guards do not flash. */
+  role: Role
+  isAdmin: boolean
+  isEditor: boolean
+  isContributor: boolean
+  hasRole: (minimum: Role) => boolean
+  signUp: (
+    email: string,
+    password: string,
+    birthdate: Date,
+    displayName?: string
+  ) => Promise<{ error: Error | null }>
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>
   signOut: () => void
   resetPassword: (email: string) => Promise<{ error: Error | null }>
   updatePassword: (password: string) => Promise<{ error: Error | null }>
-  updateProfile: (updates: Partial<Pick<UserProfile, 'display_name'>>) => Promise<{ error: Error | null }>
+  updateProfile: (
+    updates: Partial<EditableProfileFields>
+  ) => Promise<{ error: Error | null }>
+  refreshProfile: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -37,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchProfile = async (userId: string) => {
     const { data, error } = await supabase
       .from('profiles')
-      .select('*')
+      .select(PROFILE_COLUMNS)
       .eq('id', userId)
       .single()
 
@@ -58,7 +99,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }, 5000)
 
       try {
-        const { data: { session } } = await supabase.auth.getSession()
+        const {
+          data: { session }
+        } = await supabase.auth.getSession()
         clearTimeout(timeout)
         setSession(session)
         setUser(session?.user ?? null)
@@ -77,38 +120,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initializeAuth()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session)
-        setUser(session?.user ?? null)
-        if (session?.user) {
-          try {
-            // Profile is created by database trigger on email confirmation
-            const profile = await fetchProfile(session.user.id)
-            setProfile(profile)
-          } catch (error) {
-            console.error('Error fetching profile:', error)
-          }
-        } else {
-          setProfile(null)
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session)
+      setUser(session?.user ?? null)
+      if (session?.user) {
+        try {
+          // Profile is created by database trigger on email confirmation
+          const profile = await fetchProfile(session.user.id)
+          setProfile(profile)
+        } catch (error) {
+          console.error('Error fetching profile:', error)
         }
+      } else {
+        setProfile(null)
       }
-    )
+    })
 
     return () => subscription.unsubscribe()
   }, [])
 
-  const signUp = async (email: string, password: string, birthdate: Date, displayName?: string) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    birthdate: Date,
+    displayName?: string
+  ) => {
     // Validate age (must be 13+)
     const today = new Date()
     const age = today.getFullYear() - birthdate.getFullYear()
     const monthDiff = today.getMonth() - birthdate.getMonth()
-    const isOldEnough = monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())
-      ? age - 1 >= 13
-      : age >= 13
+    const isOldEnough =
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthdate.getDate())
+        ? age - 1 >= 13
+        : age >= 13
 
     if (!isOldEnough) {
-      return { error: new Error('You must be at least 13 years old to sign up.') }
+      return {
+        error: new Error('You must be at least 13 years old to sign up.')
+      }
     }
 
     // Sign up with email confirmation
@@ -138,9 +190,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signOut = () => {
-    localStorage.clear()
-    sessionStorage.clear()
-    window.location.href = '/login'
+    // Revoke the refresh token server-side first; clearing storage alone would
+    // leave a valid session behind on Supabase.
+    void supabase.auth.signOut().finally(() => {
+      localStorage.clear()
+      sessionStorage.clear()
+      window.location.href = '/login'
+    })
   }
 
   const resetPassword = async (email: string) => {
@@ -155,7 +211,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error }
   }
 
-  const updateProfile = async (updates: Partial<Pick<UserProfile, 'display_name'>>) => {
+  const updateProfile = async (updates: Partial<EditableProfileFields>) => {
     if (!user) {
       return { error: new Error('No user logged in') }
     }
@@ -166,23 +222,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .eq('id', user.id)
 
     if (!error) {
-      setProfile(prev => prev ? { ...prev, ...updates } : null)
+      setProfile((prev) => (prev ? { ...prev, ...updates } : null))
     }
 
     return { error }
   }
+
+  const refreshProfile = async () => {
+    if (!user) return
+    setProfile(await fetchProfile(user.id))
+  }
+
+  // A user with no profile row yet is treated as a plain reader, never as
+  // staff -- an unresolved profile must not grant CMS access.
+  const role: Role =
+    profile?.is_active === false ? 'user' : profile?.role ?? 'user'
+  const hasRole = (minimum: Role) => ROLE_RANK[role] >= ROLE_RANK[minimum]
 
   const value = {
     user,
     profile,
     session,
     loading,
+    role,
+    isAdmin: role === 'admin',
+    isEditor: hasRole('editor'),
+    isContributor: hasRole('writer'),
+    hasRole,
     signUp,
     signIn,
     signOut,
     resetPassword,
     updatePassword,
-    updateProfile
+    updateProfile,
+    refreshProfile
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

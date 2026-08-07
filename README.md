@@ -73,6 +73,24 @@ public-site/
     └── rss.xml                      # Generated — RSS feed
 ```
 
+## Authoring with the CMS
+
+`cms/` is a local editor and lightweight CRM for these articles — a kanban board
+across draft stages, a markdown/WYSIWYG editor with live preview, per-article
+notes and checklists, a media browser, and course management. It writes the
+markdown into `md-articles/content` and can run the build for a single article.
+
+```bash
+cd cms
+pnpm install
+pnpm dev          # http://localhost:5174
+```
+
+Content lives in a local SQLite database (`cms/data/cms.db`, gitignored); the
+`.md` files are exports and remain what git tracks. Committing and pushing to
+trigger the Cloudflare Pages deploy is still done by hand. See
+[cms/README.md](cms/README.md).
+
 ## Writing Articles
 
 ### 1. Create Article Folder

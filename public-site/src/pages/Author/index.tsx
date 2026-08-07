@@ -1,23 +1,50 @@
+import { useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import articlesData from 'data/articles.json'
-import authorsData from 'data/authors.json'
-import type { ArticleMeta, Author } from 'types'
+import ContentState from 'components/ContentState'
+import { useArticles, useAuthors } from 'hooks/useContent'
 import { filterPublishedArticles, parseDate } from 'utils'
-
-const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
-const authors = authorsData.authors as Author[]
 
 export default function AuthorPage() {
   const { slug } = useParams<{ slug: string }>()
+  const {
+    data: allArticles,
+    loading: articlesLoading,
+    error: articlesError,
+    reload
+  } = useArticles()
+  const {
+    data: authors,
+    loading: authorsLoading,
+    error: authorsError
+  } = useAuthors()
 
+  const articles = useMemo(
+    () => filterPublishedArticles(allArticles),
+    [allArticles]
+  )
   const author = authors.find((a) => a.slug === slug)
   const authorArticles = articles.filter((a) => a.author.slug === slug)
+
+  const loading = articlesLoading || authorsLoading
+  const error = articlesError ?? authorsError
+
+  if (loading || error) {
+    return (
+      <ContentState loading={loading} error={error} onRetry={reload}>
+        {null}
+      </ContentState>
+    )
+  }
 
   if (!author) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h1 className="mb-4 text-2xl font-bold text-gray-900">Author Not Found</h1>
-        <p className="mb-8 text-gray-600">The author you're looking for doesn't exist.</p>
+        <h1 className="mb-4 text-2xl font-bold text-gray-900">
+          Author Not Found
+        </h1>
+        <p className="mb-8 text-gray-600">
+          The author you&apos;re looking for doesn&apos;t exist.
+        </p>
         <Link
           to="/"
           className="inline-block rounded-full bg-purple-600 px-6 py-3 font-medium text-white transition-colors hover:bg-purple-700"
@@ -39,22 +66,27 @@ export default function AuthorPage() {
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-sm text-gray-900">Authors</span>
           <span className="mx-2 text-gray-400">/</span>
-          <span className="text-sm font-medium text-brand-600">{author.name}</span>
+          <span className="text-sm font-medium text-brand-600">
+            {author.name}
+          </span>
         </nav>
 
         <div className="flex items-start gap-6">
           {/* Avatar */}
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-100 text-2xl font-bold text-brand-600">
+          <div className="flex size-20 items-center justify-center rounded-full bg-brand-100 text-2xl font-bold text-brand-600">
             {author.name.charAt(0)}
           </div>
 
           <div>
-            <h1 className="mb-2 text-3xl font-bold text-gray-900">{author.name}</h1>
+            <h1 className="mb-2 text-3xl font-bold text-gray-900">
+              {author.name}
+            </h1>
             {author.bio && (
               <p className="mb-2 max-w-2xl text-gray-600">{author.bio}</p>
             )}
             <p className="text-sm text-gray-500">
-              {authorArticles.length} article{authorArticles.length !== 1 ? 's' : ''}
+              {authorArticles.length} article
+              {authorArticles.length !== 1 ? 's' : ''}
             </p>
           </div>
         </div>
@@ -78,7 +110,7 @@ export default function AuthorPage() {
                   <img
                     src={article.featureImage.src}
                     alt={article.featureImage.alt}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-4">
@@ -86,12 +118,16 @@ export default function AuthorPage() {
                     <span className="rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600">
                       {article.category.name}
                     </span>
-                    <span className="text-xs text-gray-500">{article.readingTime} min</span>
+                    <span className="text-xs text-gray-500">
+                      {article.readingTime} min
+                    </span>
                   </div>
                   <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                     {article.title}
                   </h3>
-                  <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
+                  <p className="mb-3 line-clamp-2 text-sm text-gray-600">
+                    {article.excerpt}
+                  </p>
                   <div className="text-xs text-gray-500">
                     {parseDate(article.publishedAt).toLocaleDateString()}
                   </div>

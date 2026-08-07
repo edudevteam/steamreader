@@ -17,12 +17,14 @@ tags:
   - insomnia
   - postman
   - venv
+
 feature_image: "/images/fast-api-tutorial-up-and-running-locally.png"
 feature_image_alt: "Python Fast API Tutorial"
 feature_image_caption: "Python Fast API Tutorial"
 excerpt: "A guided step-by-step tutorial shows how Web API's work. You will learn how to use API tools to get data nd even build yoru own web api using python."
 status: published
 prev: python-venv
+next:
 ---
 
 ## Building a Simple API with Python

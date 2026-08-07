@@ -14,12 +14,14 @@ tags:
   - venv
   - virtual environment
   - pip
+
 feature_image: "/images/python-generating-requirements-file.png"
 feature_image_alt: "python generating requirements TXT file"
 feature_image_caption: "Graphic by FundedYouth"
 excerpt: "It's not enough to create a `venv` for a python project. You also need an easy way to download the correct libraries using the `pip` command. That's where the requirements.txt document comes into play."
 status: published
 prev: python-requirements
+next:
 ---
 
 The `requirements.txt` has two major benefits.

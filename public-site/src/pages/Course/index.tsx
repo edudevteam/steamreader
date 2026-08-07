@@ -1,22 +1,50 @@
+import { useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import articlesData from 'data/articles.json'
-import coursesData from 'data/courses.json'
-import type { ArticleMeta, CourseMeta } from 'types'
+import type { ArticleMeta } from 'types'
+import ContentState from 'components/ContentState'
+import { useArticles, useCourses } from 'hooks/useContent'
 import { filterPublishedArticles, parseDate } from 'utils'
-
-const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
-const courses = coursesData.courses as CourseMeta[]
 
 export default function CoursePage() {
   const { slug } = useParams<{ slug: string }>()
+  const {
+    data: allArticles,
+    loading: articlesLoading,
+    error: articlesError,
+    reload
+  } = useArticles()
+  const {
+    data: courses,
+    loading: coursesLoading,
+    error: coursesError
+  } = useCourses()
 
+  const articles = useMemo(
+    () => filterPublishedArticles(allArticles),
+    [allArticles]
+  )
   const course = courses.find((c) => c.slug === slug)
+
+  const loading = articlesLoading || coursesLoading
+  const error = articlesError ?? coursesError
+
+  if (loading || error) {
+    return (
+      <ContentState loading={loading} error={error} onRetry={reload}>
+        {null}
+      </ContentState>
+    )
+  }
 
   if (!course) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h1 className="mb-4 text-2xl font-bold text-gray-900">Course Not Found</h1>
-        <p className="mb-8 text-gray-600">The course you're looking for doesn't exist.</p>
+        <h1 className="mb-4 text-2xl font-bold text-gray-900">
+          Course Not Found
+        </h1>
+        <p className="mb-8 text-gray-600">
+          The course you&apos;re looking for doesn&apos;t exist.
+        </p>
         <Link
           to="/"
           className="inline-block rounded-full bg-purple-600 px-6 py-3 font-medium text-white transition-colors hover:bg-purple-700"
@@ -41,19 +69,24 @@ export default function CoursePage() {
             Home
           </Link>
           <span className="mx-2 text-gray-400">/</span>
-          <span className="text-sm font-medium text-teal-600">{course.title}</span>
+          <span className="text-sm font-medium text-teal-600">
+            {course.title}
+          </span>
         </nav>
         <div className="flex items-center gap-4">
           <img
             src={course.featureImage.src}
             alt={course.featureImage.alt}
-            className="hidden h-16 w-16 rounded-lg object-cover sm:block"
+            className="hidden size-16 rounded-lg object-cover sm:block"
           />
           <div>
-            <h1 className="mb-1 text-3xl font-bold text-gray-900">{course.title}</h1>
+            <h1 className="mb-1 text-3xl font-bold text-gray-900">
+              {course.title}
+            </h1>
             <p className="text-sm text-gray-600">{course.description}</p>
             <p className="mt-1 text-sm text-gray-500">
-              {courseArticles.length} lesson{courseArticles.length !== 1 ? 's' : ''}
+              {courseArticles.length} lesson
+              {courseArticles.length !== 1 ? 's' : ''}
             </p>
           </div>
         </div>
@@ -72,7 +105,7 @@ export default function CoursePage() {
                 <img
                   src={article.featureImage.src}
                   alt={article.featureImage.alt}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
@@ -80,14 +113,19 @@ export default function CoursePage() {
                   <span className="rounded-full bg-teal-100 px-2 py-1 text-xs font-medium text-teal-700">
                     Part {index + 1}
                   </span>
-                  <span className="text-xs text-gray-500">{article.readingTime} min</span>
+                  <span className="text-xs text-gray-500">
+                    {article.readingTime} min
+                  </span>
                 </div>
                 <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                   {article.title}
                 </h3>
-                <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
+                <p className="mb-3 line-clamp-2 text-sm text-gray-600">
+                  {article.excerpt}
+                </p>
                 <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
+                  {article.author.name} &#8226;{' '}
+                  {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>
             </Link>
@@ -95,7 +133,9 @@ export default function CoursePage() {
         </div>
       ) : (
         <div className="rounded-lg bg-gray-50 p-8 text-center">
-          <p className="text-gray-600">No lessons available for this course yet.</p>
+          <p className="text-gray-600">
+            No lessons available for this course yet.
+          </p>
         </div>
       )}
     </div>

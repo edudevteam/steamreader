@@ -1,23 +1,50 @@
+import { useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import articlesData from 'data/articles.json'
-import categoriesData from 'data/categories.json'
-import type { ArticleMeta, Category } from 'types'
+import ContentState from 'components/ContentState'
+import { useArticles, useCategories } from 'hooks/useContent'
 import { filterPublishedArticles, parseDate } from 'utils'
-
-const articles = filterPublishedArticles(articlesData.articles as ArticleMeta[])
-const categories = categoriesData.categories as Category[]
 
 export default function CategoryPage() {
   const { slug } = useParams<{ slug: string }>()
+  const {
+    data: allArticles,
+    loading: articlesLoading,
+    error: articlesError,
+    reload
+  } = useArticles()
+  const {
+    data: categories,
+    loading: categoriesLoading,
+    error: categoriesError
+  } = useCategories()
 
+  const articles = useMemo(
+    () => filterPublishedArticles(allArticles),
+    [allArticles]
+  )
   const category = categories.find((c) => c.slug === slug)
   const categoryArticles = articles.filter((a) => a.category.slug === slug)
+
+  const loading = articlesLoading || categoriesLoading
+  const error = articlesError ?? categoriesError
+
+  if (loading || error) {
+    return (
+      <ContentState loading={loading} error={error} onRetry={reload}>
+        {null}
+      </ContentState>
+    )
+  }
 
   if (!category) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h1 className="mb-4 text-2xl font-bold text-gray-900">Category Not Found</h1>
-        <p className="mb-8 text-gray-600">The category you're looking for doesn't exist.</p>
+        <h1 className="mb-4 text-2xl font-bold text-gray-900">
+          Category Not Found
+        </h1>
+        <p className="mb-8 text-gray-600">
+          The category you&apos;re looking for doesn&apos;t exist.
+        </p>
         <Link
           to="/"
           className="inline-block rounded-full bg-purple-600 px-6 py-3 font-medium text-white transition-colors hover:bg-purple-700"
@@ -39,14 +66,19 @@ export default function CategoryPage() {
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-sm text-gray-900">Categories</span>
           <span className="mx-2 text-gray-400">/</span>
-          <span className="text-sm font-medium text-brand-600">{category.name}</span>
+          <span className="text-sm font-medium text-brand-600">
+            {category.name}
+          </span>
         </nav>
-        <h1 className="mb-2 text-3xl font-bold text-gray-900">{category.name}</h1>
+        <h1 className="mb-2 text-3xl font-bold text-gray-900">
+          {category.name}
+        </h1>
         {category.description && (
           <p className="text-lg text-gray-600">{category.description}</p>
         )}
         <p className="mt-2 text-sm text-gray-500">
-          {categoryArticles.length} article{categoryArticles.length !== 1 ? 's' : ''}
+          {categoryArticles.length} article
+          {categoryArticles.length !== 1 ? 's' : ''}
         </p>
       </header>
 
@@ -63,7 +95,7 @@ export default function CategoryPage() {
                 <img
                   src={article.featureImage.src}
                   alt={article.featureImage.alt}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
@@ -73,9 +105,12 @@ export default function CategoryPage() {
                 <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                   {article.title}
                 </h3>
-                <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
+                <p className="mb-3 line-clamp-2 text-sm text-gray-600">
+                  {article.excerpt}
+                </p>
                 <div className="text-xs text-gray-500">
-                  {article.author.name} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
+                  {article.author.name} &#8226;{' '}
+                  {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>
             </Link>

@@ -1,5 +1,8 @@
+import { lazy, Suspense, type ReactNode } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import PageLayout from 'components/layout/PageLayout'
+import RequireRole from 'components/admin/RequireRole'
+import { LoadingBlock } from 'components/admin/ui'
 import HomePage from 'pages/Home'
 import RandomPage from 'pages/Random'
 import LatestPage from 'pages/Latest'
@@ -24,7 +27,95 @@ import TermsPage from 'pages/Terms'
 import CoursePage from 'pages/Course'
 import ChangelogPage from 'pages/Changelog'
 
+// The CMS pulls in TipTap, ProseMirror and turndown -- several hundred KB that
+// a reader should never download. Lazy-loading keeps all of it in its own
+// chunk, fetched only when someone actually opens /admin.
+const AdminLayout = lazy(() => import('components/admin/AdminLayout'))
+const AdminDashboardPage = lazy(() => import('pages/admin/Dashboard'))
+const AdminArticlesPage = lazy(() => import('pages/admin/Articles'))
+const ArticleEditorPage = lazy(() => import('pages/admin/ArticleEditor'))
+const AdminUsersPage = lazy(() => import('pages/admin/Users'))
+const AdminTaxonomyPage = lazy(() => import('pages/admin/Taxonomy'))
+const AdminProfilePage = lazy(() => import('pages/admin/Profile'))
+const NoAccessPage = lazy(() => import('pages/admin/NoAccess'))
+
+function Lazy({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<LoadingBlock />}>{children}</Suspense>
+}
+
 export const router = createBrowserRouter([
+  {
+    path: '/admin/no-access',
+    element: (
+      <Lazy>
+        <NoAccessPage />
+      </Lazy>
+    )
+  },
+  {
+    path: '/admin',
+    element: (
+      <Lazy>
+        <RequireRole minimum="writer">
+          <AdminLayout />
+        </RequireRole>
+      </Lazy>
+    ),
+    children: [
+      {
+        index: true,
+        element: (
+          <Lazy>
+            <AdminDashboardPage />
+          </Lazy>
+        )
+      },
+      {
+        path: 'articles',
+        element: (
+          <Lazy>
+            <AdminArticlesPage />
+          </Lazy>
+        )
+      },
+      {
+        path: 'articles/:id',
+        element: (
+          <Lazy>
+            <ArticleEditorPage />
+          </Lazy>
+        )
+      },
+      {
+        path: 'taxonomy',
+        element: (
+          <Lazy>
+            <RequireRole minimum="editor">
+              <AdminTaxonomyPage />
+            </RequireRole>
+          </Lazy>
+        )
+      },
+      {
+        path: 'users',
+        element: (
+          <Lazy>
+            <RequireRole minimum="admin">
+              <AdminUsersPage />
+            </RequireRole>
+          </Lazy>
+        )
+      },
+      {
+        path: 'profile',
+        element: (
+          <Lazy>
+            <AdminProfilePage />
+          </Lazy>
+        )
+      }
+    ]
+  },
   {
     path: '/',
     element: <PageLayout />,

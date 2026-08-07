@@ -1,51 +1,6 @@
 {
   "articles": [
     {
-      "id": "c0a87c33-cea4-4060-94bb-98246168a827",
-      "slug": "tinkercad-circuits-lesson-01",
-      "title": "tinkercad-circuits-lesson-0",
-      "subtitle": "How to use this course",
-      "excerpt": "",
-      "author": {
-        "slug": "ryan-and-amira",
-        "name": "Ryan and Amira"
-      },
-      "publishedAt": "2026-08-06",
-      "category": {
-        "slug": "tutorial",
-        "name": "Tutorial"
-      },
-      "tags": [],
-      "featureImage": {
-        "src": "/images/Tinkercad-Circuits-Lesson-0.png",
-        "alt": "Circuits Lesson 0",
-        "caption": ""
-      },
-      "readingTime": 1,
-      "status": "published",
-      "tableOfContents": [
-        {
-          "id": "lesson-objectives",
-          "text": "📌 Lesson Objectives",
-          "level": 2
-        },
-        {
-          "id": "tutorial",
-          "text": "🚀 Tutorial",
-          "level": 2
-        },
-        {
-          "id": "challenge",
-          "text": "🧩 Challenge",
-          "level": 2
-        }
-      ],
-      "nextArticle": {
-        "slug": "tinkercad-circuits-lesson-1",
-        "title": "TinkerCAD Circuits Lesson 1"
-      }
-    },
-    {
       "id": "e78dc961-f383-46e6-bc56-c2a4b129f9e8",
       "slug": "tinkercad-circuits-lesson-6",
       "title": "TinkerCAD Circuits Lesson 6",
@@ -652,6 +607,11 @@
         {
           "id": "tips-for-success",
           "text": "💡 Tips for Success",
+          "level": 2
+        },
+        {
+          "id": "change-up-notes",
+          "text": "Change Up notes",
           "level": 2
         }
       ],
@@ -1843,6 +1803,6 @@
       }
     }
   ],
-  "totalCount": 17,
-  "lastUpdated": "2026-08-06T20:43:26.596Z"
+  "totalCount": 16,
+  "lastUpdated": "2026-08-06T23:18:01.269Z"
 }

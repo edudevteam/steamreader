@@ -9,6 +9,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
+    // Article fixtures embed YouTube iframes; without this happy-dom tries to
+    // fetch them and the failed loads surface as unhandled rejections.
+    environmentOptions: {
+      happyDOM: { settings: { disableIframePageLoading: true } }
+    },
     setupFiles: '.vitest/setup',
     include: ['**/test.{ts,tsx}']
   }

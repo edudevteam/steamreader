@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
-import { marked, Marked } from 'marked'
+import { marked, Marked, type Tokens } from 'marked'
 import { markedHighlight } from 'marked-highlight'
 import hljs from 'highlight.js'
 import readingTime from 'reading-time'
@@ -21,7 +21,6 @@ marked.use(
 import type {
   Article,
   ArticleMeta,
-  ArticleRef,
   ArticlesIndex,
   Frontmatter,
   Category,
@@ -45,11 +44,11 @@ interface ArticleWithRawRefs extends Omit<Article, 'previousArticle' | 'nextArti
   _nextSlug?: string
 }
 
-function generateSlug(text: string): string {
+export function generateSlug(text: string): string {
   return slugify(text, { lower: true, strict: true })
 }
 
-function generateExcerpt(content: string, length = 160): string {
+export function generateExcerpt(content: string, length = 160): string {
   const plainText = content
     .replace(/^#+\s+.*/gm, '')
     .replace(/!\[.*?\]\(.*?\)/g, '')
@@ -65,7 +64,7 @@ function generateHeadingId(text: string): string {
   return slugify(text, { lower: true, strict: true })
 }
 
-function extractTableOfContents(content: string): TocItem[] {
+export function extractTableOfContents(content: string): TocItem[] {
   const headingRegex = /^(#{2,3})\s+(.+)$/gm
   const toc: TocItem[] = []
   let match
@@ -82,12 +81,62 @@ function extractTableOfContents(content: string): TocItem[] {
 
 function createHeadingRenderer() {
   return {
-    heading({ tokens, depth }: { tokens: { text: string }[]; depth: number }) {
-      const text = tokens.map(t => t.text).join('')
+    heading({ tokens, depth }: Tokens.Heading) {
+      const text = tokens.map(t => (t as { text?: string }).text ?? '').join('')
       const id = generateHeadingId(text)
       return `<h${depth} id="${id}">${text}</h${depth}>\n`
     }
   }
+}
+
+/**
+ * Inserts the excerpt as a lead paragraph directly above the "Lesson Objectives"
+ * heading, when the article has one. No-op otherwise.
+ */
+export function applyExcerptToContent(content: string, excerpt: string): string {
+  const lessonObjectivesRegex = /^(## .* ?Lesson Objectives)/m
+  return excerpt && lessonObjectivesRegex.test(content)
+    ? content.replace(lessonObjectivesRegex, `${excerpt}\n\n$1`)
+    : content
+}
+
+export interface RenderedContent {
+  html: string
+  tableOfContents: TocItem[]
+  readingTime: number
+}
+
+/**
+ * Renders markdown body -> HTML exactly the way the build does. Pure: no
+ * filesystem access, so the CMS can call this for live preview and get
+ * byte-identical output to what ships in the article JSON.
+ */
+export async function renderArticleContent(
+  content: string,
+  excerpt: string
+): Promise<RenderedContent> {
+  const contentWithExcerpt = applyExcerptToContent(content, excerpt)
+
+  // Extract table of contents from markdown before processing
+  const tableOfContents = extractTableOfContents(contentWithExcerpt)
+
+  // Create a marked instance with custom heading renderer for IDs
+  const markedWithIds = new Marked()
+  markedWithIds.use({ renderer: createHeadingRenderer() })
+  markedWithIds.use(
+    markedHighlight({
+      langPrefix: 'hljs language-',
+      highlight(code, lang) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext'
+        return hljs.highlight(code, { language }).value
+      }
+    })
+  )
+
+  const html = await markedWithIds.parse(contentWithExcerpt)
+  const stats = readingTime(contentWithExcerpt)
+
+  return { html, tableOfContents, readingTime: Math.ceil(stats.minutes) }
 }
 
 async function copyAllImages(): Promise<void> {
@@ -125,34 +174,10 @@ async function processArticle(fileName: string): Promise<ArticleWithRawRefs | nu
     // e.g., "2024-01-15-intro-to-robotics.md" -> "intro-to-robotics"
     const slug = fileName.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')
 
-    // Insert excerpt before Lesson Objectives heading if both exist
+    // Insert excerpt before Lesson Objectives heading if both exist, then
+    // render to HTML and derive the TOC / reading time
     const excerpt = frontmatter.excerpt || generateExcerpt(content)
-    const lessonObjectivesRegex = /^(## .* ?Lesson Objectives)/m
-    const contentWithExcerpt = excerpt && lessonObjectivesRegex.test(content)
-      ? content.replace(lessonObjectivesRegex, `${excerpt}\n\n$1`)
-      : content
-
-    // Extract table of contents from markdown before processing
-    const tableOfContents = extractTableOfContents(contentWithExcerpt)
-
-    // Create a marked instance with custom heading renderer for IDs
-    const markedWithIds = new Marked()
-    markedWithIds.use({ renderer: createHeadingRenderer() })
-    markedWithIds.use(
-      markedHighlight({
-        langPrefix: 'hljs language-',
-        highlight(code, lang) {
-          const language = hljs.getLanguage(lang) ? lang : 'plaintext'
-          return hljs.highlight(code, { language }).value
-        }
-      })
-    )
-
-    // Process markdown to HTML
-    const htmlContent = await markedWithIds.parse(contentWithExcerpt)
-
-    // Calculate reading time
-    const stats = readingTime(contentWithExcerpt)
+    const rendered = await renderArticleContent(content, excerpt)
 
     // Handle feature image - use as-is (local paths like /images/... or external URLs)
     const featureImageSrc = frontmatter.feature_image
@@ -182,15 +207,15 @@ async function processArticle(fileName: string): Promise<ArticleWithRawRefs | nu
         alt: frontmatter.feature_image_alt || frontmatter.title,
         caption: frontmatter.feature_image_caption
       },
-      readingTime: Math.ceil(stats.minutes),
+      readingTime: rendered.readingTime,
       status: frontmatter.status || 'published',
       validation: (frontmatter.validated_tutorial || frontmatter.supported_evidence || frontmatter.community_approved) ? {
         validatedTutorial: frontmatter.validated_tutorial,
         supportedEvidence: frontmatter.supported_evidence,
         communityApproved: frontmatter.community_approved
       } : undefined,
-      content: htmlContent,
-      tableOfContents,
+      content: rendered.html,
+      tableOfContents: rendered.tableOfContents,
       _previousSlug: frontmatter.prev || frontmatter.previous,
       _nextSlug: frontmatter.next
     }
