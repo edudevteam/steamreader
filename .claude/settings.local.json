@@ -1,34 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(tree:*)",
-      "Bash(pnpm approve-builds:*)",
-      "Bash(pnpm config set:*)",
-      "Bash(pnpm typecheck:*)",
-      "Bash(pnpm articles:list:*)",
-      "Bash(pnpm articles:build:*)",
-      "Bash(timeout 10 pnpm dev:*)",
-      "Bash(pnpm build:*)",
-      "Bash(npm run articles:build:*)",
-      "Bash(npx tsc:*)",
-      "Bash(npm install:*)",
-      "Bash(pnpm add:*)",
-      "Bash(pnpm run articles:build:*)",
-      "Bash(pnpm run build:*)",
-      "Bash(pnpm install:*)",
-      "Bash(pnpm list:*)",
-      "Bash(npx tsx:*)",
-      "Bash(ls:*)",
-      "Bash(pnpm build:article:*)",
-      "Bash(npm run typecheck:*)",
-      "Bash(timeout 10 npm run dev:*)",
-      "Bash(npm run build:*)",
-      "Bash(pnpm sync:dry:*)",
-      "Bash(pnpm tsc:*)",
-      "Bash(curl:*)",
-      "Bash(dig:*)",
-      "Bash(find:*)",
-      "Bash(node scripts/generate-changelog-assets.mjs:*)"
+      "Bash(pnpm install)",
+      "Bash(pnpm rebuild better-sqlite3 esbuild)",
+      "Bash(pnpm build)",
+      "Bash(pnpm lint)"
     ]
   }
 }
