@@ -14,7 +14,10 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const { signUp } = useAuth()
 
-  const { isPasswordValid, passwordsMatch } = usePasswordValidation(password, confirmPassword)
+  const { isPasswordValid, passwordsMatch } = usePasswordValidation(
+    password,
+    confirmPassword
+  )
 
   // Check if user is 13+ based on birthdate
   const isOldEnough = useMemo(() => {
@@ -23,9 +26,10 @@ export default function SignupPage() {
     const today = new Date()
     const age = today.getFullYear() - birth.getFullYear()
     const monthDiff = today.getMonth() - birth.getMonth()
-    const actualAge = monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())
-      ? age - 1
-      : age
+    const actualAge =
+      monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())
+        ? age - 1
+        : age
     return actualAge >= 13
   }, [birthdate])
 
@@ -53,7 +57,12 @@ export default function SignupPage() {
 
     setLoading(true)
 
-    const { error } = await signUp(email, password, new Date(birthdate), displayName || undefined)
+    const { error } = await signUp(
+      email,
+      password,
+      new Date(birthdate),
+      displayName || undefined
+    )
 
     if (error) {
       setError(error.message)
@@ -67,12 +76,14 @@ export default function SignupPage() {
   if (success) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
-        <div className="rounded-lg bg-white p-8 shadow-md text-center">
+        <div className="rounded-lg bg-white p-8 text-center shadow-md">
           <div className="mb-4 text-5xl">📧</div>
-          <h1 className="mb-4 text-2xl font-bold text-gray-900">Check your email</h1>
+          <h1 className="mb-4 text-2xl font-bold text-gray-900">
+            Check your email
+          </h1>
           <p className="mb-6 text-gray-600">
-            We've sent a confirmation link to <strong>{email}</strong>.
-            Please click the link to verify your account.
+            We've sent a confirmation link to <strong>{email}</strong>. Please
+            click the link to verify your account.
           </p>
           <Link
             to="/login"
@@ -88,7 +99,9 @@ export default function SignupPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
       <div className="rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-center text-3xl font-bold text-gray-900">Create Account</h1>
+        <h1 className="mb-6 text-center text-3xl font-bold text-gray-900">
+          Create Account
+        </h1>
 
         {error && (
           <div className="mb-4 rounded-md bg-red-50 p-4 text-sm text-red-700">
@@ -98,7 +111,10 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="displayName" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="displayName"
+              className="block text-sm font-medium text-gray-700"
+            >
               Display Name <span className="text-gray-400">(optional)</span>
             </label>
             <input
@@ -112,7 +128,10 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -127,7 +146,10 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <label htmlFor="birthdate" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="birthdate"
+              className="block text-sm font-medium text-gray-700"
+            >
               Birthdate <span className="text-gray-400">(must be 13+)</span>
             </label>
             <input
@@ -146,7 +168,9 @@ export default function SignupPage() {
               }`}
             />
             {isOldEnough === false && (
-              <p className="mt-1 text-sm text-red-600">You must be at least 13 years old</p>
+              <p className="mt-1 text-sm text-red-600">
+                You must be at least 13 years old
+              </p>
             )}
           </div>
 
@@ -167,10 +191,15 @@ export default function SignupPage() {
         </form>
 
         <p className="mt-4 text-center text-xs text-gray-500">
-          By signing up, you confirm that you are at least 13 years old and agree to our{' '}
-          <Link to="/terms" className="text-brand-600 hover:text-brand-500 underline">
+          By signing up, you confirm that you are at least 13 years old and
+          agree to our{' '}
+          <Link
+            to="/terms"
+            className="text-brand-600 underline hover:text-brand-500"
+          >
             Terms and Conditions
-          </Link>.
+          </Link>
+          .
         </p>
 
         <div className="mt-4 text-center text-sm text-gray-600">

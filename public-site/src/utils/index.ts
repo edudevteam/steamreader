@@ -35,7 +35,9 @@ export function toDateTimeLocal(iso: string): string {
   )
 }
 
-export function filterPublishedArticles<T extends { publishedAt: string }>(articles: T[]): T[] {
+export function filterPublishedArticles<T extends { publishedAt: string }>(
+  articles: T[]
+): T[] {
   const now = new Date()
   return articles.filter((article) => parseDate(article.publishedAt) <= now)
 }

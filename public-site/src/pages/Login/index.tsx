@@ -28,7 +28,9 @@ export default function LoginPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
       <div className="rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-center text-3xl font-bold text-gray-900">Sign In</h1>
+        <h1 className="mb-6 text-center text-3xl font-bold text-gray-900">
+          Sign In
+        </h1>
 
         {error && (
           <div className="mb-4 rounded-md bg-red-50 p-4 text-sm text-red-700">
@@ -38,7 +40,10 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -53,7 +58,10 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -77,7 +85,10 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-6 text-center text-sm">
-          <Link to="/reset-password" className="text-brand-600 hover:text-brand-500">
+          <Link
+            to="/reset-password"
+            className="text-brand-600 hover:text-brand-500"
+          >
             Forgot your password?
           </Link>
         </div>

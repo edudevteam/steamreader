@@ -22,24 +22,33 @@ export default function ArticleCarousel({
   limit,
   variant = 'default',
   viewAllLink,
-  viewAllText = 'View all',
+  viewAllText = 'View all'
 }: ArticleCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [currentPage, setCurrentPage] = useState(0)
 
   const limitedArticles = limit ? articles.slice(0, limit) : articles
   const totalPages = Math.ceil(limitedArticles.length / count)
-  const displayedArticles = limitedArticles.slice(currentPage * count, (currentPage + 1) * count)
+  const displayedArticles = limitedArticles.slice(
+    currentPage * count,
+    (currentPage + 1) * count
+  )
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -scrollRef.current.offsetWidth * 0.85, behavior: 'smooth' })
+      scrollRef.current.scrollBy({
+        left: -scrollRef.current.offsetWidth * 0.85,
+        behavior: 'smooth'
+      })
     }
   }
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: scrollRef.current.offsetWidth * 0.85, behavior: 'smooth' })
+      scrollRef.current.scrollBy({
+        left: scrollRef.current.offsetWidth * 0.85,
+        behavior: 'smooth'
+      })
     }
   }
 
@@ -51,13 +60,15 @@ export default function ArticleCarousel({
     setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))
   }
 
-  const cardClasses = variant === 'tutorial'
-    ? 'group overflow-hidden rounded-xl border-2 border-brand-100 bg-gradient-to-br from-brand-50 to-white shadow-md transition-all hover:border-brand-200 hover:shadow-lg'
-    : 'group overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg'
+  const cardClasses =
+    variant === 'tutorial'
+      ? 'group overflow-hidden rounded-xl border-2 border-brand-100 bg-gradient-to-br from-brand-50 to-white shadow-md transition-all hover:border-brand-200 hover:shadow-lg'
+      : 'group overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg'
 
-  const badgeClasses = variant === 'tutorial'
-    ? 'rounded-full bg-brand-100 px-2 py-1 text-xs font-medium text-brand-700'
-    : 'rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600'
+  const badgeClasses =
+    variant === 'tutorial'
+      ? 'rounded-full bg-brand-100 px-2 py-1 text-xs font-medium text-brand-700'
+      : 'rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600'
 
   const badgeText = (article: ArticleMeta) =>
     variant === 'tutorial' ? 'Tutorial' : article.category.name
@@ -70,9 +81,7 @@ export default function ArticleCarousel({
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
-          {subtitle && (
-            <p className="mt-1 text-sm text-gray-600">{subtitle}</p>
-          )}
+          {subtitle && <p className="mt-1 text-sm text-gray-600">{subtitle}</p>}
         </div>
         {viewAllLink && (
           <Link
@@ -92,8 +101,18 @@ export default function ArticleCarousel({
           className="absolute left-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition-colors hover:bg-white"
           aria-label="Scroll left"
         >
-          <svg className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="size-5 text-gray-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
         </button>
 
@@ -107,20 +126,18 @@ export default function ArticleCarousel({
             <Link
               key={article.slug}
               to={`/article/${article.slug}`}
-              className={`w-[85vw] flex-shrink-0 snap-center ${cardClasses}`}
+              className={`w-[85vw] shrink-0 snap-center ${cardClasses}`}
             >
               <div className="aspect-video w-full overflow-hidden">
                 <img
                   src={article.featureImage.src}
                   alt={article.featureImage.alt}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
                 <div className="mb-2 flex items-center gap-2">
-                  <span className={badgeClasses}>
-                    {badgeText(article)}
-                  </span>
+                  <span className={badgeClasses}>{badgeText(article)}</span>
                   <span className="text-xs text-gray-500">
                     {article.readingTime} min
                   </span>
@@ -128,9 +145,12 @@ export default function ArticleCarousel({
                 <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                   {article.title}
                 </h3>
-                <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
+                <p className="mb-3 line-clamp-2 text-sm text-gray-600">
+                  {article.excerpt}
+                </p>
                 <div className="text-xs text-gray-500">
-                  {formatByline(article.authors)} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
+                  {formatByline(article.authors)} &#8226;{' '}
+                  {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>
             </Link>
@@ -143,8 +163,18 @@ export default function ArticleCarousel({
           className="absolute right-0 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-md backdrop-blur-sm transition-colors hover:bg-white"
           aria-label="Scroll right"
         >
-          <svg className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            className="size-5 text-gray-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </button>
       </div>
@@ -162,14 +192,12 @@ export default function ArticleCarousel({
                 <img
                   src={article.featureImage.src}
                   alt={article.featureImage.alt}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
                 <div className="mb-2 flex items-center gap-2">
-                  <span className={badgeClasses}>
-                    {badgeText(article)}
-                  </span>
+                  <span className={badgeClasses}>{badgeText(article)}</span>
                   <span className="text-xs text-gray-500">
                     {article.readingTime} min
                   </span>
@@ -177,9 +205,12 @@ export default function ArticleCarousel({
                 <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-brand-600">
                   {article.title}
                 </h3>
-                <p className="mb-3 line-clamp-2 text-sm text-gray-600">{article.excerpt}</p>
+                <p className="mb-3 line-clamp-2 text-sm text-gray-600">
+                  {article.excerpt}
+                </p>
                 <div className="text-xs text-gray-500">
-                  {formatByline(article.authors)} &#8226; {parseDate(article.publishedAt).toLocaleDateString()}
+                  {formatByline(article.authors)} &#8226;{' '}
+                  {parseDate(article.publishedAt).toLocaleDateString()}
                 </div>
               </div>
             </Link>
@@ -201,8 +232,10 @@ export default function ArticleCarousel({
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i)}
-                  className={`h-2 w-2 rounded-full transition-colors ${
-                    i === currentPage ? 'bg-brand-600' : 'bg-gray-300 hover:bg-gray-400'
+                  className={`size-2 rounded-full transition-colors ${
+                    i === currentPage
+                      ? 'bg-brand-600'
+                      : 'bg-gray-300 hover:bg-gray-400'
                   }`}
                   aria-label={`Go to page ${i + 1}`}
                 />

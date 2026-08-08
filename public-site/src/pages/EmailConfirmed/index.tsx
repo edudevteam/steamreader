@@ -18,7 +18,7 @@ export default function EmailConfirmedPage() {
   if (!ready) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
-        <div className="rounded-lg bg-white p-8 shadow-md text-center">
+        <div className="rounded-lg bg-white p-8 text-center shadow-md">
           <p className="text-gray-600">Verifying...</p>
         </div>
       </div>
@@ -27,10 +27,10 @@ export default function EmailConfirmedPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
-      <div className="rounded-lg bg-white p-8 shadow-md text-center">
+      <div className="rounded-lg bg-white p-8 text-center shadow-md">
         <div className="mb-4">
           <svg
-            className="mx-auto h-12 w-12 text-green-500"
+            className="mx-auto size-12 text-green-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -44,10 +44,13 @@ export default function EmailConfirmedPage() {
           </svg>
         </div>
 
-        <h1 className="mb-4 text-2xl font-bold text-gray-900">Email Verified</h1>
+        <h1 className="mb-4 text-2xl font-bold text-gray-900">
+          Email Verified
+        </h1>
 
         <p className="mb-6 text-gray-600">
-          Your email has been verified and your account is now active. Please log in to access your account.
+          Your email has been verified and your account is now active. Please
+          log in to access your account.
         </p>
 
         <Link

@@ -46,5 +46,20 @@ export default {
       }
     }
   },
-  plugins: [require('@tailwindcss/typography')]
+  plugins: [
+    require('@tailwindcss/typography'),
+    // The article and course carousels scroll horizontally with snap points,
+    // so the native scrollbar is redundant next to their arrow controls -- and
+    // on Windows it eats a row of pixels the design does not account for. The
+    // class was in use long before this utility existed; it simply did nothing.
+    require('tailwindcss/plugin')(({ addUtilities }) => {
+      addUtilities({
+        '.scrollbar-hide': {
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+          '&::-webkit-scrollbar': { display: 'none' }
+        }
+      })
+    })
+  ]
 }

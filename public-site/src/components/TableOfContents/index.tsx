@@ -38,11 +38,11 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
         {/* Floating TOC button */}
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand-600 text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className="fixed bottom-6 right-6 z-40 flex size-14 items-center justify-center rounded-full bg-brand-600 text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
           aria-label="Open table of contents"
         >
           <svg
-            className="h-6 w-6"
+            className="size-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -66,15 +66,15 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
 
         {/* Slide-out drawer */}
         <div
-          className={`fixed inset-y-0 right-0 z-50 w-80 max-w-[85vw] transform bg-white shadow-xl transition-transform duration-300 ease-in-out ${
+          className={`fixed inset-y-0 right-0 z-50 w-80 max-w-[85vw] bg-white shadow-xl transition-transform duration-300 ease-in-out${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
           {/* Drawer header */}
-          <div className="flex items-center justify-between border-b border-gray-200 px-4 py-4">
+          <div className="flex items-center justify-between border-b border-gray-200 p-4">
             <div className="flex items-center gap-2">
               <svg
-                className="h-5 w-5 text-brand-600"
+                className="size-5 text-brand-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -94,7 +94,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
               aria-label="Close table of contents"
             >
               <svg
-                className="h-5 w-5"
+                className="size-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -110,7 +110,10 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
           </div>
 
           {/* Drawer content */}
-          <nav className="overflow-y-auto p-4" style={{ maxHeight: 'calc(100vh - 65px)' }}>
+          <nav
+            className="overflow-y-auto p-4"
+            style={{ maxHeight: 'calc(100vh - 65px)' }}
+          >
             <ul className="space-y-1">
               {groupedItems.map(({ parent, children }) => (
                 <li key={parent.id}>

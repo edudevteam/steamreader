@@ -94,9 +94,12 @@ function useCachedResource<T>(
       return () => {
         cancelled = true
       }
-      // The loader is recreated per render by callers; the key identifies it.
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    // The loader is recreated per render by callers; the key identifies it.
+    // The disable has to sit directly above the dependency array -- one line
+    // higher and it lands on the closing brace, which is not where the rule
+    // reports.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [key]
   )
 

@@ -2,7 +2,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { supabase } from 'lib/supabase'
 import { useAuth } from 'context/AuthContext'
 
-export type VoteType = 'read' | 'tutorial_verified' | 'links_verified' | 'endorsed'
+export type VoteType =
+  | 'read'
+  | 'tutorial_verified'
+  | 'links_verified'
+  | 'endorsed'
 
 export interface VoteCounts {
   read_count: number
@@ -10,6 +14,10 @@ export interface VoteCounts {
   links_verified_count: number
   endorsed_count: number
 }
+
+// Every vote type has a matching count column, which is what lets the
+// optimistic updates below index VoteCounts by a computed key.
+type VoteCountKey = `${VoteType}_count`
 
 export interface UseArticleVotesResult {
   voteCounts: VoteCounts | null
@@ -27,7 +35,9 @@ const defaultCounts: VoteCounts = {
   endorsed_count: 0
 }
 
-export function useArticleVotes(articleId: string | undefined): UseArticleVotesResult {
+export function useArticleVotes(
+  articleId: string | undefined
+): UseArticleVotesResult {
   const { user } = useAuth()
   const [voteCounts, setVoteCounts] = useState<VoteCounts | null>(null)
   const [userVotes, setUserVotes] = useState<VoteType[]>([])
@@ -75,7 +85,7 @@ export function useArticleVotes(articleId: string | undefined): UseArticleVotesR
 
       if (fetchError) throw fetchError
 
-      setUserVotes(data?.map(v => v.vote_type as VoteType) || [])
+      setUserVotes(data?.map((v) => v.vote_type as VoteType) || [])
     } catch (err) {
       console.error('Error fetching user votes:', err)
       setUserVotes([])
@@ -93,75 +103,87 @@ export function useArticleVotes(articleId: string | undefined): UseArticleVotesR
     refreshVotes()
   }, [refreshVotes])
 
-  const toggleVote = useCallback(async (voteType: VoteType) => {
-    if (!articleId || !user) {
-      setError('You must be logged in to vote')
-      return
-    }
-
-    const hasVote = userVotes.includes(voteType)
-
-    try {
-      if (hasVote) {
-        // Remove vote
-        const { error: deleteError } = await supabase
-          .from('article_votes')
-          .delete()
-          .eq('article_id', articleId)
-          .eq('user_id', user.id)
-          .eq('vote_type', voteType)
-
-        if (deleteError) throw deleteError
-
-        // Optimistic update
-        setUserVotes(prev => prev.filter(v => v !== voteType))
-        setVoteCounts(prev => prev ? {
-          ...prev,
-          [`${voteType}_count`]: Math.max(0, (prev as any)[`${voteType}_count`] - 1)
-        } : null)
-      } else {
-        // Add vote
-        const { error: insertError } = await supabase
-          .from('article_votes')
-          .insert({
-            article_id: articleId,
-            user_id: user.id,
-            vote_type: voteType
-          })
-
-        if (insertError) throw insertError
-
-        // Optimistic update - also add 'read' if not already voted
-        // (the database trigger handles this, but we update UI optimistically)
-        const newVotes = [...userVotes, voteType]
-        if (voteType !== 'read' && !userVotes.includes('read')) {
-          newVotes.push('read')
-        }
-        setUserVotes(newVotes)
-
-        setVoteCounts(prev => {
-          if (!prev) return prev
-          const updated = {
-            ...prev,
-            [`${voteType}_count`]: (prev as any)[`${voteType}_count`] + 1
-          }
-          // Also increment read count if auto-added
-          if (voteType !== 'read' && !userVotes.includes('read')) {
-            updated.read_count = prev.read_count + 1
-          }
-          return updated
-        })
+  const toggleVote = useCallback(
+    async (voteType: VoteType) => {
+      if (!articleId || !user) {
+        setError('You must be logged in to vote')
+        return
       }
 
-      // Refresh to get accurate counts
-      setTimeout(refreshVotes, 500)
-    } catch (err: any) {
-      console.error('Error toggling vote:', err)
-      setError(err.message || 'Failed to update vote')
-      // Refresh to restore accurate state
-      refreshVotes()
-    }
-  }, [articleId, user, userVotes, refreshVotes])
+      const hasVote = userVotes.includes(voteType)
+      const countKey: VoteCountKey = `${voteType}_count`
+
+      try {
+        if (hasVote) {
+          // Remove vote
+          const { error: deleteError } = await supabase
+            .from('article_votes')
+            .delete()
+            .eq('article_id', articleId)
+            .eq('user_id', user.id)
+            .eq('vote_type', voteType)
+
+          if (deleteError) throw deleteError
+
+          // Optimistic update
+          setUserVotes((prev) => prev.filter((v) => v !== voteType))
+          setVoteCounts((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  [countKey]: Math.max(0, prev[countKey] - 1)
+                }
+              : null
+          )
+        } else {
+          // Add vote
+          const { error: insertError } = await supabase
+            .from('article_votes')
+            .insert({
+              article_id: articleId,
+              user_id: user.id,
+              vote_type: voteType
+            })
+
+          if (insertError) throw insertError
+
+          // Optimistic update - also add 'read' if not already voted
+          // (the database trigger handles this, but we update UI optimistically)
+          const newVotes = [...userVotes, voteType]
+          if (voteType !== 'read' && !userVotes.includes('read')) {
+            newVotes.push('read')
+          }
+          setUserVotes(newVotes)
+
+          setVoteCounts((prev) => {
+            if (!prev) return prev
+            const updated = {
+              ...prev,
+              [countKey]: prev[countKey] + 1
+            }
+            // Also increment read count if auto-added
+            if (voteType !== 'read' && !userVotes.includes('read')) {
+              updated.read_count = prev.read_count + 1
+            }
+            return updated
+          })
+        }
+
+        // Refresh to get accurate counts
+        setTimeout(refreshVotes, 500)
+      } catch (err) {
+        console.error('Error toggling vote:', err)
+        setError(
+          err instanceof Error && err.message
+            ? err.message
+            : 'Failed to update vote'
+        )
+        // Refresh to restore accurate state
+        refreshVotes()
+      }
+    },
+    [articleId, user, userVotes, refreshVotes]
+  )
 
   return {
     voteCounts,

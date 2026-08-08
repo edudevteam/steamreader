@@ -13,7 +13,10 @@ export default function UpdatePasswordPage() {
   const { user, loading: authLoading, updatePassword, signOut } = useAuth()
   const navigate = useNavigate()
 
-  const { isPasswordValid, passwordsMatch } = usePasswordValidation(password, confirmPassword)
+  const { isPasswordValid, passwordsMatch } = usePasswordValidation(
+    password,
+    confirmPassword
+  )
 
   useEffect(() => {
     // Check if this is a password recovery flow
@@ -83,9 +86,11 @@ export default function UpdatePasswordPage() {
   if (isRecoveryMode && !user) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
-        <div className="rounded-lg bg-white p-8 shadow-md text-center">
+        <div className="rounded-lg bg-white p-8 text-center shadow-md">
           <div className="mb-4 text-5xl text-red-500">!</div>
-          <h1 className="mb-4 text-2xl font-bold text-gray-900">Link Expired</h1>
+          <h1 className="mb-4 text-2xl font-bold text-gray-900">
+            Link Expired
+          </h1>
           <p className="mb-6 text-gray-600">
             This password reset link has expired or has already been used.
             Please request a new one.
@@ -104,9 +109,11 @@ export default function UpdatePasswordPage() {
   if (success) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
-        <div className="rounded-lg bg-white p-8 shadow-md text-center">
+        <div className="rounded-lg bg-white p-8 text-center shadow-md">
           <div className="mb-4 text-5xl text-green-500">&#10003;</div>
-          <h1 className="mb-4 text-2xl font-bold text-gray-900">Password Updated</h1>
+          <h1 className="mb-4 text-2xl font-bold text-gray-900">
+            Password Updated
+          </h1>
           <p className="mb-6 text-gray-600">
             Your password has been successfully updated.
           </p>

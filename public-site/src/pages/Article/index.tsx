@@ -354,7 +354,7 @@ export default function ArticlePage() {
       {/* Article Content */}
       <div
         ref={contentRef}
-        className="prose-brand prose prose-lg mx-auto"
+        className="prose prose-lg mx-auto"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
 

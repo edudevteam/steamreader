@@ -7,7 +7,10 @@ export default function AccountPage() {
   const navigate = useNavigate()
   const [displayName, setDisplayName] = useState('')
   const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [message, setMessage] = useState<{
+    type: 'success' | 'error'
+    text: string
+  } | null>(null)
 
   useEffect(() => {
     if (!loading && !user) {
@@ -55,7 +58,9 @@ export default function AccountPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-8 text-3xl font-bold text-gray-900">Account Settings</h1>
+      <h1 className="mb-8 text-3xl font-bold text-gray-900">
+        Account Settings
+      </h1>
 
       <div className="space-y-8">
         {/* Profile Section */}
@@ -76,7 +81,10 @@ export default function AccountPage() {
 
           <form onSubmit={handleUpdateProfile} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               <input
@@ -86,11 +94,16 @@ export default function AccountPage() {
                 value={user.email || ''}
                 className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-gray-500"
               />
-              <p className="mt-1 text-xs text-gray-500">Email cannot be changed</p>
+              <p className="mt-1 text-xs text-gray-500">
+                Email cannot be changed
+              </p>
             </div>
 
             <div>
-              <label htmlFor="displayName" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="displayName"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Display Name
               </label>
               <input
@@ -104,12 +117,18 @@ export default function AccountPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Role</label>
-              <p className="mt-1 text-sm text-gray-600 capitalize">{profile?.role || 'user'}</p>
+              <label className="block text-sm font-medium text-gray-700">
+                Role
+              </label>
+              <p className="mt-1 text-sm capitalize text-gray-600">
+                {profile?.role || 'user'}
+              </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Member Since</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Member Since
+              </label>
               <p className="mt-1 text-sm text-gray-600">
                 {profile?.created_at
                   ? new Date(profile.created_at).toLocaleDateString('en-US', {

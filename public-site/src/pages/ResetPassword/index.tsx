@@ -28,11 +28,14 @@ export default function ResetPasswordPage() {
   if (success) {
     return (
       <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
-        <div className="rounded-lg bg-white p-8 shadow-md text-center">
+        <div className="rounded-lg bg-white p-8 text-center shadow-md">
           <div className="mb-4 text-5xl">📧</div>
-          <h1 className="mb-4 text-2xl font-bold text-gray-900">Check your email</h1>
+          <h1 className="mb-4 text-2xl font-bold text-gray-900">
+            Check your email
+          </h1>
           <p className="mb-6 text-gray-600">
-            If an account exists for <strong>{email}</strong>, we've sent a password reset link.
+            If an account exists for <strong>{email}</strong>, we've sent a
+            password reset link.
           </p>
           <Link
             to="/login"
@@ -48,7 +51,9 @@ export default function ResetPasswordPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-12 sm:px-6 lg:px-8">
       <div className="rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-2 text-center text-3xl font-bold text-gray-900">Reset Password</h1>
+        <h1 className="mb-2 text-center text-3xl font-bold text-gray-900">
+          Reset Password
+        </h1>
         <p className="mb-6 text-center text-sm text-gray-600">
           Enter your email and we'll send you a link to reset your password.
         </p>
@@ -61,7 +66,10 @@ export default function ResetPasswordPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input

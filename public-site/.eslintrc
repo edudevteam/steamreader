@@ -8,6 +8,9 @@
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "tailwindcss": {
+      "whitelist": ["scrollbar-hide"]
     }
   },
   "extends": [
@@ -32,6 +35,7 @@
     "react-hooks/exhaustive-deps": "warn",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "tailwindcss/classnames-order": "warn",

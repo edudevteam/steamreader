@@ -13,10 +13,13 @@ export default function Footer() {
         <div className="mb-8 md:hidden">
           <Link to="/" className="flex items-center gap-2">
             <img src="/logo.png" alt="STEAM Reader" className="h-8 w-auto" />
-            <span className="text-xl font-bold text-gray-900">STEAM Reader</span>
+            <span className="text-xl font-bold text-gray-900">
+              STEAM Reader
+            </span>
           </Link>
           <p className="mt-4 text-sm text-gray-600">
-            Inspiring the next generation through Science, Technology, Engineering, Arts, and Mathematics.
+            Inspiring the next generation through Science, Technology,
+            Engineering, Arts, and Mathematics.
           </p>
         </div>
 
@@ -144,10 +147,13 @@ export default function Footer() {
           <div>
             <Link to="/" className="flex items-center gap-2">
               <img src="/logo.png" alt="STEAM Reader" className="h-8 w-auto" />
-              <span className="text-xl font-bold text-gray-900">STEAM Reader</span>
+              <span className="text-xl font-bold text-gray-900">
+                STEAM Reader
+              </span>
             </Link>
             <p className="mt-4 text-sm text-gray-600">
-              Inspiring the next generation through Science, Technology, Engineering, Arts, and Mathematics.
+              Inspiring the next generation through Science, Technology,
+              Engineering, Arts, and Mathematics.
             </p>
           </div>
 
