@@ -18,6 +18,106 @@ import type { ArticleRow, ArticleStatus } from 'types'
 import { STATUS_LABELS } from 'types/cms'
 
 type Scope = 'mine' | 'all'
+type SortKey = 'title' | 'author' | 'category' | 'status' | 'updated'
+type SortDir = 'asc' | 'desc'
+type Sort = { key: SortKey; dir: SortDir }
+
+// Matches the order the list arrives in, so the table looks untouched until a
+// header is actually clicked.
+const DEFAULT_SORT: Sort = { key: 'updated', dir: 'desc' }
+
+// Sorting statuses alphabetically would scatter the workflow across the table;
+// rank them the way an article actually travels instead.
+const STATUS_ORDER: Record<ArticleStatus, number> = {
+  draft: 0,
+  in_review: 1,
+  published: 2,
+  archived: 3
+}
+
+// First click on a date column should surface the newest work; first click on a
+// name column should read A–Z.
+const FIRST_DIR: Record<SortKey, SortDir> = {
+  title: 'asc',
+  author: 'asc',
+  category: 'asc',
+  status: 'asc',
+  updated: 'desc'
+}
+
+const sortValue = (row: ArticleRow, key: SortKey): string | number => {
+  switch (key) {
+    case 'title':
+      return row.title
+    case 'author':
+      return row.author_name ?? ''
+    case 'category':
+      return row.category_name ?? ''
+    case 'status':
+      return STATUS_ORDER[row.status]
+    case 'updated':
+      return row.updated_at
+  }
+}
+
+function SortHeader({
+  label,
+  sortKey,
+  sort,
+  onSort
+}: {
+  label: string
+  sortKey: SortKey
+  sort: Sort
+  onSort: (key: SortKey) => void
+}) {
+  const active = sort.key === sortKey
+  return (
+    <th
+      className="px-4 py-3 font-medium"
+      aria-sort={
+        active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'
+      }
+    >
+      <button
+        type="button"
+        onClick={() => onSort(sortKey)}
+        className={classNames(
+          'group inline-flex items-center gap-1 uppercase tracking-wide transition-colors hover:text-gray-900',
+          active && 'text-gray-900'
+        )}
+      >
+        {label}
+        <svg
+          className={classNames(
+            'size-3',
+            active
+              ? 'text-brand-600'
+              : 'text-gray-300 group-hover:text-gray-400'
+          )}
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.6}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          {active ? (
+            <path
+              d={sort.dir === 'asc' ? 'M3 7.5L6 4.5l3 3' : 'M3 4.5L6 7.5l3-3'}
+            />
+          ) : (
+            <>
+              <path d="M3.5 5L6 2.5 8.5 5" />
+              <path d="M3.5 7L6 9.5 8.5 7" />
+            </>
+          )}
+        </svg>
+      </button>
+    </th>
+  )
+}
 
 export default function AdminArticlesPage() {
   const { user, isEditor } = useAuth()
@@ -28,6 +128,7 @@ export default function AdminArticlesPage() {
   const [scope, setScope] = useState<Scope>(isEditor ? 'all' : 'mine')
   const [status, setStatus] = useState<ArticleStatus | 'all'>('all')
   const [search, setSearch] = useState('')
+  const [sort, setSort] = useState<Sort>(DEFAULT_SORT)
   const [rows, setRows] = useState<ArticleRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -71,6 +172,39 @@ export default function AdminArticlesPage() {
       )
     })
   }, [rows, status, search])
+
+  // The Author column only exists for an editor browsing everyone's work, so a
+  // sort left over from that view falls back rather than sorting invisibly.
+  const showAuthor = isEditor && scope === 'all'
+  const activeSort = sort.key === 'author' && !showAuthor ? DEFAULT_SORT : sort
+
+  const sorted = useMemo(() => {
+    const factor = activeSort.dir === 'asc' ? 1 : -1
+    // The rows arrive newest-first and sort is stable, so ties keep breaking by
+    // how recently the article was touched.
+    return [...visible].sort((a, b) => {
+      const left = sortValue(a, activeSort.key)
+      const right = sortValue(b, activeSort.key)
+      if (typeof left === 'number' && typeof right === 'number')
+        return (left - right) * factor
+      // An article with no author or category sits at the bottom either way --
+      // flipping the arrow should not fill the top of the table with dashes.
+      if (!left || !right) return left ? -1 : right ? 1 : 0
+      return (
+        String(left).localeCompare(String(right), undefined, {
+          sensitivity: 'base',
+          numeric: true
+        }) * factor
+      )
+    })
+  }, [visible, activeSort])
+
+  const toggleSort = (key: SortKey) =>
+    setSort((current) =>
+      current.key === key
+        ? { key, dir: current.dir === 'asc' ? 'desc' : 'asc' }
+        : { key, dir: FIRST_DIR[key] }
+    )
 
   const counts = useMemo(() => {
     const tally: Record<string, number> = { all: rows.length }
@@ -242,18 +376,43 @@ export default function AdminArticlesPage() {
             <table className="min-w-full divide-y divide-gray-200 text-sm">
               <thead>
                 <tr className="text-left text-xs uppercase tracking-wide text-gray-500">
-                  <th className="px-4 py-3 font-medium">Title</th>
-                  {isEditor && scope === 'all' && (
-                    <th className="px-4 py-3 font-medium">Author</th>
+                  <SortHeader
+                    label="Title"
+                    sortKey="title"
+                    sort={activeSort}
+                    onSort={toggleSort}
+                  />
+                  {showAuthor && (
+                    <SortHeader
+                      label="Author"
+                      sortKey="author"
+                      sort={activeSort}
+                      onSort={toggleSort}
+                    />
                   )}
-                  <th className="px-4 py-3 font-medium">Category</th>
-                  <th className="px-4 py-3 font-medium">Status</th>
-                  <th className="px-4 py-3 font-medium">Updated</th>
+                  <SortHeader
+                    label="Category"
+                    sortKey="category"
+                    sort={activeSort}
+                    onSort={toggleSort}
+                  />
+                  <SortHeader
+                    label="Status"
+                    sortKey="status"
+                    sort={activeSort}
+                    onSort={toggleSort}
+                  />
+                  <SortHeader
+                    label="Updated"
+                    sortKey="updated"
+                    sort={activeSort}
+                    onSort={toggleSort}
+                  />
                   <th className="px-4 py-3 text-right font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {visible.map((row) => (
+                {sorted.map((row) => (
                   <tr
                     key={row.id}
                     className={classNames(
@@ -272,7 +431,7 @@ export default function AdminArticlesPage() {
                         /{row.slug}
                       </p>
                     </td>
-                    {isEditor && scope === 'all' && (
+                    {showAuthor && (
                       <td className="px-4 py-3 text-gray-600">
                         {row.author_name ?? '—'}
                         {(row.authors ?? []).length > 1 && (
