@@ -47,7 +47,7 @@ function Divider() {
   return <span className="mx-1 h-5 w-px bg-gray-300" aria-hidden />
 }
 
-function Icon({ d }: { d: string }) {
+function Icon({ d, children }: { d: string; children?: ReactNode }) {
   return (
     <svg
       className="size-4"
@@ -57,6 +57,8 @@ function Icon({ d }: { d: string }) {
       strokeWidth={1.8}
     >
       <path strokeLinecap="round" strokeLinejoin="round" d={d} />
+      {/* Filled details -- dots and the like -- that a stroked path can't do. */}
+      {children}
     </svg>
   )
 }
@@ -236,7 +238,8 @@ export default function EditorToolbar({
         active={editor.isActive('link')}
         onClick={addLink}
       >
-        <Icon d="M13.828 10.172a4 4 0 010 5.656l-3 3a4 4 0 01-5.656-5.656l1.5-1.5M10.172 13.828a4 4 0 010-5.656l3-3a4 4 0 015.656 5.656l-1.5 1.5" />
+        {/* Two horizontal pills overlapping in the middle -- a chain link. */}
+        <Icon d="M5.5 8.5H10.5a3.5 3.5 0 010 7H5.5a3.5 3.5 0 010-7zM13.5 8.5H18.5a3.5 3.5 0 010 7h-5a3.5 3.5 0 010-7z" />
       </ToolButton>
       <ToolButton
         title={
@@ -245,7 +248,18 @@ export default function EditorToolbar({
         active={editor.isActive('articleButton')}
         onClick={openButtonDialog}
       >
-        <Icon d="M5 9h14a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 012-2zM9.5 12h5" />
+        <Icon d="M7 5.5h10a3.5 3.5 0 013.5 3.5v6a3.5 3.5 0 01-3.5 3.5H7a3.5 3.5 0 01-3.5-3.5V9A3.5 3.5 0 017 5.5z">
+          {[8.4, 12, 15.6].map((cx) => (
+            <circle
+              key={cx}
+              cx={cx}
+              cy={12}
+              r={1.3}
+              fill="currentColor"
+              stroke="none"
+            />
+          ))}
+        </Icon>
       </ToolButton>
       <ToolButton
         title="Insert image"
