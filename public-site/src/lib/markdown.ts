@@ -19,6 +19,7 @@ import slugify from 'slugify'
 import TurndownService from 'turndown'
 import { gfm } from 'turndown-plugin-gfm'
 import type { TocItem } from 'types'
+import { stripInlineMarkdown } from 'utils'
 
 export function generateSlug(text: string): string {
   return slugify(text, { lower: true, strict: true })
@@ -38,6 +39,11 @@ export function generateExcerpt(content: string, length = 160): string {
     : plainText
 }
 
+/**
+ * Heading ids are unaffected by the strip below -- slugify's strict mode
+ * already dropped emphasis punctuation, so stripping it first produces
+ * byte-identical slugs.
+ */
 export function extractTableOfContents(content: string): TocItem[] {
   const headingRegex = /^(#{2,3})\s+(.+)$/gm
   const toc: TocItem[] = []
@@ -45,7 +51,7 @@ export function extractTableOfContents(content: string): TocItem[] {
 
   while ((match = headingRegex.exec(content)) !== null) {
     const level = match[1].length as 2 | 3
-    const text = match[2].trim()
+    const text = stripInlineMarkdown(match[2])
     toc.push({ id: generateSlug(text), text, level })
   }
 

@@ -66,7 +66,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
 
         {/* Slide-out drawer */}
         <div
-          className={`fixed inset-y-0 right-0 z-50 w-80 max-w-[85vw] bg-white shadow-xl transition-transform duration-300 ease-in-out${
+          className={`fixed inset-y-0 right-0 z-50 w-80 max-w-[85vw] bg-white shadow-xl transition-transform duration-300 ease-in-out ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >

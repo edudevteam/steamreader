@@ -11,6 +11,7 @@
  * fetch.
  */
 import { supabase } from 'lib/supabase'
+import { stripInlineMarkdown } from 'utils'
 import type {
   Article,
   ArticleMeta,
@@ -91,7 +92,12 @@ export async function fetchArticleBySlug(
   const article: Article = {
     ...toMeta(row),
     content: row.content_html,
-    tableOfContents: row.toc ?? []
+    // The stored toc predates the strip in extractTableOfContents, so rows
+    // published before it still carry `**bold**` in their heading text.
+    tableOfContents: (row.toc ?? []).map((item) => ({
+      ...item,
+      text: stripInlineMarkdown(item.text)
+    }))
   }
 
   // prev/next are stored as slugs; the reader needs titles for the nav links.

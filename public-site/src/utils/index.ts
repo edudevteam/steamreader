@@ -35,6 +35,27 @@ export function toDateTimeLocal(iso: string): string {
   )
 }
 
+/**
+ * Strips emphasis, code ticks and link syntax from a fragment of markdown.
+ *
+ * Heading text reaches the table of contents as a plain string, so `**bold**`
+ * showed up as literal asterisks. It lives here rather than in lib/markdown so
+ * the reader can use it without pulling highlight.js and turndown into the
+ * bundle.
+ */
+export function stripInlineMarkdown(text: string): string {
+  return (
+    text
+      .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/`([^`]+)`/g, '$1')
+      .replace(/\*{1,3}([^*]+)\*{1,3}/g, '$1')
+      // Underscores need word boundaries or snake_case names lose them.
+      .replace(/(^|\W)_{1,3}([^_]+)_{1,3}(?=\W|$)/g, '$1$2')
+      .trim()
+  )
+}
+
 export function filterPublishedArticles<T extends { publishedAt: string }>(
   articles: T[]
 ): T[] {
