@@ -1,6 +1,7 @@
-import { lazy, Suspense, type ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import PageLayout from 'components/layout/PageLayout'
+import RouteError from 'components/layout/RouteError'
 import RequireRole from 'components/admin/RequireRole'
 import { LoadingBlock } from 'components/admin/ui'
 import HomePage from 'pages/Home'
@@ -26,21 +27,28 @@ import EmailConfirmedPage from 'pages/EmailConfirmed'
 import TermsPage from 'pages/Terms'
 import CoursePage from 'pages/Course'
 import ChangelogPage from 'pages/Changelog'
+import { lazyWithRetry } from './lazyWithRetry'
 
 // The CMS pulls in TipTap, ProseMirror and turndown -- several hundred KB that
 // a reader should never download. Lazy-loading keeps all of it in its own
-// chunk, fetched only when someone actually opens /admin.
-const AdminLayout = lazy(() => import('components/admin/AdminLayout'))
-const AdminDashboardPage = lazy(() => import('pages/admin/Dashboard'))
-const AdminArticlesPage = lazy(() => import('pages/admin/Articles'))
-const ArticleEditorPage = lazy(() => import('pages/admin/ArticleEditor'))
-const AdminArticleTrashPage = lazy(() => import('pages/admin/ArticleTrash'))
-const AdminCoursesPage = lazy(() => import('pages/admin/Courses'))
-const CourseEditorPage = lazy(() => import('pages/admin/CourseEditor'))
-const AdminUsersPage = lazy(() => import('pages/admin/Users'))
-const AdminTaxonomyPage = lazy(() => import('pages/admin/Taxonomy'))
-const AdminProfilePage = lazy(() => import('pages/admin/Profile'))
-const NoAccessPage = lazy(() => import('pages/admin/NoAccess'))
+// chunk, fetched only when someone actually opens /admin. lazyWithRetry rather
+// than plain lazy so a deploy mid-session does not strand an open tab on a
+// chunk hash that no longer exists.
+const AdminLayout = lazyWithRetry(() => import('components/admin/AdminLayout'))
+const AdminDashboardPage = lazyWithRetry(() => import('pages/admin/Dashboard'))
+const AdminArticlesPage = lazyWithRetry(() => import('pages/admin/Articles'))
+const ArticleEditorPage = lazyWithRetry(
+  () => import('pages/admin/ArticleEditor')
+)
+const AdminArticleTrashPage = lazyWithRetry(
+  () => import('pages/admin/ArticleTrash')
+)
+const AdminCoursesPage = lazyWithRetry(() => import('pages/admin/Courses'))
+const CourseEditorPage = lazyWithRetry(() => import('pages/admin/CourseEditor'))
+const AdminUsersPage = lazyWithRetry(() => import('pages/admin/Users'))
+const AdminTaxonomyPage = lazyWithRetry(() => import('pages/admin/Taxonomy'))
+const AdminProfilePage = lazyWithRetry(() => import('pages/admin/Profile'))
+const NoAccessPage = lazyWithRetry(() => import('pages/admin/NoAccess'))
 
 function Lazy({ children }: { children: ReactNode }) {
   return <Suspense fallback={<LoadingBlock />}>{children}</Suspense>
@@ -53,7 +61,8 @@ export const router = createBrowserRouter([
       <Lazy>
         <NoAccessPage />
       </Lazy>
-    )
+    ),
+    errorElement: <RouteError />
   },
   {
     path: '/admin',
@@ -64,6 +73,7 @@ export const router = createBrowserRouter([
         </RequireRole>
       </Lazy>
     ),
+    errorElement: <RouteError />,
     children: [
       {
         index: true,
@@ -155,6 +165,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <PageLayout />,
+    errorElement: <RouteError />,
     children: [
       {
         index: true,

@@ -1,0 +1,14 @@
+# Cloudflare Pages header rules. See src/router/lazyWithRetry.ts for why the
+# split below matters: a browser holding a stale index.html asks for chunk
+# hashes that the current deploy no longer has.
+
+# The HTML shell is the one file that must never be reused across deploys --
+# it is what names every hashed asset.
+/*
+  Cache-Control: no-store, must-revalidate
+
+# Hashed filenames make these safe to keep forever; a new build means a new
+# name, never new bytes at an old name. Listed last so it wins over the
+# catch-all above.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
