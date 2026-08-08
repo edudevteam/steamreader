@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:functions": "cd .. && wrangler pages dev public-site/dist --r2 ARTICLE_IMAGES --port 8788",
+    "dev:functions": "wrangler pages dev dist --r2 ARTICLE_IMAGES --port 8788",
     "build": "node scripts/generate-changelog-assets.mjs && tsc && vite build",
     "changelog:generate": "node scripts/generate-changelog-assets.mjs",
     "migrate:r2:supabase": "node scripts/migrate-supabase-images-to-r2.mjs",

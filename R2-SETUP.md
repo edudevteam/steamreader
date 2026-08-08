@@ -11,7 +11,7 @@ caller's JWT and decide whether to allow it. R2 has no equivalent — a bucket
 binding is all-or-nothing, and there is no per-user rule layer.
 
 So uploads go through a Cloudflare Pages Function at
-[`functions/api/upload.ts`](functions/api/upload.ts). It verifies the Supabase
+[`public-site/functions/api/upload.ts`](public-site/functions/api/upload.ts). It verifies the Supabase
 session, looks up the caller's role in `profiles`, and only then writes to the
 bucket. **That Function is the authorization boundary** that the storage RLS
 policies used to be. The matching checks in
@@ -174,13 +174,17 @@ under plain `pnpm dev`. Everything except uploading works.
 To run the Function too:
 
 ```bash
-cp .dev.vars.example .dev.vars   # repo root, fill it in
-
 cd public-site
+cp .dev.vars.example .dev.vars   # fill it in
+
 pnpm build                       # wrangler serves dist/
 pnpm dev:functions               # wrangler on :8788
 pnpm dev                         # vite on :5173, proxies /api → :8788
 ```
+
+`functions/` lives inside `public-site/` because that is the Pages project's
+**Root directory** — Pages only discovers the directory there, not at the repo
+root. Wrangler resolves it the same way, so it must run from `public-site` too.
 
 `--r2 ARTICLE_IMAGES` gives you a *local simulated* bucket. Uploads succeed and
 return `cdn.steamreader.com` URLs, but the bytes stay on your machine, so the
@@ -213,6 +217,7 @@ Supabase objects are still there and still public.
   `steamreader.com` session — but note that a contributor uploading an SVG is
   publishing active content, and only contributors can upload.
 - **Size limit.** 5 MB, enforced in the Function. Raising it means changing
-  `MAX_BYTES` in both `functions/api/upload.ts` and `uploads.ts`.
+  `MAX_BYTES` in both `public-site/functions/api/upload.ts` and
+  `uploads.ts`.
 - **Deletes.** Nothing deletes from R2 today. Removing an image from an article
   unlinks it but leaves the object, same as the previous Supabase behaviour.

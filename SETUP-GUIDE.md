@@ -496,9 +496,13 @@ pnpm sync --slug article-slug
 
 **For public-site:**
 - Framework preset: Vite
-- Build command: `cd public-site && pnpm install && pnpm build`
-- Build output directory: `public-site/dist`
-- Root directory: `/`
+- Build command: `pnpm run build`
+- Build output directory: `dist`
+- Root directory: `public-site`
+
+The root directory matters beyond the build: Pages discovers `functions/`
+relative to it, which is why the upload Function lives at
+`public-site/functions/` and not at the repository root. See R2-SETUP.md.
 
 ### 3. Set Environment Variables
 

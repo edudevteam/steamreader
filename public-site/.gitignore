@@ -2,6 +2,12 @@ dist
 dist-ssr
 *.local
 
+# local values for the Pages Function -- see .dev.vars.example
+.dev.vars
+
+# wrangler pages dev state (local R2 simulation, caches)
+.wrangler/
+
 # dependencies
 /node_modules
 /.pnp
