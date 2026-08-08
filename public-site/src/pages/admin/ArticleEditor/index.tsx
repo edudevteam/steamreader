@@ -26,7 +26,7 @@ import {
   StatusBadge,
   Textarea
 } from 'components/admin/ui'
-import { classNames } from 'utils'
+import { classNames, toDateTimeLocal } from 'utils'
 import { emptyDraft, STATUS_LABELS } from 'types/cms'
 import type {
   ArticleDraft,
@@ -675,7 +675,9 @@ export default function ArticleEditorPage() {
                     id="published"
                     type="datetime-local"
                     value={
-                      draft.published_at ? draft.published_at.slice(0, 16) : ''
+                      draft.published_at
+                        ? toDateTimeLocal(draft.published_at)
+                        : ''
                     }
                     onChange={(e) =>
                       update(

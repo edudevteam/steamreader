@@ -1,15 +1,15 @@
 # STEAM Reader
 
-A markdown-powered blog site for Science, Technology, Engineering, Arts, and Mathematics education content.
+A blog site for Science, Technology, Engineering, Arts, and Mathematics education content, published through a built-in CMS backed by Supabase.
 
 ## Features
 
-- **Markdown Articles** - Write articles in Markdown with frontmatter metadata
+- **Built-in CMS** - Write and publish from `/admin`: a WYSIWYG markdown editor, draft/review/published workflow, courses, taxonomy and user management
 - **Category & Tag Filtering** - Browse articles by category, tag, or author
 - **Full-Text Search** - Search articles by title, author, category, or tags
+- **Courses** - Group articles into an ordered, multi-part series
 - **Social Sharing** - Share buttons for Twitter, Facebook, LinkedIn, and Email
 - **Responsive Design** - Mobile-friendly with collapsible navigation
-- **CLI Tool** - Manage articles from the command line
 - **Changelog System** - Public changelog page, RSS feed, and version endpoint
 
 ## Tech Stack
@@ -18,6 +18,8 @@ A markdown-powered blog site for Science, Technology, Engineering, Arts, and Mat
 - Vite (build tool)
 - TailwindCSS + Typography plugin
 - React Router
+- Supabase (Postgres, auth, RLS) for content
+- Cloudflare R2 for images
 
 ## Getting Started
 
@@ -52,130 +54,47 @@ pnpm serve  # Preview the build
 
 ```
 public-site/
-├── content/
-│   └── articles/                    # Markdown source files
-│       └── YYYY-MM-DD-article-slug/
-│           ├── index.md             # Article content
-│           └── images/              # Article images
-├── scripts/                         # CLI & build tools
-│   └── generate-changelog-assets.mjs
+├── scripts/                         # Build tools
+│   ├── generate-changelog-assets.mjs
+│   └── migrate-supabase-images-to-r2.mjs
 ├── src/
 │   ├── components/
+│   │   ├── admin/                   # CMS editor and admin widgets
 │   │   └── layout/                  # Header, Footer, PageLayout
 │   ├── pages/                       # Route pages
-│   ├── data/                        # Generated JSON (from CLI)
+│   │   └── admin/                   # CMS screens
+│   ├── lib/                         # Supabase client, content queries, markdown
+│   ├── data/
 │   │   └── changelog.json           # Changelog entries (edit manually)
 │   ├── types/                       # TypeScript interfaces
 │   └── router/                      # Route configuration
 └── public/
-    ├── images/articles/             # Processed images
     ├── version.json                 # Generated — latest changelog entry
     └── rss.xml                      # Generated — RSS feed
 ```
 
-## Authoring with the CMS
-
-`cms/` is a local editor and lightweight CRM for these articles — a kanban board
-across draft stages, a markdown/WYSIWYG editor with live preview, per-article
-notes and checklists, a media browser, and course management. It writes the
-markdown into `md-articles/content` and can run the build for a single article.
-
-```bash
-cd cms
-pnpm install
-pnpm dev          # http://localhost:5174
-```
-
-Content lives in a local SQLite database (`cms/data/cms.db`, gitignored); the
-`.md` files are exports and remain what git tracks. Committing and pushing to
-trigger the Cloudflare Pages deploy is still done by hand. See
-[cms/README.md](cms/README.md).
+Article content is not in this repo — it lives in Supabase. Images are served
+from Cloudflare R2.
 
 ## Writing Articles
 
-### 1. Create Article Folder
+Articles are written and published in the CMS at `/admin`, which is part of the
+site itself. There is no build step and nothing to commit: saving in the editor
+writes to Supabase, and the change is live as soon as the article is published.
 
-Create a new folder in `content/articles/` with the naming convention:
+1. Sign in and open **`/admin/articles`**
+2. **New article** opens the WYSIWYG editor. Content is stored as markdown, so
+   switching between the visual editor and markdown is lossless.
+3. Fill in the sidebar — category, tags, feature image, authors, excerpt
+4. Set **status** to `published` (the publish date defaults to now; a future
+   date schedules it)
 
-```
-YYYY-MM-DD-article-slug/
-├── index.md
-└── images/
-    └── feature.jpg (optional)
-```
+Images dropped into the editor upload to R2 automatically.
 
-### 2. Write Frontmatter
+Courses — an ordered, multi-part series of articles — are managed separately at
+**`/admin/courses`**, where lessons are added and dragged into order.
 
-Each article needs frontmatter at the top of `index.md`:
-
-```yaml
----
-title: "Your Article Title"
-subtitle: "Optional Subtitle"
-author: "Author Name"
-author_slug: "author-name"
-date: "2024-01-15"
-category: "Science"
-tags:
-  - chemistry
-  - experiments
-  - beginner
-feature_image: "https://example.com/image.jpg"
-feature_image_alt: "Description of image"
-feature_image_caption: "Photo credit"
-excerpt: "A brief description of the article..."
-status: published
----
-
-Your markdown content here...
-```
-
-### 3. Frontmatter Fields
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `title` | Yes | Article title |
-| `subtitle` | No | Secondary title |
-| `author` | Yes | Author's display name |
-| `author_slug` | No | URL-friendly author ID (auto-generated if omitted) |
-| `date` | Yes | Publication date (YYYY-MM-DD) |
-| `category` | Yes | Single category (Science, Technology, Engineering, Arts, Mathematics) |
-| `tags` | No | Array of tags |
-| `feature_image` | Yes | URL or local path to feature image |
-| `feature_image_alt` | No | Alt text for accessibility |
-| `feature_image_caption` | No | Image caption/credit |
-| `excerpt` | No | Article summary (auto-generated if omitted) |
-| `status` | No | `published` or `draft` (default: published) |
-
-## CLI Commands
-
-### Build Articles
-
-Convert markdown articles to JSON:
-
-```bash
-# Build all articles
-pnpm articles:build
-
-# Build a specific article
-pnpm articles:build -- -s article-slug
-```
-
-### List Articles
-
-View all articles in the content directory:
-
-```bash
-pnpm articles:list
-```
-
-### Delete Article
-
-Remove an article:
-
-```bash
-pnpm articles:delete article-slug
-```
+See [CMS-SETUP.md](CMS-SETUP.md) for the database schema, roles and permissions.
 
 ## Routes
 
@@ -186,8 +105,11 @@ pnpm articles:delete article-slug
 | `/category/:slug` | Articles filtered by category |
 | `/tag/:slug` | Articles filtered by tag |
 | `/author/:slug` | Articles by author |
+| `/course/:slug` | A course and its ordered lessons |
+| `/latest` | All articles, newest first |
 | `/search` | Search page with filters |
 | `/changelog` | Public changelog of site updates |
+| `/admin` | CMS — articles, courses, taxonomy, users |
 
 ## Changelog & Versioning
 
@@ -300,9 +222,7 @@ colors: {
 | `pnpm typecheck` | Run TypeScript type checking |
 | `pnpm lint` | Run ESLint |
 | `pnpm test` | Run tests |
-| `pnpm articles:build` | Build articles from markdown |
-| `pnpm articles:list` | List all articles |
-| `pnpm articles:delete` | Delete an article |
+| `pnpm migrate:r2:supabase` | One-off: copy Supabase-hosted images to R2 and rewrite their URLs |
 
 ## License
 

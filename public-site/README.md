@@ -91,108 +91,47 @@ pnpm run test:ui
 
 ## Articles
 
-Articles are stored as Markdown files in `content/articles/`. Each article lives in its own directory with the format `YYYY-MM-DD-slug-name/index.md`.
+Articles live in Supabase and are written in the CMS at `/admin` — there are no
+markdown files in the repo and no build step for content. Saving in the editor
+writes to the database; publishing makes the article live.
 
-### Building Articles
+- `/admin/articles` — list, filter, search, and open the editor
+- `/admin/articles/trash` — soft-deleted articles, restorable
+- `/admin/courses` — group articles into an ordered, multi-part series
 
-```bash
-npm run articles:build   # Build all articles
-npm run articles:list    # List all articles
-npm run articles:delete  # Delete an article
-```
+The editor has a **Visual** tab and a **Markdown** tab over the same content.
+Article fields (category, tags, feature image, authors, excerpt, validation
+badges) are set in the editor sidebar rather than in frontmatter.
 
-### Frontmatter Fields
+**Scheduling:** the publish date defaults to the moment you publish. Setting it
+in the future keeps the article hidden until then.
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `title` | Yes | Article title |
-| `subtitle` | No | Subtitle or tagline |
-| `author` | Yes | Author name |
-| `author_slug` | No | Author URL slug (auto-generated from name if omitted) |
-| `date` | Yes | Publication date (YYYY-MM-DD) |
-| `updated` | No | Last updated date |
-| `category` | Yes | Single category name |
-| `tags` | No | Array of tag strings |
-| `feature_image` | Yes | Image URL or local path |
-| `feature_image_alt` | No | Alt text for feature image |
-| `feature_image_caption` | No | Caption for feature image |
-| `excerpt` | No | Custom excerpt (auto-generated if omitted) |
-| `status` | No | `published` or `draft` (default: `published`) |
-| `previous` | No | Slug of previous article in a series |
-| `next` | No | Slug of next article in a series |
-| `validated_tutorial` | No | `true` if tutorial has been verified to work |
-| `supported_evidence` | No | `true` if references have been verified |
-| `community_approved` | No | Number of community approvals |
+**Series:** ordering is handled by courses in `/admin/courses`, which also
+generate the previous/next links on an article.
 
-### Article Series
+See [../CMS-SETUP.md](../CMS-SETUP.md) for schema, roles and editor internals.
 
-Use `previous` and `next` to link articles in a tutorial series:
+## Categories and Tags
 
-```yaml
----
-title: "Part 2: Building Components"
-author: "Jane Doe"
-date: "2024-01-15"
-category: "Tutorials"
-feature_image: "https://example.com/image.jpg"
-previous: "part-1-getting-started"
-next: "part-3-advanced-patterns"
----
-```
+Both are managed at `/admin/taxonomy` — add, rename, edit or delete, with
+article counts calculated automatically. Categories carry a `sort_order` that
+controls the order shown in the footer and on the categories page.
 
-The values should be article slugs (directory name without the date prefix). The build process resolves these to include the article title for display.
+### Category Colors
 
-## Categories
-
-Categories are managed through a single JSON file. Changes automatically update the footer, categories page, and individual category pages.
-
-### Category Data File
-
-Edit `src/data/categories.json`:
-
-```json
-{
-  "categories": [
-    { "slug": "tutorial", "name": "Tutorial" },
-    { "slug": "technology", "name": "Technology" }
-  ]
-}
-```
-
-### Adding a Category
-
-Add a new object to the `categories` array:
-
-```json
-{ "slug": "science", "name": "Science" }
-```
-
-- `slug`: URL-friendly identifier (lowercase, no spaces)
-- `name`: Display name shown in the UI
-
-Article counts are calculated automatically from the articles data.
-
-### Removing a Category
-
-Delete the category object from the array. Make sure no articles reference this category first.
-
-### Reordering Categories
-
-Change the order of objects in the array. The footer and categories page display them in array order.
-
-### Category Colors (Optional)
-
-To customize category colors on the categories page, edit `src/pages/Categories/index.tsx`:
+Colors are still hardcoded in [src/pages/Categories/index.tsx](src/pages/Categories/index.tsx):
 
 ```typescript
 const categoryColors: Record<string, string> = {
   tutorial: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
-  science: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
-  technology: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+  science: 'bg-blue-100 text-blue-700 hover:bg-blue-200'
 }
 ```
 
-Categories without a color mapping use the default gray style.
+Categories without a mapping use the default gray style. Note that the
+`categories` table has a `color` column that `saveCategory` already writes and
+`fetchCategories` already returns — but no admin screen sets it and the page
+above does not read it. Wiring that up would remove this hardcoded map.
 
 ## H5P Interactive Content
 

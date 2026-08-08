@@ -1,10 +1,11 @@
 /**
  * Browser-side markdown pipeline for the CMS.
  *
- * This mirrors `md-articles/scripts/lib/article-processor.ts` deliberately and
- * exactly: heading ids, highlight classes, excerpt injection and reading-time
- * rounding all match, so an article saved from the CMS renders byte-identically
- * to one built from a markdown file. If you change one, change the other.
+ * The rules here -- heading ids, highlight classes, excerpt injection and
+ * reading-time rounding -- were matched byte for byte against the markdown
+ * build pipeline this CMS replaced, so articles imported from it keep
+ * rendering exactly as they did. Changing any of them re-renders published
+ * HTML, so treat them as fixed unless you mean to rewrite existing articles.
  */
 import { Marked, type Tokens } from 'marked'
 import { markedHighlight } from 'marked-highlight'

@@ -120,47 +120,28 @@ anywhere near the Pages project.
 ### Run them
 
 ```bash
-# 1. Supabase Storage → R2, then rewrite the stored URLs
+# Supabase Storage → R2, then rewrite the stored URLs
 pnpm migrate:r2:supabase -- --dry-run
 pnpm migrate:r2:supabase
-
-# 2. Committed public/images → R2, then rewrite JSON, markdown and DB rows
-pnpm migrate:r2:public -- --dry-run
-pnpm migrate:r2:public
 ```
 
-What each one does:
+What it does:
 
 | Script                    | Copies                     | To key           | Rewrites                                                                                             |
 | ------------------------- | -------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------- |
 | `migrate:r2:supabase`     | `article-images` bucket    | same path        | `articles.feature_image` / `content_markdown` / `content_html`, `courses.feature_image`, `profiles.avatar_url` |
-| `migrate:r2:public`       | `public-site/public/images`| `static/<name>`  | `src/data/**/*.json`, `md-articles/content/**/*.md`, and the same DB columns                          |
 
-The second script leaves `public/images` on disk by default so you can compare
-the site against it. Once you are satisfied:
+Re-running is safe: objects already in R2 are skipped, and the URL rewrite is a
+prefix swap that no-ops on rows already pointing at R2.
 
-```bash
-pnpm migrate:r2:public -- --delete-local
-```
-
-Any `/images/...` reference with no matching file is left exactly as it was and
-listed at the end of the run. Those are already broken today — the path is not
-in `public/images` — so the migration neither fixes nor worsens them.
-
-**There is one such reference right now**, inherited from before this change:
-
-```
-/images/articles/placeholder.jpg
-  md-articles/content/2026-02-01-build-a-website-with-publii.md
-  md-articles/content/2026-02-01-build-a-website-using-prompt-engineering.md
-```
-
-`public/images/articles/` does not exist, so both articles have a dead feature
-image. Worth fixing, but unrelated to R2.
+> A second script, `migrate:r2:public`, moved the committed `public/images`
+> directory and the markdown that referenced it. Both the images and that
+> pipeline are gone, so the script has been removed — recover it from git
+> history if a similar bulk rewrite is ever needed.
 
 ### After migrating
 
-- Redeploy so the rewritten JSON ships.
+- Redeploy.
 - Spot-check an article, a course card, and an author avatar.
 - Only then retire the Supabase bucket — see step 6.
 

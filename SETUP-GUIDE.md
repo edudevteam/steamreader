@@ -12,7 +12,7 @@ Complete instructions for cloning and setting up the STEAM Reader project with S
 6. [Environment Variables](#environment-variables)
 7. [Database Schema](#database-schema)
 8. [Database Reset & Fresh Start](#database-reset--fresh-start)
-9. [Syncing Articles](#syncing-articles)
+9. [Managing Articles](#managing-articles)
 10. [Cloudflare Pages Deployment](#cloudflare-pages-deployment)
 11. [Production Configuration](#production-configuration)
 
@@ -24,13 +24,6 @@ Complete instructions for cloning and setting up the STEAM Reader project with S
 
 ```
 steamreader/
-├── md-articles/                 # Article content and processing
-│   ├── content/                 # Markdown article files
-│   ├── scripts/                 # Build and sync scripts
-│   │   ├── lib/                 # Processing libraries
-│   │   └── sync-articles.ts     # Supabase sync script
-│   └── .env                     # Environment variables (not committed)
-│
 ├── supabase/                    # Supabase configuration
 │   ├── functions/               # Edge Functions
 │   │   ├── send-email/
@@ -67,7 +60,7 @@ steamreader/
 
 ### Key Features
 
-- **Static Site Generation**: Articles are built from markdown files
+- **Database-backed CMS**: Articles are written and published at `/admin`
 - **User Authentication**: Supabase Auth with email/password
 - **Voting System**: Users can mark articles as read, verified, or endorsed
 - **Email Integration**: Resend for transactional emails
@@ -97,28 +90,19 @@ cd steamreader
 ### 2. Install Dependencies
 
 ```bash
-# Install md-articles dependencies
-cd md-articles
-pnpm install
-
-# Install public-site dependencies
-cd ../public-site
-pnpm install
-```
-
-### 3. Build Articles
-
-```bash
-cd md-articles
-pnpm build
-```
-
-### 4. Run Development Server
-
-```bash
 cd public-site
+pnpm install
+```
+
+### 3. Run Development Server
+
+```bash
 pnpm dev
 ```
+
+Articles come from Supabase at runtime, so there is no content build step.
+Configure the connection first — see [Environment Variables](#environment-variables)
+below — then write articles in the CMS at `/admin`.
 
 ---
 
@@ -216,7 +200,7 @@ This automatically configures Supabase to send auth emails through Resend.
 For custom emails beyond auth (welcome emails, notifications):
 
 ```bash
-cd md-articles
+# Run from the repo root, where the supabase/ directory lives
 
 # Install Supabase CLI
 brew install supabase/tap/supabase
@@ -238,16 +222,6 @@ supabase functions deploy send-welcome-email
 ---
 
 ## Environment Variables
-
-### md-articles/.env
-
-```env
-# Supabase (for sync script)
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-```
-
-**Important:** Use the **service role key** (not anon key) for the sync script. This key has full database access and bypasses RLS.
 
 ### public-site/.env
 
@@ -286,7 +260,7 @@ The schema includes these key components:
 
 **articles**
 ```sql
-- id: UUID (from frontmatter)
+- id: UUID
 - slug: text (unique)
 - title: text
 - status: enum ('draft', 'published', 'archived')
@@ -448,39 +422,27 @@ User clicks confirmation link
 
 ---
 
-## Syncing Articles
+## Managing Articles
 
-Articles must have a UUID in their frontmatter to sync:
+Articles are written and published in the CMS at `/admin`, which ships with the
+site. There is no sync step and no content in the repo — saving in the editor
+writes straight to Supabase, and each article gets its UUID from the database.
 
-```yaml
----
-id: "c9e4a2b1-5f8d-4e3a-9c7b-8d6e5f4a3b2c"
-title: "Article Title"
-# ... other frontmatter
----
+```
+/admin/articles          List, filter and search every article
+/admin/articles/:id      The editor (visual + markdown tabs)
+/admin/articles/trash    Soft-deleted articles, restorable
+/admin/courses           Group articles into an ordered series
+/admin/taxonomy          Categories and tags
+/admin/users             Roles and permissions
 ```
 
-### Generate UUIDs
+**Publishing flow:** a writer moves an article `draft` → `in_review`; an editor
+reviews it and sets it to `published`. A future publish date keeps it hidden
+until then — RLS filters on `published_at <= NOW()`, so scheduling needs no cron
+job.
 
-Use any UUID generator, or run:
-```bash
-uuidgen | tr '[:upper:]' '[:lower:]'
-```
-
-### Sync Commands
-
-```bash
-cd md-articles
-
-# Sync all articles
-pnpm sync
-
-# Dry run (preview without changes)
-pnpm sync:dry
-
-# Sync specific article
-pnpm sync --slug article-slug
-```
+See [CMS-SETUP.md](CMS-SETUP.md) for schema, roles and editor internals.
 
 ---
 
@@ -599,20 +561,17 @@ In Supabase → Authentication → Providers → Email:
 ### Common Commands
 
 ```bash
-# Build articles
-cd md-articles && pnpm build
-
-# Sync to Supabase
-cd md-articles && pnpm sync
-
 # Run frontend dev server
 cd public-site && pnpm dev
 
 # Build frontend for production
 cd public-site && pnpm build
 
-# Deploy Edge Functions
-cd md-articles && supabase functions deploy
+# Type-check, lint and test
+cd public-site && pnpm typecheck && pnpm lint && pnpm test
+
+# Deploy Edge Functions (from the repo root)
+supabase functions deploy
 ```
 
 ### Key Files
@@ -623,14 +582,13 @@ cd md-articles && supabase functions deploy
 | `supabase/reset-database.sql` | Database reset script |
 | `public-site/src/context/AuthContext.tsx` | Auth state management |
 | `public-site/src/lib/supabase.ts` | Supabase client |
-| `md-articles/scripts/sync-articles.ts` | Article sync script |
+| `public-site/src/lib/content.ts` | Public content queries |
+| `public-site/src/lib/cms/` | CMS reads and writes |
 
 ### Environment Variable Checklist
 
 | Variable | Location | Key Type |
 |----------|----------|----------|
-| `SUPABASE_URL` | md-articles/.env | Public |
-| `SUPABASE_SERVICE_ROLE_KEY` | md-articles/.env | **Secret** |
 | `VITE_SUPABASE_URL` | public-site/.env | Public |
 | `VITE_SUPABASE_ANON_KEY` | public-site/.env | Public |
 | `RESEND_API_KEY` | Supabase secrets | **Secret** |

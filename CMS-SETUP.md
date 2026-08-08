@@ -1,11 +1,10 @@
 # STEAM Reader CMS — Setup
 
-The public site is now backed by a database-driven CMS at `/admin`. Content
-lives in Supabase; the markdown build pipeline in `md-articles/` is no longer
-the source of truth.
+The public site is backed by a database-driven CMS at `/admin`. Content lives in
+Supabase, which is the only source of truth — the markdown build pipeline that
+preceded it has been removed.
 
-Work through the steps in order — the import in step 5 depends on everything
-before it.
+Work through the steps in order.
 
 ---
 
@@ -77,32 +76,17 @@ VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJ...
 ```
 
-## 5. Import the existing articles
+## 5. Add content
 
-This moves the 18 built articles, plus categories, tags and courses, into the
-database. Run it once, from `public-site/`:
+Everything from the original markdown pipeline has already been imported, so a
+working database starts populated. Write anything new in the editor at
+`/admin/articles`.
 
-```bash
-# Preview without writing anything
-SUPABASE_SERVICE_ROLE_KEY=<service-role-key> \
-  node scripts/import-content.mjs --author you@example.com --dry-run
-
-# Then for real
-SUPABASE_SERVICE_ROLE_KEY=<service-role-key> \
-  node scripts/import-content.mjs --author you@example.com
-```
-
-The script reads `public-site/.env` itself for the project URL, so only the
-service_role key needs passing in. A real environment variable always wins over
-the file, and the key stays out of anything committed.
-
-The importer reads the original markdown from `md-articles/content/` where it
-can, so articles open in the editor as markdown rather than as HTML. It keeps
-each article's existing UUID, so **votes stay attached**. It also aligns your
-profile slug with the old author slug so `/author/ryan-jones` keeps working.
-
-Re-running is safe: it upserts by id and replaces tag links rather than
-appending.
+> The one-time importer (`scripts/import-content.mjs`) and the markdown sources
+> it read have both been removed now that the migration is finished. If you ever
+> need to replay it against a fresh database, recover it from git history —
+> it preserved each article's UUID so votes stayed attached, and aligned the
+> author profile slug so `/author/ryan-jones` kept working.
 
 ---
 
@@ -159,20 +143,20 @@ blocks, and inline coloured `<span>`s. A stock WYSIWYG discards all of it.
 Only the Markdown tab can edit the inside of an embed — the Visual tab shows it
 but treats it as opaque.
 
-### Why the render pipeline is duplicated
+### Why the render pipeline is pinned
 
-`public-site/src/lib/markdown.ts` deliberately mirrors
-`md-articles/scripts/lib/article-processor.ts`: same heading ids, same
-highlight.js classes, same excerpt injection, same reading-time rounding.
+`public-site/src/lib/markdown.ts` was written to match the old build pipeline's
+output exactly: same heading ids, same highlight.js classes, same excerpt
+injection, same reading-time rounding. That mattered during the migration —
+an article saved from the CMS had to render identically to the one built from
+markdown, or the first save would silently rewrite every article's HTML.
 
-An article saved from the CMS must render identically to one built from a
-markdown file, or the first save would silently rewrite every article's HTML.
-`src/lib/test.ts` asserts this against real articles — if you change one
-pipeline, change the other, and the tests will tell you if you missed something.
+The old pipeline is gone, but the constraint outlives it: these rules now
+describe how every already-published article is stored. Changing one re-renders
+existing HTML on the next save.
 
-> `marked` is pinned to **17.0.1** in `public-site` to match `md-articles`.
-> marked 18 renders tables differently and breaks byte-equality. Upgrade both
-> together or not at all.
+> `marked` is pinned to **17.0.1** for the same reason. marked 18 renders tables
+> differently, which would rewrite any article containing one.
 
 ### Known normalization
 
@@ -189,8 +173,9 @@ Every listing page previously imported `src/data/*.json` at build time. They now
 read from Supabase through `src/hooks/useContent.ts`, which caches each dataset
 once per session so navigation does not refetch.
 
-`src/data/*.json` is now **stale** — kept only as the importer's input and as
-test fixtures. Delete it once the import is verified.
+`src/data/articles/*.json` is **stale** — the built output of the retired
+pipeline, read by nothing. `src/data/changelog.json` is the exception: it is
+still a build-time import and is authored by hand.
 
 The CMS is lazy-loaded. TipTap, ProseMirror, turndown and highlight.js total
 about 1 MB, and none of it is in the reader's bundle — the entry chunk has no
@@ -211,8 +196,5 @@ grep -c 'hljs\|turndown' dist/assets/index-*.js   # entry chunk should be 0
 
 ## What was not migrated
 
-- **`md-articles/`** still works and still writes to `src/data/`. It is now a
-  parallel path that the site no longer reads. Retire it once you are happy
-  with the CMS, or keep it for bulk authoring and re-run the importer.
 - **`changelog.json`** is still a build-time import; the changelog is generated
   from git history, not authored content.

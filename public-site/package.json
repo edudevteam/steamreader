@@ -10,7 +10,6 @@
     "build": "node scripts/generate-changelog-assets.mjs && tsc && vite build",
     "changelog:generate": "node scripts/generate-changelog-assets.mjs",
     "migrate:r2:supabase": "node scripts/migrate-supabase-images-to-r2.mjs",
-    "migrate:r2:public": "node scripts/migrate-public-images-to-r2.mjs",
     "serve": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",

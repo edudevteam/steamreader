@@ -47,9 +47,10 @@ function toMeta(row: ArticleRow): ArticleMeta {
             name: person.name ?? 'Unknown'
           }))
         : [{ slug: row.author_slug ?? '', name: row.author_name ?? 'Unknown' }],
-    // The site formats dates from a bare YYYY-MM-DD; `parseDate` in utils
-    // depends on that, so trim the timestamp rather than passing an ISO string.
-    publishedAt: (row.published_at ?? row.created_at).slice(0, 10),
+    // Kept as a full timestamp: `parseDate` handles both shapes, and trimming
+    // to a UTC date pushed anything published in the evening onto tomorrow,
+    // which hid it from every published-only page until local midnight.
+    publishedAt: row.published_at ?? row.created_at,
     updatedAt: row.updated_at,
     category: {
       slug: row.category_slug ?? 'uncategorized',

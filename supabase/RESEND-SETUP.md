@@ -64,7 +64,7 @@ npx supabase
 ### Step 2: Link Your Project
 
 ```bash
-cd md-articles
+# Run from the repo root, where the supabase/ directory lives
 
 # Login to Supabase
 supabase login
