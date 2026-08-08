@@ -101,11 +101,45 @@ describe('ArticleButton', () => {
     expect(saved).toContain('>Click</span></a>')
   })
 
+  /**
+   * A button saved from a real browser, not from happy-dom.
+   *
+   * ProseMirror applies the node's `style` spec via `cssText`, so Chrome and
+   * Safari hand the colours back as `rgb()`. That is the form the markdown
+   * actually holds, and reading it must give the author's colour back rather
+   * than the default purple.
+   */
+  it('reads back a button whose colours a browser normalised to rgb()', () => {
+    const saved = normalize(
+      throughEditor(
+        '<a href="https://portal.fundedyouth.org/" data-button="true" ' +
+          'class="article-button" style="display: inline-block; ' +
+          'background-color: rgb(248, 139, 37); color: rgb(255, 255, 255); ' +
+          'border-radius: 4px; padding: 0.625rem 1.25rem; ' +
+          'text-decoration: none;"><span style="font-weight: 600;">' +
+          'FundedYouth Portal</span></a>'
+      )
+    )
+
+    expect(saved).toContain('background-color:#f88b25')
+    expect(saved).toContain('color:#ffffff')
+    expect(saved).toContain('border-radius:4px')
+  })
+
   describe('value sanitising', () => {
     it('accepts hex colours and rejects anything else', () => {
       expect(safeColor('#ABCDEF', '#000000')).toBe('#abcdef')
       expect(safeColor('#fff', '#000000')).toBe('#fff')
       expect(safeColor('red; content:url(x)', '#000000')).toBe('#000000')
+    })
+
+    it('accepts the rgb() form browsers normalise inline styles to', () => {
+      expect(safeColor('rgb(103, 58, 183)', '#000000')).toBe('#673ab7')
+      expect(safeColor('rgb(248 139 37)', '#000000')).toBe('#f88b25')
+      expect(safeColor('rgba(0, 0, 0, 0.5)', '#ffffff')).toBe('#00000080')
+      expect(safeColor('rgb(0 0 0 / 100%)', '#ffffff')).toBe('#000000')
+      expect(safeColor('rgb(1, 2)', '#000000')).toBe('#000000')
+      expect(safeColor('rgb(nope, 2, 3)', '#000000')).toBe('#000000')
     })
 
     it('accepts css lengths for the corner radius', () => {

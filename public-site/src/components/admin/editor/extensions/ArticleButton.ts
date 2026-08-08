@@ -46,13 +46,61 @@ export const BUTTON_RADIUS_PRESETS: { label: string; value: string }[] = [
 // markdown source is just as much an input as the dialog is.
 
 const HEX_COLOR = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i
+const RGB_COLOR = /^rgba?\(([^)]*)\)$/i
 const CSS_LENGTH = /^\d{1,5}(?:\.\d+)?(?:px|rem|em|%)$/
 const URL_SCHEME = /^([a-z][a-z0-9+.-]*):/i
 const SAFE_SCHEMES = new Set(['http', 'https', 'mailto', 'tel'])
 
+/** One `rgb()` channel -> two hex digits. `183`, `71.6` and `50%` are all legal. */
+function hexChannel(value: string, scale: number): string | null {
+  const trimmed = value.trim()
+  const percent = trimmed.endsWith('%')
+  const number = Number(percent ? trimmed.slice(0, -1) : trimmed)
+
+  if (!trimmed || !Number.isFinite(number)) return null
+
+  const ratio = percent ? number / 100 : number / scale
+  const byte = Math.round(Math.min(Math.max(ratio, 0), 1) * 255)
+
+  return byte.toString(16).padStart(2, '0')
+}
+
+/**
+ * `rgb(103, 58, 183)` -> `#673ab7`.
+ *
+ * Buttons are written to the DOM as a `style` *spec*, which ProseMirror applies
+ * through `element.style.cssText` -- and every browser rewrites colours to
+ * `rgb()` on the way in. That normalised form is what `getHTML` hands back, so
+ * it is what turndown writes to the markdown and what has to be readable again
+ * the next time the article is opened. Reject it and the parser silently
+ * substitutes the default purple, then the next save overwrites the author's
+ * colour with it.
+ */
+function hexFromRgb(value: string): string | null {
+  const match = RGB_COLOR.exec(value)
+  if (!match) return null
+
+  // Handles both the legacy `r, g, b, a` form and the modern `r g b / a`.
+  const parts = match[1].split(/[\s,/]+/).filter(Boolean)
+  if (parts.length < 3 || parts.length > 4) return null
+
+  const channels = parts.slice(0, 3).map((part) => hexChannel(part, 255))
+  if (channels.some((channel) => channel === null)) return null
+
+  // Alpha is a 0-1 fraction rather than a byte, and a fully opaque colour is
+  // written as plain `#rrggbb` so it round trips through `<input type="color">`.
+  const alpha = parts[3] === undefined ? 'ff' : hexChannel(parts[3], 1)
+  if (alpha === null) return null
+
+  return `#${channels.join('')}${alpha === 'ff' ? '' : alpha}`
+}
+
 export function safeColor(value: unknown, fallback: string): string {
   const candidate = String(value ?? '').trim()
-  return HEX_COLOR.test(candidate) ? candidate.toLowerCase() : fallback
+
+  if (HEX_COLOR.test(candidate)) return candidate.toLowerCase()
+
+  return hexFromRgb(candidate) ?? fallback
 }
 
 export function safeRadius(value: unknown): string {
