@@ -238,8 +238,8 @@ export default function EditorToolbar({
         active={editor.isActive('link')}
         onClick={addLink}
       >
-        {/* Two horizontal pills overlapping in the middle -- a chain link. */}
-        <Icon d="M5.5 8.5H10.5a3.5 3.5 0 010 7H5.5a3.5 3.5 0 010-7zM13.5 8.5H18.5a3.5 3.5 0 010 7h-5a3.5 3.5 0 010-7z" />
+        {/* Two C-shaped links facing each other, joined by a bar. */}
+        <Icon d="M10 7.5H8.5a4.5 4.5 0 000 9H10M14 7.5h1.5a4.5 4.5 0 010 9H14M8 12h8" />
       </ToolButton>
       <ToolButton
         title={
