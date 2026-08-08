@@ -19,7 +19,7 @@ tags:
   - position
   - location
 
-feature_image: "/images/sprite-lab-lesson-2.png"
+feature_image: "https://cdn.steamreader.com/static/sprite-lab-lesson-2.png"
 feature_image_alt: "Picture Swapping"
 feature_image_caption: "Picture Swapping"
 excerpt: "Learn how to use IF statements to make decisions, display messages with print statements, increase or decrease values using variables, swap images, keep track of counters, and add new assets."

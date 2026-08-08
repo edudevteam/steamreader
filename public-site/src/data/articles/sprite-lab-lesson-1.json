@@ -48,7 +48,7 @@
     }
   ],
   "featureImage": {
-    "src": "/images/sprite-lab-lesson-1.png",
+    "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-1.png",
     "alt": "Chatting with Sprites",
     "caption": ""
   },

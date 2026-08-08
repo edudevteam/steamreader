@@ -64,7 +64,7 @@
     }
   ],
   "featureImage": {
-    "src": "/images/sprite-lab-lesson-4.png",
+    "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-4.png",
     "alt": "Lesson 4 Maze Maker",
     "caption": "Maze Maker"
   },

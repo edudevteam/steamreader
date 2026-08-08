@@ -16,7 +16,7 @@ tags:
   - chat
   - code.org
 
-feature_image: "/images/sprite-lab-lesson-1.png"
+feature_image: "https://cdn.steamreader.com/static/sprite-lab-lesson-1.png"
 feature_image_alt: "Chatting with Sprites"
 feature_image_caption: ""
 excerpt: "Learn how to add backgrounds and sprites, ask users for input, save their responses with variables, and make things happen using events."

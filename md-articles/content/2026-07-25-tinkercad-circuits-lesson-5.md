@@ -18,7 +18,7 @@ tags:
   - breadboard
   - ohms law
 
-feature_image: "/images/Tinkercad-Circuits-Lesson-5.png"
+feature_image: "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-5.png"
 feature_image_alt: "Tinkercad Circuits Lesson 5"
 feature_image_caption: "Tinkercad Circuits Lesson 5"
 excerpt: "Let's learn how to find the `just right` resistor so an RGB LED glows bright and happy in red, green, and blue. Then you'll add a push button that turns your color on only while you hold it down!"
@@ -41,7 +41,7 @@ By the end of this lesson, the student will be able to:
 
 ## 🚀 Tutorial
 
-<img style="width: 500px;" src="/images/TinkerCAD-Circuits-L05-Activity-Components.png" alt="Breadboard, 9 volt battery, push button, LED RGB, resistor" />
+<img style="width: 500px;" src="https://cdn.steamreader.com/static/TinkerCAD-Circuits-L05-Activity-Components.png" alt="Breadboard, 9 volt battery, push button, LED RGB, resistor" />
 
 **What is a "Momentary Switch"?**
 Think of a **Momentary Switch** like a doorbell. It is only "on" while you are pressing it down. As soon as you let go, it pops back up and turns the circuit "off". It is called "momentary" because it only does its job for the _moment_ that you are touching it!

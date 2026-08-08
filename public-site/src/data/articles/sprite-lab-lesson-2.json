@@ -60,7 +60,7 @@
     }
   ],
   "featureImage": {
-    "src": "/images/sprite-lab-lesson-2.png",
+    "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-2.png",
     "alt": "Picture Swapping",
     "caption": "Picture Swapping"
   },

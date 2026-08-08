@@ -62,7 +62,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/Tinkercad-Circuits-Lesson-6.png",
+        "src": "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-6.png",
         "alt": "TinkerCAD Circuits Lesson 6",
         "caption": "TinkerCAD Circuits Lesson 6"
       },
@@ -168,7 +168,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/Tinkercad-Circuits-Lesson-5.png",
+        "src": "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-5.png",
         "alt": "Tinkercad Circuits Lesson 5",
         "caption": "Tinkercad Circuits Lesson 5"
       },
@@ -264,7 +264,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/Tinkercad-Circuits-Lesson-4.png",
+        "src": "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-4.png",
         "alt": "TinkerCAD Circuits Lesson 4",
         "caption": "TinkerCAD Circuits Lesson 4"
       },
@@ -361,7 +361,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/Tinkercad-Circuits-Lesson-3.png",
+        "src": "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-3.png",
         "alt": "TinkerCAD Circuits Lesson 3",
         "caption": "TinkerCAD Circuits Lesson 3"
       },
@@ -473,7 +473,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/Tinkercad-Circuits-Lesson-2.png",
+        "src": "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-2.png",
         "alt": "TinkerCAD Circuits Lesson 2",
         "caption": "TinkerCAD Circuits Lesson 2"
       },
@@ -567,7 +567,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/Tinkercad-Circuits-Lesson-1.png",
+        "src": "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-1.png",
         "alt": "TinkerCAD Circuits",
         "caption": "TinkerCAD Circuits Lesson 1"
       },
@@ -690,7 +690,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/vibe-code-a-website-google-to-claude-to-cloudflare-pages.png",
+        "src": "https://cdn.steamreader.com/static/vibe-code-a-website-google-to-claude-to-cloudflare-pages.png",
         "alt": "Build Your First Website for Free (With AI!)",
         "caption": "Think it, design it, vibe it out — from Google AI Studio to Claude Code to free hosting on Cloudflare Pages."
       },
@@ -752,7 +752,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/sprite-lab-lesson-5.png",
+        "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-5.png",
         "alt": "Story Boarding",
         "caption": "Story Boarding"
       },
@@ -906,7 +906,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/sprite-lab-lesson-4.png",
+        "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-4.png",
         "alt": "Lesson 4 Maze Maker",
         "caption": "Maze Maker"
       },
@@ -1113,7 +1113,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/sprite-lab-lesson-3.png",
+        "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-3.png",
         "alt": "The Bug Catcher",
         "caption": "Re-using Functions"
       },
@@ -1242,7 +1242,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/sprite-lab-lesson-2.png",
+        "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-2.png",
         "alt": "Picture Swapping",
         "caption": "Picture Swapping"
       },
@@ -1379,7 +1379,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/sprite-lab-lesson-1.png",
+        "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-1.png",
         "alt": "Chatting with Sprites",
         "caption": ""
       },
@@ -1474,7 +1474,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/sprite-lab.png",
+        "src": "https://cdn.steamreader.com/static/sprite-lab.png",
         "alt": "Code.org Sprite Lab",
         "caption": "Code.org Sprite Lab"
       },
@@ -1573,7 +1573,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/python-generating-requirements-file.png",
+        "src": "https://cdn.steamreader.com/static/python-generating-requirements-file.png",
         "alt": "python generating requirements TXT file",
         "caption": "Graphic by FundedYouth"
       },
@@ -1648,7 +1648,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/python-virtual-environments-banner.png",
+        "src": "https://cdn.steamreader.com/static/python-virtual-environments-banner.png",
         "alt": "python virtual environments",
         "caption": "Python (venv) virtual environments"
       },
@@ -1744,7 +1744,7 @@
         }
       ],
       "featureImage": {
-        "src": "/images/fast-api-tutorial-up-and-running-locally.png",
+        "src": "https://cdn.steamreader.com/static/fast-api-tutorial-up-and-running-locally.png",
         "alt": "Python Fast API Tutorial",
         "caption": "Python Fast API Tutorial"
       },

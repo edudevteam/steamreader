@@ -68,7 +68,7 @@
     }
   ],
   "featureImage": {
-    "src": "/images/sprite-lab-lesson-3.png",
+    "src": "https://cdn.steamreader.com/static/sprite-lab-lesson-3.png",
     "alt": "The Bug Catcher",
     "caption": "Re-using Functions"
   },

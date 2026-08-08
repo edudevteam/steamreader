@@ -8,7 +8,7 @@ date: "2026-08-06"
 category: "Tutorial"
 tags: []
 
-feature_image: "/images/Tinkercad-Circuits-Lesson-0.png"
+feature_image: "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-0.png"
 feature_image_alt: "Circuits Lesson 0"
 feature_image_caption: ""
 excerpt: ""

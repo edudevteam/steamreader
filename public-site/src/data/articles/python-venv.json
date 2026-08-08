@@ -40,7 +40,7 @@
     }
   ],
   "featureImage": {
-    "src": "/images/python-virtual-environments-banner.png",
+    "src": "https://cdn.steamreader.com/static/python-virtual-environments-banner.png",
     "alt": "python virtual environments",
     "caption": "Python (venv) virtual environments"
   },

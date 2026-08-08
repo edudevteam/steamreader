@@ -16,7 +16,7 @@ tags:
   - restance
   - led
 
-feature_image: "/images/Tinkercad-Circuits-Lesson-2.png"
+feature_image: "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-2.png"
 feature_image_alt: "TinkerCAD Circuits Lesson 2"
 feature_image_caption: "TinkerCAD Circuits Lesson 2"
 excerpt: "Let's learn the basics of resistors and how they affect the flow of electricity in a (series) circuit."
@@ -52,9 +52,9 @@ Now let's swap out one small piece of the tube for a piece that is stuffed with 
 - **Lots of Bumps (High Resistance):** The beads have a hard time squeezing through, so the whole loop slows down and less energy reaches the LED.
 - **No Bumps at All (No Resistor):** The beads race around so fast that the LED cannot handle it — and it pops!
 
-![A closed LED circuit without Resistor](/images/TinkerCAD-Circuits-L02-Circuit-without-Resistor.png)
+![A closed LED circuit without Resistor](https://cdn.steamreader.com/static/TinkerCAD-Circuits-L02-Circuit-without-Resistor.png)
 
-![A closed LED circuit with Resistor](/images/TinkerCAD-Circuits-L02-Circuit-with-Resistor.png)
+![A closed LED circuit with Resistor](https://cdn.steamreader.com/static/TinkerCAD-Circuits-L02-Circuit-with-Resistor.png)
 
 ### Activity 1: The "Pop" (The Danger of Too Much Power)
 

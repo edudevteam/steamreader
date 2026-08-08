@@ -13,7 +13,7 @@ tags:
   - storyboard
   - story board
 
-feature_image: "/images/sprite-lab-lesson-5.png"
+feature_image: "https://cdn.steamreader.com/static/sprite-lab-lesson-5.png"
 feature_image_alt: "Story Boarding"
 feature_image_caption: "Story Boarding"
 excerpt: "Learn how to plan your ideas using storyboards, then put your skills to the test by building your own interactive Sprite Lab story from scratch."
@@ -96,7 +96,7 @@ The following tools work for creating an online storyboard. These are not the on
 
 ### Storyboard Sample
 
-<img src="/images/StoryBoardGoogleGemini.png" />
+<img src="https://cdn.steamreader.com/static/StoryBoardGoogleGemini.png" />
 
 ## 🧩 Challenge
 

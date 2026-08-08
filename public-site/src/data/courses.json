@@ -5,7 +5,7 @@
       "title": "Sprite Lab",
       "description": "Learn to build interactive stories and games using Code.org's Sprite Lab. Start with the basics and work your way up to creating your own storyboarded project.",
       "featureImage": {
-        "src": "/images/sprite-lab.png",
+        "src": "https://cdn.steamreader.com/static/sprite-lab.png",
         "alt": "Code.org Sprite Lab"
       },
       "articles": [
@@ -22,7 +22,7 @@
       "title": "Tinkercad Circuits Lab",
       "description": "Learn to send electricity around a loop and keep your lights safe with resistors. Then learn to use buttons and knobs to turn your lights on, dim them, and mix your own colors!",
       "featureImage": {
-        "src": "/images/TinkerCAD-Circuits-Course.png",
+        "src": "https://cdn.steamreader.com/static/TinkerCAD-Circuits-Course.png",
         "alt": "TinkerCAD Circuits Lab"
       },
       "articles": [

@@ -17,7 +17,7 @@ tags:
   - led
   - breadboard
 
-feature_image: "/images/Tinkercad-Circuits-Lesson-4.png"
+feature_image: "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-4.png"
 feature_image_alt: "TinkerCAD Circuits Lesson 4"
 feature_image_caption: "TinkerCAD Circuits Lesson 4"
 excerpt: "Let's learn how to slow down a battery that pushes too hard, and how to build your own battery pack that pushes just right. Then you'll test it in Tinkercad, where nothing really pops!"
@@ -41,7 +41,7 @@ By the end of this lesson, the student will be able to:
 
 - **Concept**: Recall that components have specific "needs." An LED needs a specific "push" (voltage) and "flow" (current) to shine brightly without burning out.
 
-<img src="/images/TinkerCAD-Circuits-L03-ohms-law-resistance.png" alt="Resistance equation for ohm's law" />
+<img src="https://cdn.steamreader.com/static/TinkerCAD-Circuits-L03-ohms-law-resistance.png" alt="Resistance equation for ohm's law" />
 
 - **Activity**:
   1. Build a circuit on your breadboard with a **9V battery**, a **resistor**, and **two LEDs** (one Red, one Green).
@@ -96,8 +96,8 @@ By the end of this lesson, the student will be able to:
      - Connect the **Red (positive)** wire from the Power Supply directly to the **Anode (positive leg)** of the LED.
      - Connect the **Black (negative)** wire from the Power Supply directly to the **Cathode (negative leg)** of the LED.
 
-<img style="width: 500px;" src="/images/TinkerCAD-Circuits-L04-PowerSupply-Testing-GreenLED-InitialSetup.png" alt="" />
+<img style="width: 500px;" src="https://cdn.steamreader.com/static/TinkerCAD-Circuits-L04-PowerSupply-Testing-GreenLED-InitialSetup.png" alt="" />
 
 4. **Discovery**: Slowly increase the voltage on the Power Supply until the LED reaches its ideal brightness. Observe the **Amperage** readout directly on the Power Supply display and record the exact voltage and amperage in your Engineer's Notebook.
 
-<img src="/images/TinkerCAD-Circuits-L04-PowerSupply-Testing-GreenLED-PeakBrightness-Voltage.png" alt="" />
+<img src="https://cdn.steamreader.com/static/TinkerCAD-Circuits-L04-PowerSupply-Testing-GreenLED-PeakBrightness-Voltage.png" alt="" />

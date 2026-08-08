@@ -16,7 +16,7 @@ tags:
   - restance
   - led
 
-feature_image: "/images/Tinkercad-Circuits-Lesson-3.png"
+feature_image: "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-3.png"
 feature_image_alt: "TinkerCAD Circuits Lesson 3"
 feature_image_caption: "TinkerCAD Circuits Lesson 3"
 excerpt: "Build a circuit on a breadboard, see how each LED uses up some of the battery's power, and use Ohm's Law math to pick the right resistor — then check your answer with a multimeter."
@@ -120,7 +120,7 @@ By the end of this lesson, the student will be able to:
   5. The 4th LED takes 2V (3V - 2V = 1V left).
 - **Discussion**: If we had 5 LEDs, we wouldn't have enough energy left! The last one would be too dim to light up.
 
-![Wateerfall Analogy](/images/TinkerCAD-Circuits-L03-waterfall-explanation.png)
+![Wateerfall Analogy](https://cdn.steamreader.com/static/TinkerCAD-Circuits-L03-waterfall-explanation.png)
 
 > Note: the LED color change is for visual use. Refer to the LED Color Table in Activity 6 for accurate color voltage.
 
@@ -167,13 +167,13 @@ By the end of this lesson, the student will be able to:
 
   > The letter (I) is used instead of (A) or "Current/Amps" to mean **"Instensity"**
 
-![Ohm's Law Finding the Resistance](/images/TinkerCAD-Circuits-L03-ohms-law-resistance.png)
+![Ohm's Law Finding the Resistance](https://cdn.steamreader.com/static/TinkerCAD-Circuits-L03-ohms-law-resistance.png)
 
 - ### **Experiment 1: The Single LED Test**
 
 Build a circuit on a Small Breadboard with a 9V battery, a 1kΩ resistor, and 1 LED.
 
-<img src="/images/TinkerCAD-Circuits-L03-Experiment-01-Components.png" style="width: 400px;"/>
+<img src="https://cdn.steamreader.com/static/TinkerCAD-Circuits-L03-Experiment-01-Components.png" style="width: 400px;"/>
 
 #### Instructions
 

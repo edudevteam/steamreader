@@ -14,7 +14,7 @@ tags:
   - energy
   - ohms law
 
-feature_image: "/images/Tinkercad-Circuits-Lesson-1.png"
+feature_image: "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-1.png"
 feature_image_alt: "TinkerCAD Circuits"
 feature_image_caption: "TinkerCAD Circuits Lesson 1"
 excerpt: "Learn how electricity flows from a 9v battery into a light bulb. Add a push button for some control."

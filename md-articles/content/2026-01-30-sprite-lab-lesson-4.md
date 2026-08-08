@@ -20,7 +20,7 @@ tags:
   - game development
   - costume graphics
 
-feature_image: "/images/sprite-lab-lesson-4.png"
+feature_image: "https://cdn.steamreader.com/static/sprite-lab-lesson-4.png"
 feature_image_alt: "Lesson 4 Maze Maker"
 feature_image_caption: "Maze Maker"
 excerpt: "In this tutorial, you’ll learn how to build a maze-style game while exploring some powerful programming ideas along the way. You’ll practice using behaviors and review how event blocks work, then learn how to make the most of the grid to design your game world. As you build, you’ll add conditional logic that lets sprites react when they interact with each other, display information on the screen, and play sounds at the right moments. You’ll also learn how logical operators help your game make smarter decisions, bringing everything together into a fun and interactive experience."

@@ -19,7 +19,7 @@ tags:
   - ohms law
   - potentiometer
 
-feature_image: "/images/Tinkercad-Circuits-Lesson-6.png"
+feature_image: "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-6.png"
 feature_image_alt: "TinkerCAD Circuits Lesson 6"
 feature_image_caption: "TinkerCAD Circuits Lesson 6"
 excerpt: "Let's learn how to use a knob called a potentiometer to make your light slowly get brighter and dimmer by adding or removing bumps in the path the electricity takes. Then you'll use three knobs at once to mix your very own rainbow colors!"
@@ -47,7 +47,7 @@ Remember the tube packed with beads? A resistor is a bumpy section that the bead
 
 **Pro Tip for TinkerCAD:** When you click on your Potentiometer, you might see a setting for Resistance. Don't worry about this—just set it to **10kΩ** (the most common size) and leave it there!
 
-<img src="/images/TinkerCAD-Circuits-L06-Potentiometer.png" alt="potentiometer 2d graphic" />
+<img src="https://cdn.steamreader.com/static/TinkerCAD-Circuits-L06-Potentiometer.png" alt="potentiometer 2d graphic" />
 
 **New Concept: The Shared Ground Highway**
 In this lesson, you will use more than one ground wire! It might look different, but it’s still simple:
@@ -149,7 +149,7 @@ In this lesson, you will use more than one ground wire! It might look different,
 
 ### Why Don't Three Resistors Add Up to 1.2kΩ?
 
-<img src="/images/TinkerCAD-Circuits-L06-Series-vs-Parallel-Circuit.png" alt="series circuit versus parallel circuit" />
+<img src="https://cdn.steamreader.com/static/TinkerCAD-Circuits-L06-Series-vs-Parallel-Circuit.png" alt="series circuit versus parallel circuit" />
 
 A clever question you might ask when looking at this circuit is: _"If we have three 400Ω resistors, does that add them all together to make 1.2kΩ?"_
 

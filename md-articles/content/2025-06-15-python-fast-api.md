@@ -18,7 +18,7 @@ tags:
   - postman
   - venv
 
-feature_image: "/images/fast-api-tutorial-up-and-running-locally.png"
+feature_image: "https://cdn.steamreader.com/static/fast-api-tutorial-up-and-running-locally.png"
 feature_image_alt: "Python Fast API Tutorial"
 feature_image_caption: "Python Fast API Tutorial"
 excerpt: "A guided step-by-step tutorial shows how Web API's work. You will learn how to use API tools to get data nd even build yoru own web api using python."
@@ -185,7 +185,7 @@ Add a new Request by providing the URL: `http://localhost:8000/items` and settin
 
 > Think of this like an html web form or web application where you add a new item. But instead of an easy to use form, we are going to send a specialized text format.
 
-![](/images/insomnia-api-tool-add-json.png)
+![](https://cdn.steamreader.com/static/insomnia-api-tool-add-json.png)
 
 In the `POST Request` select the `Body` tab. You should see a drop-down. Select `JSON`.
 
