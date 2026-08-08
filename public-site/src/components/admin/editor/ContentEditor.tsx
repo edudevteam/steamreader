@@ -18,6 +18,7 @@ import {
   renderForEditor
 } from 'lib/markdown'
 import EditorToolbar from './EditorToolbar'
+import ArticleButton from './extensions/ArticleButton'
 import RawHtmlBlock from './extensions/RawHtmlBlock'
 import { Alert } from '../ui'
 
@@ -69,6 +70,7 @@ export default function ContentEditor({
       TableRow,
       TableHeader,
       TableCell,
+      ArticleButton,
       RawHtmlBlock,
       Placeholder.configure({ placeholder: 'Start writing your article…' })
     ],

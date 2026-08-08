@@ -1,7 +1,13 @@
-import { useRef, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import type { Editor } from '@tiptap/react'
 import { classNames } from 'utils'
 import { uploadImage } from 'lib/cms/uploads'
+import ButtonDialog from './ButtonDialog'
+import {
+  DEFAULT_ARTICLE_BUTTON,
+  normalizeArticleButton,
+  type ArticleButtonAttributes
+} from './extensions/ArticleButton'
 
 function ToolButton({
   onClick,
@@ -63,6 +69,37 @@ export default function EditorToolbar({
   onError: (message: string) => void
 }) {
   const fileInput = useRef<HTMLInputElement>(null)
+  const [buttonDraft, setButtonDraft] = useState<{
+    attributes: ArticleButtonAttributes
+    editing: boolean
+  } | null>(null)
+
+  // Selecting an existing button and hitting the toolbar edits it in place;
+  // otherwise a fresh one is inserted at the cursor.
+  const openButtonDialog = () => {
+    const editing = editor.isActive('articleButton')
+
+    setButtonDraft({
+      editing,
+      attributes: editing
+        ? normalizeArticleButton(editor.getAttributes('articleButton'))
+        : { ...DEFAULT_ARTICLE_BUTTON }
+    })
+  }
+
+  const saveButton = (attributes: ArticleButtonAttributes) => {
+    const chain = editor.chain().focus()
+
+    if (buttonDraft?.editing) chain.updateArticleButton(attributes).run()
+    else chain.setArticleButton(attributes).run()
+
+    setButtonDraft(null)
+  }
+
+  const removeButton = () => {
+    editor.chain().focus().unsetArticleButton().run()
+    setButtonDraft(null)
+  }
 
   const addLink = () => {
     const previous = editor.getAttributes('link').href as string | undefined
@@ -200,6 +237,15 @@ export default function EditorToolbar({
         <Icon d="M13.828 10.172a4 4 0 010 5.656l-3 3a4 4 0 01-5.656-5.656l1.5-1.5M10.172 13.828a4 4 0 010-5.656l3-3a4 4 0 015.656 5.656l-1.5 1.5" />
       </ToolButton>
       <ToolButton
+        title={
+          editor.isActive('articleButton') ? 'Edit button' : 'Insert button'
+        }
+        active={editor.isActive('articleButton')}
+        onClick={openButtonDialog}
+      >
+        <Icon d="M5 9h14a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 012-2zM9.5 12h5" />
+      </ToolButton>
+      <ToolButton
         title="Insert image"
         onClick={() => fileInput.current?.click()}
       >
@@ -230,6 +276,16 @@ export default function EditorToolbar({
           event.target.value = ''
         }}
       />
+
+      {buttonDraft && (
+        <ButtonDialog
+          initial={buttonDraft.attributes}
+          editing={buttonDraft.editing}
+          onClose={() => setButtonDraft(null)}
+          onSubmit={saveButton}
+          onRemove={removeButton}
+        />
+      )}
     </div>
   )
 }

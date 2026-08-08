@@ -56,6 +56,14 @@
   height: auto;
 }
 
+/* CTA buttons carry their colours and corner radius as inline styles so the
+   published HTML is self-contained. The editor only adds the affordances that
+   say "this is one object, click to select it". */
+.tiptap .article-button {
+  cursor: pointer;
+  user-select: none;
+}
+
 /* Selected atom nodes (images, embeds) need a visible selection ring, since
    they have no text cursor of their own. */
 .ProseMirror-selectednode {

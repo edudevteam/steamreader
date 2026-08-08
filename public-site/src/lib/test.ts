@@ -176,6 +176,24 @@ describe('CMS markdown pipeline', () => {
       expect(roundTripped).toContain('After')
     })
 
+    it('keeps CTA buttons, their colours and their corner radius', () => {
+      // Exactly what the ArticleButton node serialises. Turndown's link rule
+      // would flatten this to `[Start the course](…)` and lose every style,
+      // so the anchor has to come back byte-identical.
+      const button =
+        '<a href="https://example.com/course" data-button="true" ' +
+        'class="article-button" style="display:inline-block;' +
+        'background-color:#673ab7;color:#ffffff;border-radius:9999px;' +
+        'padding:0.625rem 1.25rem;text-decoration:none">' +
+        '<span style="font-weight:600">Start the course</span></a>'
+
+      const roundTripped = htmlToMarkdown(`<p>${button}</p>`)
+
+      expect(roundTripped).toBe(button)
+      // And marked hands it straight back for the next editing session.
+      expect(renderForEditor(roundTripped)).toContain(button)
+    })
+
     it('keeps nested lists indented correctly', () => {
       const source = [
         '- Outer',

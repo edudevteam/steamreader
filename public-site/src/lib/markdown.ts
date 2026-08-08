@@ -142,6 +142,17 @@ function getTurndown(): TurndownService {
 
   turndown.use(gfm)
 
+  // CTA buttons round trip as inline HTML. Turndown's link rule would happily
+  // flatten one to `[Label](url)` and throw away every style the author picked,
+  // so the anchor is handed back exactly as the editor serialised it. Custom
+  // rules are consulted before the built-ins, so this wins.
+  turndown.addRule('articleButton', {
+    filter: (node) =>
+      node.nodeName === 'A' &&
+      (node as HTMLElement).hasAttribute('data-button'),
+    replacement: (_content, node) => (node as HTMLElement).outerHTML
+  })
+
   // Inline colour spans are used in the existing articles; keep them as HTML
   // rather than letting turndown drop the styling.
   turndown.addRule('styledSpan', {
