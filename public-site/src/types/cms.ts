@@ -112,6 +112,28 @@ export interface ArticleDetailRow extends ArticleRow {
   toc: TocItem[]
 }
 
+/**
+ * Row shape of the `article_trash` view -- deliberately not an `ArticleRow`.
+ * The Trash page shows a title, who trashed it and when, and offers Restore or
+ * Destroy, so the view skips the byline aggregate and the tag rollup.
+ *
+ * `status` is the status the article will return to on restore, which is why
+ * the trash is a timestamp column and not a fifth status.
+ */
+export interface ArticleTrashRow {
+  id: string
+  slug: string
+  title: string
+  status: ArticleStatus
+  published_at: string | null
+  deleted_at: string
+  deleted_by: string | null
+  deleted_by_name: string | null
+  author_id: string | null
+  author_name: string | null
+  category_name: string | null
+}
+
 /** The editable draft the article editor holds in state. */
 export interface ArticleDraft {
   id?: string
@@ -133,6 +155,59 @@ export interface ArticleDraft {
   previous_slug: string | null
   next_slug: string | null
   validation: ValidationBadges | null
+}
+
+/** Row shape of the `courses` table, with its lesson count rolled up. */
+export interface CourseRow {
+  id: string
+  slug: string
+  title: string
+  description: string
+  feature_image: FeatureImage | Record<string, never>
+  sort_order: number
+  created_at: string
+  /** Lessons in the course, published or not. */
+  lesson_count: number
+}
+
+/**
+ * One lesson in a course, in course order.
+ *
+ * `status` and `trashed` ride along because the public course page silently
+ * drops anything a reader cannot reach, and the two ways that happens look
+ * identical from the editor otherwise: a course assembled ahead of its
+ * articles going live, and a lesson somebody has since trashed. Staff can read
+ * trashed articles, so nothing else would give the second one away.
+ */
+export interface CourseLesson {
+  article_id: string
+  slug: string
+  title: string
+  status: ArticleStatus
+  trashed: boolean
+}
+
+/** The editable course the course editor holds in state. */
+export interface CourseDraft {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  feature_image: FeatureImage
+  sort_order: number
+  /** Article ids in lesson order. Position is the index, not a stored field. */
+  lessons: CourseLesson[]
+}
+
+export function emptyCourse(): CourseDraft {
+  return {
+    slug: '',
+    title: '',
+    description: '',
+    feature_image: { src: '', alt: '' },
+    sort_order: 0,
+    lessons: []
+  }
 }
 
 export interface CategoryRow extends CategoryRef {

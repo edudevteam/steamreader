@@ -96,7 +96,13 @@ Deno.serve(async (req) => {
         const authById = new Map(authList?.users.map((u) => [u.id, u]) ?? [])
 
         // Article counts drive the "N articles" column in the users table.
-        const { data: counts } = await admin.from('articles').select('author_id')
+        // Reads `articles` directly rather than `article_list`, so the trash
+        // filter every view carries has to be repeated here -- otherwise a
+        // user's count keeps counting work they threw away.
+        const { data: counts } = await admin
+          .from('articles')
+          .select('author_id')
+          .is('deleted_at', null)
         const countByAuthor = new Map<string, number>()
         for (const row of counts ?? []) {
           if (!row.author_id) continue

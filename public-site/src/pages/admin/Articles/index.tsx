@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from 'context/AuthContext'
-import { deleteArticle, listArticles, setArticleStatus } from 'lib/cms/articles'
+import { listArticles, setArticleStatus, trashArticle } from 'lib/cms/articles'
 import {
   Alert,
   Button,
@@ -31,7 +31,7 @@ export default function AdminArticlesPage() {
   const [rows, setRows] = useState<ArticleRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [pendingDelete, setPendingDelete] = useState<ArticleRow | null>(null)
+  const [pendingTrash, setPendingTrash] = useState<ArticleRow | null>(null)
   const [busyId, setBusyId] = useState<string | null>(null)
 
   const refresh = useCallback(async () => {
@@ -91,16 +91,16 @@ export default function AdminArticlesPage() {
     }
   }
 
-  const handleDelete = async () => {
-    if (!pendingDelete) return
-    setBusyId(pendingDelete.id)
+  const handleTrash = async () => {
+    if (!pendingTrash) return
+    setBusyId(pendingTrash.id)
     try {
-      await deleteArticle(pendingDelete.id)
-      setPendingDelete(null)
+      await trashArticle(pendingTrash.id)
+      setPendingTrash(null)
       await refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not delete article')
-      setPendingDelete(null)
+      setError(err instanceof Error ? err.message : 'Could not trash article')
+      setPendingTrash(null)
     } finally {
       setBusyId(null)
     }
@@ -117,25 +117,43 @@ export default function AdminArticlesPage() {
               : 'Articles you have written.'}
           </p>
         </div>
-        <Button
-          variant="primary"
-          onClick={() => navigate('/admin/articles/new')}
-        >
-          <svg
-            className="size-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
+        <div className="flex items-center gap-2">
+          <Button onClick={() => navigate('/admin/articles/trash')}>
+            <svg
+              className="size-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.8}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+            Trash
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => navigate('/admin/articles/new')}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-          New article
-        </Button>
+            <svg
+              className="size-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            New article
+          </Button>
+        </div>
       </div>
 
       {error && (
@@ -318,10 +336,10 @@ export default function AdminArticlesPage() {
                         </Link>
                         <button
                           type="button"
-                          onClick={() => setPendingDelete(row)}
+                          onClick={() => setPendingTrash(row)}
                           className="text-xs font-medium text-red-600 hover:text-red-800"
                         >
-                          Delete
+                          Trash
                         </button>
                       </div>
                     </td>
@@ -334,26 +352,36 @@ export default function AdminArticlesPage() {
       </Card>
 
       <Modal
-        open={Boolean(pendingDelete)}
-        title="Delete article"
-        onClose={() => setPendingDelete(null)}
+        open={Boolean(pendingTrash)}
+        title="Move to trash"
+        onClose={() => setPendingTrash(null)}
         footer={
           <>
-            <Button onClick={() => setPendingDelete(null)}>Cancel</Button>
+            <Button onClick={() => setPendingTrash(null)}>Cancel</Button>
             <Button
               variant="danger"
-              onClick={handleDelete}
-              loading={busyId === pendingDelete?.id}
+              onClick={handleTrash}
+              loading={busyId === pendingTrash?.id}
             >
-              Delete permanently
+              Move to trash
             </Button>
           </>
         }
       >
         <p className="text-sm text-gray-600">
-          Delete{' '}
-          <strong className="text-gray-900">{pendingDelete?.title}</strong>?
-          This removes the article and its votes, and cannot be undone.
+          Move <strong className="text-gray-900">{pendingTrash?.title}</strong>{' '}
+          to the trash?
+          {pendingTrash?.status === 'published' &&
+            ' It comes off the site straight away.'}{' '}
+          Nothing is deleted — its votes and tags are kept, and you can restore
+          it from{' '}
+          <Link
+            to="/admin/articles/trash"
+            className="font-medium text-brand-600 hover:text-brand-700"
+          >
+            Trash
+          </Link>
+          .
         </p>
       </Modal>
     </div>

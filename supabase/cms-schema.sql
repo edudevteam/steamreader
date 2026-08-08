@@ -10,6 +10,8 @@
 --   * categories, tags, courses become first-class tables
 --   * RLS enforces: writers touch only their own work, editors touch all
 --     content, admins additionally manage users
+--   * deleting an article moves it to a trash (`articles.deleted_at`) that a
+--     second, explicit action empties -- see fix-07 for the full reasoning
 --
 -- It is idempotent -- safe to re-run.
 -- ============================================================================
@@ -256,6 +258,11 @@ ALTER TABLE articles ADD COLUMN IF NOT EXISTS updated_at       TIMESTAMPTZ NOT N
 -- Co-authors are a byline credit by default; the primary author opts an
 -- article into shared editing. See the ARTICLE AUTHORS section below.
 ALTER TABLE articles ADD COLUMN IF NOT EXISTS co_authors_can_edit BOOLEAN NOT NULL DEFAULT false;
+-- Deleting an article trashes it rather than dropping the row, so a misclick
+-- cannot take a published article and its votes with it. `deleted_by` is
+-- stamped by the ownership trigger, never by the client.
+ALTER TABLE articles ADD COLUMN IF NOT EXISTS deleted_at       TIMESTAMPTZ;
+ALTER TABLE articles ADD COLUMN IF NOT EXISTS deleted_by       UUID REFERENCES profiles(id) ON DELETE SET NULL;
 
 ALTER TABLE articles ALTER COLUMN id SET DEFAULT gen_random_uuid();
 
@@ -269,6 +276,12 @@ CREATE INDEX IF NOT EXISTS idx_articles_author    ON articles(author_id);
 CREATE INDEX IF NOT EXISTS idx_articles_category  ON articles(category_id);
 CREATE INDEX IF NOT EXISTS idx_articles_status    ON articles(status);
 CREATE INDEX IF NOT EXISTS idx_articles_published ON articles(published_at DESC);
+
+-- Partial: the trash is a small fraction of the table, and every other query
+-- here wants `deleted_at IS NULL`, which this index cannot serve anyway. It
+-- exists for the Trash page's one listing query.
+CREATE INDEX IF NOT EXISTS idx_articles_trashed
+  ON articles(deleted_at DESC) WHERE deleted_at IS NOT NULL;
 
 -- Full-text search over the fields the public Search page actually queries.
 CREATE INDEX IF NOT EXISTS idx_articles_search ON articles
@@ -442,9 +455,16 @@ DROP POLICY IF EXISTS "Staff delete any article"    ON articles;
 DROP POLICY IF EXISTS "Co-authors read editable articles"   ON articles;
 DROP POLICY IF EXISTS "Co-authors update editable articles" ON articles;
 
--- Scheduled posts stay hidden until their publish date arrives.
+-- Scheduled posts stay hidden until their publish date arrives, and so does
+-- anything in the trash. The trash test has to be here and not only in
+-- `article_list`: `articles` is an exposed table, so a view-only filter would
+-- leave a trashed published article fetchable at /rest/v1/articles by name.
 CREATE POLICY "Public read published" ON articles
-  FOR SELECT USING (status = 'published' AND (published_at IS NULL OR published_at <= NOW()));
+  FOR SELECT USING (
+    status = 'published'
+    AND (published_at IS NULL OR published_at <= NOW())
+    AND deleted_at IS NULL
+  );
 
 CREATE POLICY "Authors read own articles" ON articles
   FOR SELECT TO authenticated USING (author_id = (select auth.uid()));
@@ -465,13 +485,20 @@ CREATE POLICY "Authors update own articles" ON articles
 CREATE POLICY "Staff update any article" ON articles
   FOR UPDATE TO authenticated USING (private.is_editor()) WITH CHECK (private.is_editor());
 
--- Writers can retract their own unpublished work but cannot unpublish live posts.
+-- Writers can retract their own unpublished work but cannot unpublish live
+-- posts. Both policies require the article to be in the trash already, so the
+-- only route to a hard delete is a second, deliberate action.
 CREATE POLICY "Authors delete own drafts" ON articles
   FOR DELETE TO authenticated
-  USING (author_id = (select auth.uid()) AND status IN ('draft', 'in_review'));
+  USING (
+    author_id = (select auth.uid())
+    AND status IN ('draft', 'in_review')
+    AND deleted_at IS NOT NULL
+  );
 
 CREATE POLICY "Staff delete any article" ON articles
-  FOR DELETE TO authenticated USING (private.is_editor());
+  FOR DELETE TO authenticated
+  USING (private.is_editor() AND deleted_at IS NOT NULL);
 
 -- Co-author access is gated on the article's own switch, not on mere credit: a
 -- credit-only co-author has no business reading an unpublished draft. Once
@@ -524,7 +551,13 @@ CREATE TRIGGER trigger_enforce_publish
 --   2. A co-author switching `co_authors_can_edit` on for an article whose
 --      primary author had left it off.
 --
--- Both are UPDATEs the co-author policy would otherwise allow.
+--   3. Trashing. Making "delete" an UPDATE puts it within reach of two
+--      accounts the DELETE policy always refused: a co-author with edit
+--      rights, and the primary author of a *published* article. Restoring is
+--      checked the same way, against OLD.status -- the status the article
+--      returns to.
+--
+-- All three are UPDATEs the co-author policy would otherwise allow.
 CREATE OR REPLACE FUNCTION public.enforce_article_ownership()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -532,6 +565,16 @@ SECURITY DEFINER
 SET search_path = ''
 AS $$
 BEGIN
+  -- Stamped before the early return, so a service_role path -- the
+  -- admin-users function reassigning articles, say -- records a NULL rather
+  -- than carrying a stale name from a previous trip through the trash.
+  IF NEW.deleted_at IS DISTINCT FROM OLD.deleted_at THEN
+    NEW.deleted_by := CASE
+      WHEN NEW.deleted_at IS NULL THEN NULL
+      ELSE (SELECT auth.uid())
+    END;
+  END IF;
+
   -- No signed-in user means service_role or a direct SQL session, both of
   -- which already bypass RLS. This guard backstops the co-author policies, so
   -- it must not be stricter than they are -- the admin-users function reassigns
@@ -550,6 +593,26 @@ BEGIN
   IF NEW.co_authors_can_edit IS DISTINCT FROM OLD.co_authors_can_edit
      AND OLD.author_id IS DISTINCT FROM (SELECT auth.uid()) THEN
     RAISE EXCEPTION 'Only the primary author or an editor can change co-author editing'
+      USING ERRCODE = '42501';
+  END IF;
+
+  IF NEW.deleted_at IS DISTINCT FROM OLD.deleted_at THEN
+    IF OLD.author_id IS DISTINCT FROM (SELECT auth.uid()) THEN
+      RAISE EXCEPTION 'Only the primary author or an editor can trash an article'
+        USING ERRCODE = '42501';
+    END IF;
+
+    IF OLD.status NOT IN ('draft', 'in_review') THEN
+      RAISE EXCEPTION 'Only an editor can trash or restore a published article'
+        USING ERRCODE = '42501';
+    END IF;
+  END IF;
+
+  -- An article sitting in the trash is frozen: edit it after restoring, not
+  -- before. Without this a writer could rewrite a trashed article and restore
+  -- it, and the version an editor thought they had removed would be gone.
+  IF OLD.deleted_at IS NOT NULL AND NEW.deleted_at IS NOT NULL THEN
+    RAISE EXCEPTION 'Restore this article before editing it'
       USING ERRCODE = '42501';
   END IF;
 
@@ -654,6 +717,7 @@ SELECT
     FROM articles a
     WHERE a.status = 'published'
       AND (a.published_at IS NULL OR a.published_at <= NOW())
+      AND a.deleted_at IS NULL
       AND (
         a.author_id = p.id
         OR EXISTS (
@@ -753,7 +817,11 @@ SELECT
   ) AS tags
 FROM articles a
 LEFT JOIN profiles   p ON p.id = a.author_id
-LEFT JOIN categories c ON c.id = a.category_id;
+LEFT JOIN categories c ON c.id = a.category_id
+-- One filter here covers Home, Latest, Category, Tag, Author, Search and the
+-- admin article list, plus `article_detail` and `search_articles` below, which
+-- inherit it by reading this view.
+WHERE a.deleted_at IS NULL;
 
 GRANT SELECT ON article_list TO anon, authenticated;
 
@@ -773,6 +841,42 @@ GRANT SELECT ON article_detail TO anon, authenticated;
 
 
 -- ============================================
+-- ARTICLE TRASH VIEW
+-- ============================================
+-- `article_list` filters trashed rows out, so the Trash page needs its own
+-- source. Deliberately thin -- the page shows a title, who trashed it and
+-- when, and offers Restore or Destroy. No byline aggregate, no tag rollup.
+--
+-- Scoped to the accounts that can act on the row, so nobody is shown a Restore
+-- button that will fail: the primary author, and staff. A co-author with edit
+-- rights can read the underlying row but cannot restore it, so they are left
+-- out. No anon grant at all.
+DROP VIEW IF EXISTS article_trash;
+CREATE VIEW article_trash
+WITH (security_invoker = on) AS
+SELECT
+  a.id,
+  a.slug,
+  a.title,
+  a.status,
+  a.published_at,
+  a.deleted_at,
+  a.deleted_by,
+  d.display_name AS deleted_by_name,
+  a.author_id,
+  p.display_name AS author_name,
+  c.name         AS category_name
+FROM articles a
+LEFT JOIN profiles   p ON p.id = a.author_id
+LEFT JOIN profiles   d ON d.id = a.deleted_by
+LEFT JOIN categories c ON c.id = a.category_id
+WHERE a.deleted_at IS NOT NULL
+  AND (a.author_id = (select auth.uid()) OR private.is_editor());
+
+GRANT SELECT ON article_trash TO authenticated;
+
+
+-- ============================================
 -- TAXONOMY COUNT VIEWS
 -- ============================================
 -- The Categories and Tags index pages show article counts. Counting in the
@@ -787,6 +891,7 @@ LEFT JOIN articles a
   ON a.category_id = c.id
  AND a.status = 'published'
  AND (a.published_at IS NULL OR a.published_at <= NOW())
+ AND a.deleted_at IS NULL
 GROUP BY c.id, c.slug, c.name, c.description, c.color, c.sort_order;
 
 GRANT SELECT ON category_counts TO anon, authenticated;
@@ -801,6 +906,7 @@ LEFT JOIN articles a
   ON a.id = at.article_id
  AND a.status = 'published'
  AND (a.published_at IS NULL OR a.published_at <= NOW())
+ AND a.deleted_at IS NULL
 GROUP BY t.id, t.slug, t.name;
 
 GRANT SELECT ON tag_counts TO anon, authenticated;
@@ -822,7 +928,7 @@ SELECT
   COUNT(*) FILTER (WHERE v.vote_type = 'endorsed')           AS endorsed_count
 FROM articles a
 LEFT JOIN article_votes v ON a.id = v.article_id
-WHERE a.status = 'published'
+WHERE a.status = 'published' AND a.deleted_at IS NULL
 GROUP BY a.id, a.slug;
 
 

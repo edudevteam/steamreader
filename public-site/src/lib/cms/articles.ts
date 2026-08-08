@@ -18,6 +18,7 @@ import type {
   ArticleDetailRow,
   ArticleRow,
   ArticleStatus,
+  ArticleTrashRow,
   TagRow
 } from 'types'
 
@@ -254,10 +255,67 @@ export async function saveArticle(
   return { id: articleId!, slug }
 }
 
-export async function deleteArticle(id: string): Promise<void> {
-  const { error } = await supabase.from('articles').delete().eq('id', id)
+/**
+ * Moves an article to the trash. Nothing is deleted, so its votes, tags,
+ * co-authors and course placements all survive a restore.
+ *
+ * `article_list` filters trashed rows out, so this is enough to take the
+ * article off every public page and out of the admin list at once. Who may
+ * trash what is enforced by the database, not here -- see fix-07.
+ */
+export async function trashArticle(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('articles')
+    .update({ deleted_at: new Date().toISOString() })
+    .eq('id', id)
+
   if (error) throw translateError(error)
   invalidateContent()
+}
+
+/** Puts a trashed article back at whatever status it held when it was trashed. */
+export async function restoreArticle(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('articles')
+    .update({ deleted_at: null })
+    .eq('id', id)
+
+  if (error) throw translateError(error)
+  invalidateContent()
+}
+
+/**
+ * The real delete, and the only one. Takes the article's votes with it through
+ * ON DELETE CASCADE and cannot be undone.
+ *
+ * The `deleted_at` filter is belt and braces -- the DELETE policies already
+ * require the row to be in the trash -- but it turns a mistaken call on a live
+ * article into a no-op rather than a permissions error.
+ */
+export async function destroyArticle(id: string): Promise<void> {
+  const { error } = await supabase
+    .from('articles')
+    .delete()
+    .eq('id', id)
+    .not('deleted_at', 'is', null)
+
+  if (error) throw translateError(error)
+  invalidateContent()
+}
+
+/**
+ * The trash, newest first. The view already scopes rows to the accounts that
+ * can act on them -- the primary author, and staff -- so there is no `mine`
+ * flag to pass.
+ */
+export async function listTrashedArticles(): Promise<ArticleTrashRow[]> {
+  const { data, error } = await supabase
+    .from('article_trash')
+    .select('*')
+    .order('deleted_at', { ascending: false })
+
+  if (error) throw error
+  return (data ?? []) as ArticleTrashRow[]
 }
 
 export async function setArticleStatus(
@@ -298,6 +356,20 @@ function translateError(error: { code?: string; message: string }): Error {
   if (error.code === '23505')
     return new Error('That slug is already in use by another article.')
   if (error.code === '42501') {
+    // Order matters: these are substring tests against the trigger's own
+    // wording, and the trash messages overlap the others. "Only an editor can
+    // trash or restore a published article" contains both "publish" and
+    // "trash", so it has to be matched before either of them.
+    if (error.message.includes('published article'))
+      return new Error(
+        'Only an editor can trash or restore a published article.'
+      )
+    if (error.message.includes('Restore this article'))
+      return new Error('Restore this article from the trash before editing it.')
+    if (error.message.includes('trash'))
+      return new Error(
+        'Only the primary author or an editor can move this article to the trash.'
+      )
     if (error.message.includes('publish'))
       return new Error(
         'Only editors and admins can publish. Submit for review instead.'

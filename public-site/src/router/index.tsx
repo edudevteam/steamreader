@@ -34,6 +34,9 @@ const AdminLayout = lazy(() => import('components/admin/AdminLayout'))
 const AdminDashboardPage = lazy(() => import('pages/admin/Dashboard'))
 const AdminArticlesPage = lazy(() => import('pages/admin/Articles'))
 const ArticleEditorPage = lazy(() => import('pages/admin/ArticleEditor'))
+const AdminArticleTrashPage = lazy(() => import('pages/admin/ArticleTrash'))
+const AdminCoursesPage = lazy(() => import('pages/admin/Courses'))
+const CourseEditorPage = lazy(() => import('pages/admin/CourseEditor'))
 const AdminUsersPage = lazy(() => import('pages/admin/Users'))
 const AdminTaxonomyPage = lazy(() => import('pages/admin/Taxonomy'))
 const AdminProfilePage = lazy(() => import('pages/admin/Profile'))
@@ -78,11 +81,44 @@ export const router = createBrowserRouter([
           </Lazy>
         )
       },
+      // Ahead of `articles/:id` so the intent is obvious at a glance, though
+      // the router would rank the static segment first either way.
+      {
+        path: 'articles/trash',
+        element: (
+          <Lazy>
+            <AdminArticleTrashPage />
+          </Lazy>
+        )
+      },
       {
         path: 'articles/:id',
         element: (
           <Lazy>
             <ArticleEditorPage />
+          </Lazy>
+        )
+      },
+      // Courses are staff-managed -- "Staff manage courses" in the schema --
+      // so the route mirrors the policy rather than relying on the nav to
+      // hide it.
+      {
+        path: 'courses',
+        element: (
+          <Lazy>
+            <RequireRole minimum="editor">
+              <AdminCoursesPage />
+            </RequireRole>
+          </Lazy>
+        )
+      },
+      {
+        path: 'courses/:id',
+        element: (
+          <Lazy>
+            <RequireRole minimum="editor">
+              <CourseEditorPage />
+            </RequireRole>
           </Lazy>
         )
       },
