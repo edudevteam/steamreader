@@ -147,7 +147,11 @@ export default function ContentEditor({
         {tab === 'visual' && editor && (
           <>
             <EditorToolbar editor={editor} onError={setError} />
-            <EditorContent editor={editor} />
+            {/* The body scrolls on its own so the toolbar stays reachable
+                however long the article gets. */}
+            <div className="max-h-[60vh] overflow-y-auto">
+              <EditorContent editor={editor} />
+            </div>
           </>
         )}
 

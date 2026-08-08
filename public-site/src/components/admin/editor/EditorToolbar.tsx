@@ -123,7 +123,9 @@ export default function EditorToolbar({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-0.5 rounded-t-lg border-b border-gray-200 bg-gray-50 px-2 py-1.5">
+    // Sticky so a page scroll can't push the toolbar out of reach; top-16
+    // clears the mobile admin header, which only exists below `lg`.
+    <div className="sticky top-16 z-20 flex flex-wrap items-center gap-0.5 rounded-t-lg border-b border-gray-200 bg-gray-50 px-2 py-1.5 lg:top-0">
       <ToolButton
         title="Undo"
         onClick={() => editor.chain().focus().undo().run()}
