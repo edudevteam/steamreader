@@ -7,7 +7,7 @@
 --   * profiles gain CMS roles (admin / editor / writer) plus author fields
 --   * the stub `articles` table is widened into the real content table
 --     (existing rows and their article_votes foreign keys are preserved)
---   * categories, tags, courses become first-class tables
+--   * categories, tags, groups become first-class tables
 --   * RLS enforces: writers touch only their own work, editors touch all
 --     content, admins additionally manage users
 --   * deleting an article moves it to a trash (`articles.deleted_at`) that a
@@ -653,44 +653,81 @@ CREATE TRIGGER trigger_articles_updated_at
 
 
 -- ============================================
--- COURSES
+-- GROUPS
 -- ============================================
-CREATE TABLE IF NOT EXISTS courses (
+-- A group is an ordered set of articles. `group_categories` says what kind of
+-- set it is -- the "Courses" category is what the public site renders as
+-- courses -- and mirrors `categories` over articles: one category per group,
+-- ON DELETE SET NULL so removing a category never takes content with it.
+CREATE TABLE IF NOT EXISTS group_categories (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug        TEXT UNIQUE NOT NULL,
+  name        TEXT NOT NULL,
+  description TEXT,
+  color       TEXT,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS groups (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   slug          TEXT UNIQUE NOT NULL,
   title         TEXT NOT NULL,
   description   TEXT NOT NULL DEFAULT '',
   feature_image JSONB NOT NULL DEFAULT '{}'::jsonb,
+  category_id   UUID REFERENCES group_categories(id) ON DELETE SET NULL,
   sort_order    INTEGER NOT NULL DEFAULT 0,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS course_articles (
-  course_id  UUID REFERENCES courses(id)  ON DELETE CASCADE,
+CREATE INDEX IF NOT EXISTS idx_groups_category ON groups(category_id);
+
+CREATE TABLE IF NOT EXISTS group_articles (
+  group_id   UUID REFERENCES groups(id)   ON DELETE CASCADE,
   article_id UUID REFERENCES articles(id) ON DELETE CASCADE,
   position   INTEGER NOT NULL DEFAULT 0,
-  PRIMARY KEY (course_id, article_id)
+  PRIMARY KEY (group_id, article_id)
 );
 
-ALTER TABLE courses         ENABLE ROW LEVEL SECURITY;
-ALTER TABLE course_articles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE group_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE groups           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE group_articles   ENABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS "Public read courses"          ON courses;
-DROP POLICY IF EXISTS "Staff manage courses"         ON courses;
-DROP POLICY IF EXISTS "Public read course articles"  ON course_articles;
-DROP POLICY IF EXISTS "Staff manage course articles" ON course_articles;
+DROP POLICY IF EXISTS "Public read group categories"  ON group_categories;
+DROP POLICY IF EXISTS "Staff manage group categories" ON group_categories;
+DROP POLICY IF EXISTS "Public read groups"            ON groups;
+DROP POLICY IF EXISTS "Staff manage groups"           ON groups;
+DROP POLICY IF EXISTS "Public read group articles"    ON group_articles;
+DROP POLICY IF EXISTS "Staff manage group articles"   ON group_articles;
 
-CREATE POLICY "Public read courses" ON courses
+CREATE POLICY "Public read group categories" ON group_categories
   FOR SELECT USING (true);
 
-CREATE POLICY "Staff manage courses" ON courses
+CREATE POLICY "Staff manage group categories" ON group_categories
   FOR ALL TO authenticated USING (private.is_editor()) WITH CHECK (private.is_editor());
 
-CREATE POLICY "Public read course articles" ON course_articles
+CREATE POLICY "Public read groups" ON groups
   FOR SELECT USING (true);
 
-CREATE POLICY "Staff manage course articles" ON course_articles
+CREATE POLICY "Staff manage groups" ON groups
   FOR ALL TO authenticated USING (private.is_editor()) WITH CHECK (private.is_editor());
+
+CREATE POLICY "Public read group articles" ON group_articles
+  FOR SELECT USING (true);
+
+CREATE POLICY "Staff manage group articles" ON group_articles
+  FOR ALL TO authenticated USING (private.is_editor()) WITH CHECK (private.is_editor());
+
+-- The category the public site looks for. Ordinary data once seeded: renaming
+-- or deleting it is allowed, the site keys off the slug it finds.
+INSERT INTO group_categories (slug, name, description, sort_order)
+VALUES (
+  'courses',
+  'Courses',
+  'Ordered sets of articles read as a course. Shown on the home page.',
+  0
+)
+ON CONFLICT (slug) DO NOTHING;
 
 
 -- ============================================
@@ -910,6 +947,21 @@ LEFT JOIN articles a
 GROUP BY t.id, t.slug, t.name;
 
 GRANT SELECT ON tag_counts TO anon, authenticated;
+
+-- Group categories are counted the same way, except every group counts --
+-- published lessons or not. The admin screen uses this to warn before
+-- deleting a category, and a category holding only draft groups is still
+-- holding something.
+DROP VIEW IF EXISTS group_category_counts;
+CREATE VIEW group_category_counts
+WITH (security_invoker = on) AS
+SELECT gc.id, gc.slug, gc.name, gc.description, gc.color, gc.sort_order,
+       COUNT(g.id) AS group_count
+FROM group_categories gc
+LEFT JOIN groups g ON g.category_id = gc.id
+GROUP BY gc.id, gc.slug, gc.name, gc.description, gc.color, gc.sort_order;
+
+GRANT SELECT ON group_category_counts TO anon, authenticated;
 
 
 -- ============================================

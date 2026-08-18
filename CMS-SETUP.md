@@ -40,6 +40,9 @@ instead, **in order**:
 | `fix-03-authors-view-invoker.sql` | `public_authors` runs as invoker |
 | `fix-04-advisor-warnings.sql` | Security Advisor cleanups |
 | `fix-05-private-helpers.sql` | Moves the security helpers out of the API schema |
+| `fix-06-retire-image-bucket.sql` | Serves images from R2 instead of Storage |
+| `fix-07-article-trash.sql` | Deleting an article sends it to a trash first |
+| `fix-08-groups.sql` | Courses become groups, and groups get their own categories |
 
 Order matters between 02 and 05: `fix-02` adds its helpers to `public`, and
 `fix-05` is what relocates them to `private`.
