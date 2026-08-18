@@ -13,24 +13,26 @@ import { TableHeader } from '@tiptap/extension-table-header'
 import { createLowlight, common } from 'lowlight'
 import { classNames } from 'utils'
 import {
-  htmlToMarkdown,
-  renderArticleContent,
-  renderForEditor
-} from 'lib/markdown'
+  PREVIEW_PATH,
+  PREVIEW_WINDOW_NAME,
+  writeArticlePreview
+} from 'lib/cms/preview'
+import { htmlToMarkdown, renderForEditor } from 'lib/markdown'
 import EditorToolbar from './EditorToolbar'
 import ArticleButton from './extensions/ArticleButton'
+import ImageGallery from './extensions/ImageGallery'
 import RawHtmlBlock from './extensions/RawHtmlBlock'
 import VideoEmbed from './extensions/VideoEmbed'
 import { Alert } from '../ui'
+import type { FeatureImage } from 'types'
 
 const lowlight = createLowlight(common)
 
-type Tab = 'visual' | 'markdown' | 'preview'
+type Tab = 'visual' | 'markdown'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'visual', label: 'Visual' },
-  { id: 'markdown', label: 'Markdown' },
-  { id: 'preview', label: 'Preview' }
+  { id: 'markdown', label: 'Markdown' }
 ]
 
 interface ContentEditorProps {
@@ -38,12 +40,19 @@ interface ContentEditorProps {
   value: string
   onChange: (markdown: string) => void
   excerpt: string
+  /** Header fields, so the preview tab shows the whole article, not just body. */
+  title: string
+  subtitle: string
+  featureImage: FeatureImage
 }
 
 export default function ContentEditor({
   value,
   onChange,
-  excerpt
+  excerpt,
+  title,
+  subtitle,
+  featureImage
 }: ContentEditorProps) {
   const [tab, setTab] = useState<Tab>('visual')
   const [error, setError] = useState<string | null>(null)
@@ -54,6 +63,8 @@ export default function ContentEditor({
    * document on every keystroke and throw the cursor to the top.
    */
   const emitted = useRef<string | null>(null)
+
+  /** Lets the preview tab exercise the reader's gallery slideshow. */
 
   const editor = useEditor({
     extensions: [
@@ -72,6 +83,7 @@ export default function ContentEditor({
       TableHeader,
       TableCell,
       ArticleButton,
+      ImageGallery,
       VideoEmbed,
       RawHtmlBlock,
       Placeholder.configure({ placeholder: 'Start writing your article…' })
@@ -100,10 +112,38 @@ export default function ContentEditor({
     emitted.current = value
   }, [editor, value, tab])
 
-  const preview = useMemo(
-    () => (tab === 'preview' ? renderArticleContent(value, excerpt) : null),
-    [tab, value, excerpt]
-  )
+  // Latest field values, read by the snapshot writers below without making
+  // either of them re-run on every keystroke.
+  const snapshot = useRef({ value, excerpt, title, subtitle, featureImage })
+  snapshot.current = { value, excerpt, title, subtitle, featureImage }
+
+  const takeSnapshot = () => {
+    const current = snapshot.current
+    writeArticlePreview({
+      title: current.title,
+      subtitle: current.subtitle,
+      excerpt: current.excerpt,
+      markdown: current.value,
+      featureImage: current.featureImage
+    })
+  }
+
+  /** Set once the writer has opened the preview tab this session. */
+  const previewOpened = useRef(false)
+
+  // Keep an open preview tab in step with the editor. Debounced because every
+  // write fires a `storage` event there, which re-renders the whole article.
+  useEffect(() => {
+    if (!previewOpened.current) return
+    const timer = setTimeout(takeSnapshot, 500)
+    return () => clearTimeout(timer)
+  }, [value, excerpt, title, subtitle, featureImage])
+
+  const openPreview = () => {
+    takeSnapshot()
+    previewOpened.current = true
+    window.open(PREVIEW_PATH, PREVIEW_WINDOW_NAME)?.focus()
+  }
 
   const wordCount = useMemo(
     () => value.trim().split(/\s+/).filter(Boolean).length,
@@ -113,29 +153,57 @@ export default function ContentEditor({
   return (
     <div>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex rounded-lg bg-gray-100 p-1" role="tablist">
-          {TABS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              role="tab"
-              aria-selected={tab === item.id}
-              onClick={() => setTab(item.id)}
-              className={classNames(
-                'rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors',
-                tab === item.id
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
-              )}
+        <div className="flex flex-wrap items-center gap-3">
+          <div
+            className="inline-flex rounded-lg bg-gray-100 p-1"
+            role="tablist"
+          >
+            {TABS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={tab === item.id}
+                onClick={() => setTab(item.id)}
+                className={classNames(
+                  'rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors',
+                  tab === item.id
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                )}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={openPreview}
+            className="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm font-medium text-gray-700 ring-1 ring-gray-300 transition-colors hover:bg-gray-50 hover:text-gray-900"
+          >
+            Preview
+            <svg
+              className="size-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
             >
-              {item.label}
-            </button>
-          ))}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5h5m0 0v5m0-5l-7 7M18 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h4"
+              />
+            </svg>
+            <span className="sr-only">(opens in a new tab)</span>
+          </button>
         </div>
 
         <p className="text-xs text-gray-500">
-          {wordCount.toLocaleString()} words ·{' '}
-          {preview?.readingTime ?? Math.ceil(wordCount / 200)} min read
+          {wordCount.toLocaleString()} words · {Math.ceil(wordCount / 200)} min
+          read
         </p>
       </div>
 
@@ -167,15 +235,6 @@ export default function ContentEditor({
             spellCheck={false}
             className="block min-h-[32rem] w-full resize-y border-0 px-5 py-4 font-mono text-sm leading-relaxed text-gray-900 focus:ring-0"
             placeholder="# Your article in markdown…"
-          />
-        )}
-
-        {tab === 'preview' && (
-          <div
-            className="prose prose-slate max-w-none px-5 py-4"
-            // Rendered by the same pipeline that produces the stored HTML, so
-            // this is exactly what a reader will see.
-            dangerouslySetInnerHTML={{ __html: preview?.html ?? '' }}
           />
         )}
       </div>

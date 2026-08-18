@@ -367,6 +367,9 @@ export default function ArticleEditorPage() {
                         update('content_markdown', markdown)
                       }
                       excerpt={draft.excerpt}
+                      title={draft.title}
+                      subtitle={draft.subtitle}
+                      featureImage={draft.feature_image}
                     />
                   </div>
                 </div>

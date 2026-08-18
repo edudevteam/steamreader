@@ -1,10 +1,16 @@
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
+import Image from '@tiptap/extension-image'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
 import { describe, expect, it } from 'vitest'
 import { htmlToMarkdown, renderForEditor } from 'lib/markdown'
 import ArticleButton, { safeColor, safeHref, safeRadius } from './ArticleButton'
+import ImageGallery, {
+  MAX_GALLERY_IMAGES,
+  safeImageSrc,
+  type GalleryImage
+} from './ImageGallery'
 import RawHtmlBlock from './RawHtmlBlock'
 import VideoEmbed, {
   parseVideoUrl,
@@ -19,7 +25,8 @@ import VideoEmbed, {
  * The extension list mirrors ContentEditor's, because the failures worth
  * catching here come from *other* extensions claiming the node: Bold parses a
  * bare `font-weight` style, Color parses a bare `color`, StarterKit's Link
- * matches any `a[href]`, and RawHtmlBlock matches any `iframe`.
+ * matches any `a[href]`, Image matches any `img[src]`, and RawHtmlBlock
+ * matches any `iframe`.
  */
 function throughEditor(markdown: string): string {
   const editor = new Editor({
@@ -29,9 +36,11 @@ function throughEditor(markdown: string): string {
         heading: { levels: [2, 3, 4] },
         link: { openOnClick: false, autolink: true }
       }),
+      Image.configure({ inline: false, allowBase64: false }),
       TextStyle,
       Color,
       ArticleButton,
+      ImageGallery,
       VideoEmbed,
       RawHtmlBlock
     ],
@@ -310,6 +319,94 @@ describe('VideoEmbed', () => {
       // Unrecognised markup falls through to the verbatim raw-HTML block
       // rather than being silently dropped.
       expect(saved).toContain('evil.example.com')
+    })
+  })
+})
+
+/** The markdown the toolbar's gallery dialog produces for a set of images. */
+function insertGallery(images: Partial<GalleryImage>[]): string {
+  const editor = new Editor({ extensions: [StarterKit, ImageGallery] })
+
+  editor.commands.setImageGallery(images as GalleryImage[])
+  const html = editor.getHTML()
+  editor.destroy()
+
+  return htmlToMarkdown(html)
+}
+
+const PHOTOS: GalleryImage[] = [
+  { src: '/img/kiln.png', alt: 'A kiln', caption: 'Firing day' },
+  { src: 'https://cdn.example.com/lathe.jpg', alt: 'A lathe', caption: '' }
+]
+
+describe('ImageGallery', () => {
+  it('publishes thumbnails that work as plain links', () => {
+    const saved = insertGallery(PHOTOS)
+
+    // Without JavaScript the thumbnail still reaches the full-size image, and
+    // the lightbox hooks onto exactly these two attributes.
+    expect(saved).toContain('data-image-gallery="2"')
+    expect(saved).toContain('<a href="/img/kiln.png" data-gallery-item="true"')
+    expect(saved).toContain('data-caption="Firing day"')
+    expect(saved).toContain('alt="A kiln"')
+  })
+
+  it('survives a full editor round trip unchanged', () => {
+    const saved = insertGallery(PHOTOS)
+
+    // Opening the article and saving it must not rewrite the gallery, or every
+    // save churns the markdown.
+    expect(throughEditor(saved)).toBe(saved)
+  })
+
+  it('is not taken apart by the image extension', () => {
+    const saved = throughEditor(insertGallery(PHOTOS))
+
+    // A markdown image means Image claimed a thumbnail and the gallery lost it.
+    expect(saved).not.toContain('![')
+    expect(saved.match(/data-gallery-item/g)).toHaveLength(2)
+  })
+
+  it('keeps the author order when the dialog reorders images', () => {
+    const saved = insertGallery([...PHOTOS].reverse())
+
+    expect(saved.indexOf('lathe.jpg')).toBeLessThan(saved.indexOf('kiln.png'))
+  })
+
+  it('drops images the markdown cannot safely publish', () => {
+    const saved = insertGallery([
+      { src: 'javascript:alert(1)', alt: 'Nope', caption: '' },
+      { src: 'data:image/svg+xml;base64,PHN2Zz4=', alt: 'Also nope' },
+      ...PHOTOS
+    ])
+
+    expect(saved).not.toContain('javascript:')
+    expect(saved).not.toContain('data:image')
+    expect(saved).toContain('data-image-gallery="2"')
+  })
+
+  it('caps a gallery at a length readers can page through', () => {
+    const saved = insertGallery(
+      Array.from({ length: MAX_GALLERY_IMAGES + 5 }, (_, index) => ({
+        src: `/img/${index}.png`,
+        alt: `Image ${index}`,
+        caption: ''
+      }))
+    )
+
+    expect(saved).toContain(`data-image-gallery="${MAX_GALLERY_IMAGES}"`)
+  })
+
+  describe('value sanitising', () => {
+    it('allows fetchable image sources and nothing else', () => {
+      expect(safeImageSrc('https://cdn.example.com/a.png')).toBe(
+        'https://cdn.example.com/a.png'
+      )
+      expect(safeImageSrc('/img/a.png')).toBe('/img/a.png')
+      expect(safeImageSrc('javascript:alert(1)')).toBe('')
+      expect(safeImageSrc('data:image/svg+xml,<svg onload=alert(1)>')).toBe('')
+      // A link scheme is fine in an href and meaningless in a src.
+      expect(safeImageSrc('mailto:hi@example.com')).toBe('')
     })
   })
 })

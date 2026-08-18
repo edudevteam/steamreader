@@ -3,12 +3,17 @@ import type { Editor } from '@tiptap/react'
 import { classNames } from 'utils'
 import { uploadImage } from 'lib/cms/uploads'
 import ButtonDialog from './ButtonDialog'
+import GalleryDialog from './GalleryDialog'
 import VideoDialog from './VideoDialog'
 import {
   DEFAULT_ARTICLE_BUTTON,
   normalizeArticleButton,
   type ArticleButtonAttributes
 } from './extensions/ArticleButton'
+import {
+  normalizeGalleryImages,
+  type GalleryImage
+} from './extensions/ImageGallery'
 import {
   defaultVideoTitle,
   normalizeVideoEmbed,
@@ -87,6 +92,10 @@ export default function EditorToolbar({
     title: string
     editing: boolean
   } | null>(null)
+  const [galleryDraft, setGalleryDraft] = useState<{
+    images: GalleryImage[]
+    editing: boolean
+  } | null>(null)
 
   // Selecting an existing button and hitting the toolbar edits it in place;
   // otherwise a fresh one is inserted at the cursor.
@@ -148,6 +157,31 @@ export default function EditorToolbar({
   const removeVideo = () => {
     editor.chain().focus().unsetVideoEmbed().run()
     setVideoDraft(null)
+  }
+
+  const openGalleryDialog = () => {
+    const editing = editor.isActive('imageGallery')
+
+    setGalleryDraft({
+      editing,
+      images: editing
+        ? normalizeGalleryImages(editor.getAttributes('imageGallery').images)
+        : []
+    })
+  }
+
+  const saveGallery = (images: GalleryImage[]) => {
+    const chain = editor.chain().focus()
+
+    if (galleryDraft?.editing) chain.updateImageGallery(images).run()
+    else chain.setImageGallery(images).run()
+
+    setGalleryDraft(null)
+  }
+
+  const removeGallery = () => {
+    editor.chain().focus().unsetImageGallery().run()
+    setGalleryDraft(null)
   }
 
   const addLink = () => {
@@ -317,6 +351,18 @@ export default function EditorToolbar({
         <Icon d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </ToolButton>
       <ToolButton
+        title={
+          editor.isActive('imageGallery') ? 'Edit gallery' : 'Image gallery'
+        }
+        active={editor.isActive('imageGallery')}
+        onClick={openGalleryDialog}
+      >
+        {/* A stack of photos: several pictures behaving as one block. */}
+        <Icon d="M8 3.5h12a1 1 0 011 1v12a1 1 0 01-1 1H8a1 1 0 01-1-1v-12a1 1 0 011-1zM8.5 14l3-3.5 2.5 3 2-2.5 3 3M4 7v12.5a1 1 0 001 1h12.5">
+          <circle cx={11} cy={7.5} r={1.1} fill="currentColor" stroke="none" />
+        </Icon>
+      </ToolButton>
+      <ToolButton
         title={editor.isActive('videoEmbed') ? 'Edit video' : 'Embed video'}
         active={editor.isActive('videoEmbed')}
         onClick={openVideoDialog}
@@ -355,6 +401,16 @@ export default function EditorToolbar({
           event.target.value = ''
         }}
       />
+
+      {galleryDraft && (
+        <GalleryDialog
+          initial={galleryDraft.images}
+          editing={galleryDraft.editing}
+          onClose={() => setGalleryDraft(null)}
+          onSubmit={saveGallery}
+          onRemove={removeGallery}
+        />
+      )}
 
       {videoDraft && (
         <VideoDialog

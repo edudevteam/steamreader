@@ -49,6 +49,9 @@ const AdminUsersPage = lazyWithRetry(() => import('pages/admin/Users'))
 const AdminTaxonomyPage = lazyWithRetry(() => import('pages/admin/Taxonomy'))
 const AdminProfilePage = lazyWithRetry(() => import('pages/admin/Profile'))
 const NoAccessPage = lazyWithRetry(() => import('pages/admin/NoAccess'))
+const ArticlePreviewPage = lazyWithRetry(
+  () => import('pages/admin/ArticlePreview')
+)
 
 function Lazy({ children }: { children: ReactNode }) {
   return <Suspense fallback={<LoadingBlock />}>{children}</Suspense>
@@ -60,6 +63,19 @@ export const router = createBrowserRouter([
     element: (
       <Lazy>
         <NoAccessPage />
+      </Lazy>
+    ),
+    errorElement: <RouteError />
+  },
+  // Outside the /admin branch on purpose: the preview opens in its own tab and
+  // wears the public site's chrome, not the CMS shell.
+  {
+    path: '/admin/article-preview',
+    element: (
+      <Lazy>
+        <RequireRole minimum="writer">
+          <ArticlePreviewPage />
+        </RequireRole>
       </Lazy>
     ),
     errorElement: <RouteError />

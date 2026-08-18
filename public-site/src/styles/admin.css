@@ -76,6 +76,17 @@
   pointer-events: none;
 }
 
+/* A gallery is one object in the editor: the thumbnails are links for the
+   reader, so their click has to be neutralised here or dragging the block
+   turns into following a link. */
+.tiptap div[data-image-gallery] {
+  cursor: pointer;
+}
+
+.tiptap div[data-image-gallery] a {
+  pointer-events: none;
+}
+
 /* Selected atom nodes (images, embeds) need a visible selection ring, since
    they have no text cursor of their own. */
 .ProseMirror-selectednode {

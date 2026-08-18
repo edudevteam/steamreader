@@ -215,10 +215,17 @@ function getTurndown(): TurndownService {
 // silently stripped every figure and iframe on save. Tokenising sidesteps that
 // path entirely, and works on any HTML rather than only on TipTap's output.
 //
-// Video embeds ride the same path: turndown has no rule that would keep a
-// `<div><iframe></iframe></div>` intact either, and the wrapper carries the
-// aspect-ratio styling the published player needs.
+// Video embeds and image galleries ride the same path: turndown has no rule
+// that would keep a `<div><iframe></iframe></div>` or a grid of linked
+// thumbnails intact either, and those wrappers carry the layout the published
+// player and gallery need.
 const RAW_TOKEN = (index: number) => `xrawhtmlblock${index}x`
+
+const VERBATIM_BLOCKS = [
+  'div[data-raw-html]',
+  'div[data-video-embed]',
+  'div[data-image-gallery]'
+].join(', ')
 
 function extractRawHtml(html: string): { prepared: string; blocks: string[] } {
   // A <template> parses inertly. DOMParser would build a live document, and
@@ -229,16 +236,14 @@ function extractRawHtml(html: string): { prepared: string; blocks: string[] } {
 
   const blocks: string[] = []
 
-  template.content
-    .querySelectorAll('div[data-raw-html], div[data-video-embed]')
-    .forEach((element) => {
-      const placeholder = document.createElement('p')
-      placeholder.textContent = RAW_TOKEN(blocks.length)
-      // A raw block stores its source in the attribute; a video embed *is* the
-      // markup the article should keep.
-      blocks.push(element.getAttribute('data-raw-html') ?? element.outerHTML)
-      element.replaceWith(placeholder)
-    })
+  template.content.querySelectorAll(VERBATIM_BLOCKS).forEach((element) => {
+    const placeholder = document.createElement('p')
+    placeholder.textContent = RAW_TOKEN(blocks.length)
+    // A raw block stores its source in the attribute; a video embed *is* the
+    // markup the article should keep.
+    blocks.push(element.getAttribute('data-raw-html') ?? element.outerHTML)
+    element.replaceWith(placeholder)
+  })
 
   return { prepared: template.innerHTML, blocks }
 }
