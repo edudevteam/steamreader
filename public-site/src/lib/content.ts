@@ -12,7 +12,7 @@
  */
 import { supabase } from 'lib/supabase'
 import { stripInlineMarkdown } from 'utils'
-import { DEFAULT_HOME_LAYOUT, normalizeHomeLayout } from 'types'
+import { DEFAULT_LAYOUTS, SURFACE_KEYS, normalizePageLayout } from 'types'
 import type {
   Article,
   ArticleMeta,
@@ -22,7 +22,8 @@ import type {
   Category,
   FeatureImage,
   GroupMeta,
-  HomeLayout,
+  PageLayout,
+  PageSurface,
   Tag
 } from 'types'
 
@@ -229,21 +230,23 @@ export async function searchArticles(query: string): Promise<ArticleMeta[]> {
 }
 
 /**
- * The home page layout, as saved by the Front Page Designer.
+ * One page's layout, as saved by the Designer.
  *
- * A missing row is the normal state, not an error: the site ships with a
- * default layout and only writes a row once someone edits it. A failed read is
- * treated the same way -- the front page renders its default rather than an
- * error, because a settings table being unreachable is no reason to show a
- * visitor nothing.
+ * A missing row is the normal state, not an error: the site ships with default
+ * layouts and only writes a row once someone edits one. A failed read is
+ * treated the same way -- the page renders its default rather than an error,
+ * because a settings table being unreachable is no reason to show a visitor
+ * nothing.
  */
-export async function fetchHomeLayout(): Promise<HomeLayout> {
+export async function fetchPageLayout(
+  surface: PageSurface
+): Promise<PageLayout> {
   const { data, error } = await supabase
     .from('site_settings')
     .select('value')
-    .eq('key', 'home_layout')
+    .eq('key', SURFACE_KEYS[surface])
     .maybeSingle()
 
-  if (error || !data) return DEFAULT_HOME_LAYOUT
-  return normalizeHomeLayout(data.value)
+  if (error || !data) return DEFAULT_LAYOUTS[surface]
+  return normalizePageLayout(data.value, surface)
 }

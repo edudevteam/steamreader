@@ -47,7 +47,7 @@ const AdminGroupsPage = lazyWithRetry(() => import('pages/admin/Groups'))
 const GroupEditorPage = lazyWithRetry(() => import('pages/admin/GroupEditor'))
 const AdminUsersPage = lazyWithRetry(() => import('pages/admin/Users'))
 const AdminTaxonomyPage = lazyWithRetry(() => import('pages/admin/Taxonomy'))
-const HomeDesignerPage = lazyWithRetry(() => import('pages/admin/HomeDesigner'))
+const DesignerPage = lazyWithRetry(() => import('pages/admin/Designer'))
 const AdminProfilePage = lazyWithRetry(() => import('pages/admin/Profile'))
 const NoAccessPage = lazyWithRetry(() => import('pages/admin/NoAccess'))
 const ArticlePreviewPage = lazyWithRetry(
@@ -177,15 +177,18 @@ export const router = createBrowserRouter([
       // no draft state to catch it, which is a heavier act than publishing an
       // article. Mirrors the "Admins manage site settings" policy.
       {
-        path: 'home',
+        path: 'designer',
         element: (
           <Lazy>
             <RequireRole minimum="admin">
-              <HomeDesignerPage />
+              <DesignerPage />
             </RequireRole>
           </Lazy>
         )
       },
+      // The Designer was the Front Page Designer and lived here. Bookmarks and
+      // the odd link in a changelog entry still point at it.
+      { path: 'home', element: <Navigate to="/admin/designer" replace /> },
       {
         path: 'users',
         element: (

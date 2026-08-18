@@ -13,17 +13,18 @@ import {
   fetchAuthors,
   fetchCategories,
   fetchGroups,
-  fetchHomeLayout,
+  fetchPageLayout,
   fetchTags
 } from 'lib/content'
-import { DEFAULT_HOME_LAYOUT } from 'types'
+import { DEFAULT_LAYOUTS, SURFACE_KEYS } from 'types'
 import type {
   Article,
   ArticleMeta,
   Author,
   Category,
   GroupMeta,
-  HomeLayout,
+  PageLayout,
+  PageSurface,
   Tag
 } from 'types'
 
@@ -138,12 +139,16 @@ export function useGroups(): AsyncState<GroupMeta[]> {
 }
 
 /**
- * The home page layout. The fallback is the built-in default rather than an
- * empty list, so the first paint before the fetch settles is the real page and
- * not a blank one.
+ * One page's layout, as arranged in the Designer. The fallback is the built-in
+ * default rather than an empty list, so the first paint before the fetch
+ * settles is the real page and not a blank one.
  */
-export function useHomeLayout(): AsyncState<HomeLayout> {
-  return useCachedResource('home_layout', fetchHomeLayout, DEFAULT_HOME_LAYOUT)
+export function usePageLayout(surface: PageSurface): AsyncState<PageLayout> {
+  return useCachedResource(
+    SURFACE_KEYS[surface],
+    () => fetchPageLayout(surface),
+    DEFAULT_LAYOUTS[surface]
+  )
 }
 
 /**

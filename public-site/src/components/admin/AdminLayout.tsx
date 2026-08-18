@@ -70,8 +70,8 @@ const NAVIGATION: NavItem[] = [
     )
   },
   {
-    name: 'Front page',
-    href: '/admin/home',
+    name: 'Designer',
+    href: '/admin/designer',
     minimum: 'admin',
     icon: (
       <path

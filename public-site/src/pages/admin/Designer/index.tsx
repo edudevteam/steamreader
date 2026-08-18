@@ -1,27 +1,34 @@
 /**
- * Front Page Designer.
+ * The Designer.
  *
- * The home page is an ordered list of sections; this screen edits that list
- * and nothing else. Sections move up and down, switch off without being
- * deleted, and each carries its own settings -- which articles a carousel
- * draws, which group category a group shelf draws, what a text block says.
+ * Three pages of the public site are ordered lists of sections rather than
+ * fixed markup -- the front page, every category archive, every tag archive --
+ * and this screen edits those lists and nothing else. Sections move up and
+ * down, switch off without being deleted, and each carries its own settings.
  *
- * The preview beside the list is the real `HomeSections` component with the
- * real content, so there is no mock of the front page to fall out of date. It
- * runs in `preview` mode, where a section with nothing to show says so instead
- * of disappearing.
+ * One surface is edited at a time, chosen by the tabs at the top. Each keeps
+ * its own unsaved state while the screen is open, so switching tabs to compare
+ * two pages does not throw away work in progress; the "unsaved" badge on a tab
+ * says which ones still need saving.
+ *
+ * The preview beside the list is the real `PageSections` component with the
+ * real content, so there is no mock of the site to fall out of date. It runs
+ * in `preview` mode, where a section with nothing to show says so instead of
+ * disappearing. Category and tag previews render against a real category or
+ * tag, picked in the preview chrome, since one layout serves them all.
  *
  * Admin only, matching the "Admins manage site settings" policy. A save is
  * live the moment it lands -- there is no draft -- which is the reason this is
  * not open to editors.
  */
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import HomeSections from 'components/home/HomeSections'
+import PageSections from 'components/page/PageSections'
+import type { ArchiveContext } from 'components/page/PageSections'
 import {
-  getHomeLayout,
-  resetHomeLayout,
-  saveHomeLayout
-} from 'lib/cms/homeLayout'
+  getPageLayout,
+  resetPageLayout,
+  savePageLayout
+} from 'lib/cms/pageLayout'
 import { listGroupCategories } from 'lib/cms/taxonomy'
 import {
   useArticles,
@@ -40,37 +47,74 @@ import {
   Select,
   Textarea
 } from 'components/admin/ui'
-import { classNames } from 'utils'
+import { classNames, filterPublishedArticles } from 'utils'
 import {
-  DEFAULT_HOME_LAYOUT,
+  DEFAULT_LAYOUTS,
   SECTION_DESCRIPTIONS,
   SECTION_LABELS,
   SINGLETON_SECTIONS,
+  SURFACE_DESCRIPTIONS,
+  SURFACE_LABELS,
+  SURFACE_SECTIONS,
   createSection
 } from 'types'
 import type {
   ArticlesSection,
   GroupCategoryRow,
   GroupsSection,
-  HomeLayout,
-  HomeSection,
-  HomeSectionType,
+  HeaderSection,
+  PageLayout,
+  PageSection,
+  PageSectionType,
+  PageSurface,
+  ResultsSection,
   SearchSection,
   TextSection
 } from 'types'
 
-const SECTION_ORDER: HomeSectionType[] = [
-  'articles',
-  'groups',
-  'quote',
-  'text',
-  'search',
-  'categories'
-]
+const SURFACES: PageSurface[] = ['home', 'category', 'tag']
+
+/** The path each surface's preview chrome shows in its address bar. */
+const SURFACE_PATHS: Record<PageSurface, string> = {
+  home: 'steamreader.org/',
+  category: 'steamreader.org/category/',
+  tag: 'steamreader.org/tag/'
+}
+
+/** What "reset" puts back, spelled out before someone confirms it. */
+const RESET_SUMMARY: Record<PageSurface, string> = {
+  home: 'search, category pills, Courses, a quote, The Learning Lab, then Stories & Discoveries',
+  category:
+    'the page header, then the category’s articles as a three-column grid',
+  tag: 'the page header, then the tag’s articles as a three-column grid'
+}
+
+/** One surface's editing state, kept per tab so switching loses nothing. */
+interface SurfaceState {
+  layout: PageLayout
+  /** The last saved layout as JSON, to tell an edit from an undo. */
+  saved: string
+  /** False when no row exists yet, i.e. the page is on the built-in default. */
+  customised: boolean
+  updatedAt: string | null
+}
 
 /** The one-line summary each row shows under its type. */
-function describe(section: HomeSection): string {
+function describe(section: PageSection): string {
   switch (section.type) {
+    case 'header': {
+      const shown = [
+        section.showBreadcrumb ? 'breadcrumb' : null,
+        'title',
+        section.showDescription ? 'description' : null,
+        section.showCount ? 'count' : null
+      ].filter(Boolean)
+      return shown.join(', ')
+    }
+    case 'results':
+      return section.style === 'list'
+        ? 'A list, one article per row'
+        : `A grid, ${section.columns} across`
     case 'search':
       return section.placeholder || 'Search field'
     case 'categories':
@@ -138,14 +182,203 @@ function IconButton({
   )
 }
 
+/** A labelled checkbox, for the show/hide switches on header and results. */
+function Toggle({
+  label,
+  checked,
+  onChange,
+  hint
+}: {
+  label: string
+  checked: boolean
+  onChange: (next: boolean) => void
+  hint?: string
+}) {
+  return (
+    <label className="flex items-start gap-2 text-sm text-gray-700">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="mt-0.5 size-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+      />
+      <span>
+        {label}
+        {hint && <span className="block text-xs text-gray-500">{hint}</span>}
+      </span>
+    </label>
+  )
+}
+
 // ------------------------------------------------------------ per-type form
 
 interface SettingsProps {
-  section: HomeSection
-  onChange: (patch: Partial<HomeSection>) => void
+  section: PageSection
+  surface: PageSurface
+  onChange: (patch: Partial<PageSection>) => void
   tags: { slug: string; name: string }[]
   categories: { slug: string; name: string }[]
   groupCategories: GroupCategoryRow[]
+}
+
+function HeaderSettings({
+  section,
+  surface,
+  onChange
+}: SettingsProps & { section: HeaderSection }) {
+  return (
+    <>
+      <p className="text-sm text-gray-500">
+        The title block. The name itself is always shown — it is what tells a
+        reader where they are.
+      </p>
+
+      <div className="space-y-2">
+        <Toggle
+          label="Breadcrumb"
+          checked={section.showBreadcrumb}
+          onChange={(showBreadcrumb) => onChange({ showBreadcrumb })}
+          hint={
+            surface === 'tag'
+              ? 'Home / Tags / #name'
+              : 'Home / Categories / name'
+          }
+        />
+        {surface === 'category' && (
+          <Toggle
+            label="Description"
+            checked={section.showDescription}
+            onChange={(showDescription) => onChange({ showDescription })}
+            hint="The category’s own description, where it has one."
+          />
+        )}
+        <Toggle
+          label="Article count"
+          checked={section.showCount}
+          onChange={(showCount) => onChange({ showCount })}
+        />
+      </div>
+
+      <Field label="Alignment">
+        <Select
+          value={section.align}
+          onChange={(event) =>
+            onChange({ align: event.target.value as HeaderSection['align'] })
+          }
+        >
+          <option value="left">Left</option>
+          <option value="center">Centred</option>
+        </Select>
+      </Field>
+    </>
+  )
+}
+
+function ResultsSettings({
+  section,
+  surface,
+  onChange
+}: SettingsProps & { section: ResultsSection }) {
+  return (
+    <>
+      <p className="text-sm text-gray-500">
+        {surface === 'tag'
+          ? 'Every article carrying this tag.'
+          : 'Every article in this category.'}
+      </p>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Shape">
+          <Select
+            value={section.style}
+            onChange={(event) =>
+              onChange({ style: event.target.value as ResultsSection['style'] })
+            }
+          >
+            <option value="grid">Grid of cards</option>
+            <option value="list">List, one per row</option>
+          </Select>
+        </Field>
+
+        {section.style === 'grid' && (
+          <Field
+            label="Columns"
+            hint="At the widest screens. Narrower steps down."
+          >
+            <Select
+              value={String(section.columns)}
+              onChange={(event) =>
+                onChange({ columns: Number(event.target.value) })
+              }
+            >
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+              <option value="4">Four</option>
+            </Select>
+          </Field>
+        )}
+      </div>
+
+      <Field label="Order">
+        <Select
+          value={section.sort}
+          onChange={(event) =>
+            onChange({ sort: event.target.value as ResultsSection['sort'] })
+          }
+        >
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">By title, A–Z</option>
+        </Select>
+      </Field>
+
+      <Field label="On each card">
+        <div className="space-y-2">
+          <Toggle
+            label="Excerpt"
+            checked={section.showExcerpt}
+            onChange={(showExcerpt) => onChange({ showExcerpt })}
+          />
+          <Toggle
+            label="Category"
+            checked={section.showCategory}
+            onChange={(showCategory) => onChange({ showCategory })}
+            hint={
+              surface === 'category'
+                ? 'Every article here is in the same category.'
+                : 'A tag spans categories, so this says which.'
+            }
+          />
+          <Toggle
+            label="Reading time"
+            checked={section.showReadingTime}
+            onChange={(showReadingTime) => onChange({ showReadingTime })}
+          />
+          <Toggle
+            label="Author"
+            checked={section.showAuthor}
+            onChange={(showAuthor) => onChange({ showAuthor })}
+          />
+          <Toggle
+            label="Date"
+            checked={section.showDate}
+            onChange={(showDate) => onChange({ showDate })}
+          />
+        </div>
+      </Field>
+
+      <Field
+        label="When there is nothing"
+        hint="Shown on an archive with no published articles."
+      >
+        <Input
+          value={section.emptyText}
+          onChange={(event) => onChange({ emptyText: event.target.value })}
+        />
+      </Field>
+    </>
+  )
 }
 
 function ArticlesSettings({
@@ -356,6 +589,12 @@ function SectionSettings(props: SettingsProps) {
   const { section, onChange } = props
 
   switch (section.type) {
+    case 'header':
+      return <HeaderSettings {...props} section={section} />
+
+    case 'results':
+      return <ResultsSettings {...props} section={section} />
+
     case 'search':
       return (
         <Field label="Placeholder">
@@ -415,11 +654,12 @@ function SectionSettings(props: SettingsProps) {
 
 // ------------------------------------------------------------------- screen
 
-export default function HomeDesignerPage() {
-  const [layout, setLayout] = useState<HomeLayout>(DEFAULT_HOME_LAYOUT)
-  const [saved, setSaved] = useState<string>('')
-  const [customised, setCustomised] = useState(false)
-  const [updatedAt, setUpdatedAt] = useState<string | null>(null)
+export default function DesignerPage() {
+  const [surface, setSurface] = useState<PageSurface>('home')
+  const [states, setStates] = useState<Record<
+    PageSurface,
+    SurfaceState
+  > | null>(null)
 
   const [groupCategories, setGroupCategories] = useState<GroupCategoryRow[]>([])
   const [loading, setLoading] = useState(true)
@@ -431,6 +671,14 @@ export default function HomeDesignerPage() {
   const [adding, setAdding] = useState(false)
   const [confirmReset, setConfirmReset] = useState(false)
 
+  // Which category or tag the archive preview renders against. Empty means
+  // "the first one", resolved once the content has loaded.
+  const [previewSlug, setPreviewSlug] = useState<Record<PageSurface, string>>({
+    home: '',
+    category: '',
+    tag: ''
+  })
+
   const { data: articles } = useArticles()
   const { data: categories } = useCategories()
   const { data: groups } = useGroups()
@@ -440,17 +688,34 @@ export default function HomeDesignerPage() {
     setLoading(true)
     setError(null)
     try {
-      const [stored, nextGroupCategories] = await Promise.all([
-        getHomeLayout(),
+      const [home, category, tag, nextGroupCategories] = await Promise.all([
+        getPageLayout('home'),
+        getPageLayout('category'),
+        getPageLayout('tag'),
         listGroupCategories()
       ])
-      setLayout(stored.layout)
-      setSaved(JSON.stringify(stored.layout))
-      setCustomised(stored.customised)
-      setUpdatedAt(stored.updatedAt)
+
+      const toState = (stored: {
+        layout: PageLayout
+        customised: boolean
+        updatedAt: string | null
+      }): SurfaceState => ({
+        layout: stored.layout,
+        saved: JSON.stringify(stored.layout),
+        customised: stored.customised,
+        updatedAt: stored.updatedAt
+      })
+
+      setStates({
+        home: toState(home),
+        category: toState(category),
+        tag: toState(tag)
+      })
       setGroupCategories(nextGroupCategories)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not load the layout')
+      setError(
+        err instanceof Error ? err.message : 'Could not load the layouts'
+      )
     } finally {
       setLoading(false)
     }
@@ -460,51 +725,115 @@ export default function HomeDesignerPage() {
     void refresh()
   }, [refresh])
 
+  const current = states?.[surface] ?? null
+
   // Compared as JSON rather than by reference: every edit rebuilds the object,
   // so identity would call an undone change unsaved.
-  const dirty = useMemo(() => JSON.stringify(layout) !== saved, [layout, saved])
+  const dirtyOn = useCallback(
+    (which: PageSurface) => {
+      const state = states?.[which]
+      if (!state) return false
+      return JSON.stringify(state.layout) !== state.saved
+    },
+    [states]
+  )
+  const dirty = dirtyOn(surface)
 
-  const update = (next: HomeSection[]) => {
+  const published = useMemo(() => filterPublishedArticles(articles), [articles])
+
+  /** The category or tag the preview stands in for, and its articles. */
+  const previewArchive = useMemo<ArchiveContext | undefined>(() => {
+    if (surface === 'category') {
+      const chosen =
+        categories.find((c) => c.slug === previewSlug.category) ?? categories[0]
+      if (!chosen) return undefined
+      return {
+        kind: 'category',
+        name: chosen.name,
+        description: chosen.description,
+        articles: published.filter((a) => a.category.slug === chosen.slug)
+      }
+    }
+
+    if (surface === 'tag') {
+      const chosen = tags.find((t) => t.slug === previewSlug.tag) ?? tags[0]
+      if (!chosen) return undefined
+      return {
+        kind: 'tag',
+        name: chosen.name,
+        articles: published.filter((a) =>
+          a.tags.some((t) => t.slug === chosen.slug)
+        )
+      }
+    }
+
+    return undefined
+  }, [surface, categories, tags, previewSlug, published])
+
+  const setLayout = (next: PageSection[]) => {
     setNotice(null)
-    setLayout({ version: 1, sections: next })
+    setStates((previous) =>
+      previous
+        ? {
+            ...previous,
+            [surface]: {
+              ...previous[surface],
+              layout: { version: 1, sections: next }
+            }
+          }
+        : previous
+    )
   }
+
+  const sections = current?.layout.sections ?? []
 
   const move = (index: number, delta: number) => {
     const target = index + delta
-    if (target < 0 || target >= layout.sections.length) return
-    const next = [...layout.sections]
+    if (target < 0 || target >= sections.length) return
+    const next = [...sections]
     ;[next[index], next[target]] = [next[target], next[index]]
-    update(next)
+    setLayout(next)
   }
 
-  const patch = (id: string, changes: Partial<HomeSection>) =>
-    update(
-      layout.sections.map((section) =>
+  const patch = (id: string, changes: Partial<PageSection>) =>
+    setLayout(
+      sections.map((section) =>
         section.id === id
-          ? ({ ...section, ...changes } as HomeSection)
+          ? ({ ...section, ...changes } as PageSection)
           : section
       )
     )
 
   const remove = (id: string) =>
-    update(layout.sections.filter((section) => section.id !== id))
+    setLayout(sections.filter((section) => section.id !== id))
 
-  const add = (type: HomeSectionType) => {
+  const add = (type: PageSectionType) => {
     const section = createSection(type)
-    update([...layout.sections, section])
+    setLayout([...sections, section])
     setOpenId(section.id)
     setAdding(false)
   }
 
   const handleSave = async () => {
+    if (!current) return
     setBusy(true)
     setError(null)
     try {
-      await saveHomeLayout(layout)
-      setSaved(JSON.stringify(layout))
-      setCustomised(true)
-      setUpdatedAt(new Date().toISOString())
-      setNotice('Front page saved. It is live now.')
+      await savePageLayout(surface, current.layout)
+      setStates((previous) =>
+        previous
+          ? {
+              ...previous,
+              [surface]: {
+                ...previous[surface],
+                saved: JSON.stringify(previous[surface].layout),
+                customised: true,
+                updatedAt: new Date().toISOString()
+              }
+            }
+          : previous
+      )
+      setNotice(`${SURFACE_LABELS[surface]} saved. Live now.`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not save')
     } finally {
@@ -516,10 +845,22 @@ export default function HomeDesignerPage() {
     setBusy(true)
     setError(null)
     try {
-      await resetHomeLayout()
+      await resetPageLayout(surface)
       setConfirmReset(false)
-      await refresh()
-      setNotice('Front page reset to the original layout.')
+      setStates((previous) =>
+        previous
+          ? {
+              ...previous,
+              [surface]: {
+                layout: DEFAULT_LAYOUTS[surface],
+                saved: JSON.stringify(DEFAULT_LAYOUTS[surface]),
+                customised: false,
+                updatedAt: null
+              }
+            }
+          : previous
+      )
+      setNotice(`${SURFACE_LABELS[surface]} reset to the original layout.`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not reset')
     } finally {
@@ -527,40 +868,33 @@ export default function HomeDesignerPage() {
     }
   }
 
-  // A second search bar or pill row is never what someone meant.
-  const availableTypes = SECTION_ORDER.filter(
+  // A second search bar, header or article list is never what someone meant.
+  const availableTypes = SURFACE_SECTIONS[surface].filter(
     (type) =>
       !SINGLETON_SECTIONS.includes(type) ||
-      !layout.sections.some((section) => section.type === type)
+      !sections.some((section) => section.type === type)
   )
 
-  if (loading) return <LoadingBlock label="Loading the front page…" />
+  if (loading || !current) return <LoadingBlock label="Loading the layouts…" />
+
+  const previewOptions = surface === 'category' ? categories : tags
 
   return (
     <div className="mx-auto max-w-7xl">
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+      <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Front page</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Designer</h1>
           <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            The home page top to bottom. Reorder the sections, switch one off,
-            or add another. Saving publishes straight to the live site — there
-            is no draft.
-          </p>
-          <p className="mt-1 text-xs text-gray-400">
-            {customised
-              ? `Custom layout${
-                  updatedAt
-                    ? `, last saved ${new Date(updatedAt).toLocaleString()}`
-                    : ''
-                }`
-              : 'Using the original built-in layout'}
+            The arrangement of the site&apos;s three laid-out pages. Reorder the
+            sections, switch one off, or add another. Saving publishes straight
+            to the live site — there is no draft.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Button
             variant="secondary"
-            disabled={busy || !customised}
+            disabled={busy || !current.customised}
             onClick={() => setConfirmReset(true)}
           >
             Reset to original
@@ -576,6 +910,47 @@ export default function HomeDesignerPage() {
         </div>
       </div>
 
+      {/* Surface tabs */}
+      <div className="mb-4 border-b border-gray-200">
+        <nav className="-mb-px flex flex-wrap gap-6">
+          {SURFACES.map((which) => (
+            <button
+              key={which}
+              type="button"
+              onClick={() => {
+                setSurface(which)
+                setOpenId(null)
+                setNotice(null)
+              }}
+              className={classNames(
+                'flex items-center gap-2 border-b-2 px-1 pb-3 text-sm font-medium transition-colors',
+                which === surface
+                  ? 'border-brand-600 text-brand-700'
+                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-800'
+              )}
+            >
+              {SURFACE_LABELS[which]}
+              {dirtyOn(which) && (
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800">
+                  Unsaved
+                </span>
+              )}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      <p className="mb-4 text-xs text-gray-400">
+        {SURFACE_DESCRIPTIONS[surface]}{' '}
+        {current.customised
+          ? `Custom layout${
+              current.updatedAt
+                ? `, last saved ${new Date(current.updatedAt).toLocaleString()}`
+                : ''
+            }`
+          : 'Using the original built-in layout'}
+      </p>
+
       {error && (
         <div className="mb-4">
           <Alert kind="error">{error}</Alert>
@@ -589,8 +964,8 @@ export default function HomeDesignerPage() {
       {dirty && (
         <div className="mb-4">
           <Alert kind="info">
-            Unsaved changes. The preview below is what visitors will see once
-            you save.
+            Unsaved changes to {SURFACE_LABELS[surface].toLowerCase()}. The
+            preview below is what visitors will see once you save.
           </Alert>
         </div>
       )}
@@ -599,7 +974,7 @@ export default function HomeDesignerPage() {
         {/* Section list */}
         <div>
           <div className="space-y-2">
-            {layout.sections.map((section, index) => {
+            {sections.map((section, index) => {
               const open = openId === section.id
 
               return (
@@ -624,7 +999,7 @@ export default function HomeDesignerPage() {
                       </IconButton>
                       <IconButton
                         label="Move down"
-                        disabled={index === layout.sections.length - 1}
+                        disabled={index === sections.length - 1}
                         onClick={() => move(index, 1)}
                       >
                         <path
@@ -707,6 +1082,7 @@ export default function HomeDesignerPage() {
                     <div className="space-y-4 border-t border-gray-200 bg-gray-50/60 p-4">
                       <SectionSettings
                         section={section}
+                        surface={surface}
                         onChange={(changes) => patch(section.id, changes)}
                         tags={tags}
                         categories={categories}
@@ -748,22 +1124,53 @@ export default function HomeDesignerPage() {
               <span className="size-2.5 rounded-full bg-gray-300" />
               <span className="size-2.5 rounded-full bg-gray-300" />
               <span className="ml-3 text-xs text-gray-500">
-                steamreader.org/
+                {SURFACE_PATHS[surface]}
               </span>
+
+              {/* One layout serves every archive, so the preview picks one. */}
+              {surface !== 'home' && previewOptions.length > 0 && (
+                <select
+                  value={
+                    previewOptions.some(
+                      (option) => option.slug === previewSlug[surface]
+                    )
+                      ? previewSlug[surface]
+                      : previewOptions[0]?.slug ?? ''
+                  }
+                  onChange={(event) =>
+                    setPreviewSlug((previous) => ({
+                      ...previous,
+                      [surface]: event.target.value
+                    }))
+                  }
+                  className="ml-1 rounded border-none bg-transparent py-0 text-xs text-gray-700 focus:ring-1 focus:ring-brand-500"
+                >
+                  {previewOptions.map((option) => (
+                    <option key={option.slug} value={option.slug}>
+                      {option.slug}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
             <div className="max-h-[70vh] overflow-y-auto px-4 py-8 sm:px-6">
-              {layout.sections.some((section) => section.enabled) ? (
-                <HomeSections
-                  layout={layout}
+              {surface !== 'home' && !previewArchive ? (
+                <p className="py-16 text-center text-sm text-gray-500">
+                  No {surface === 'tag' ? 'tags' : 'categories'} yet, so there
+                  is nothing to preview this layout against.
+                </p>
+              ) : sections.some((section) => section.enabled) ? (
+                <PageSections
+                  layout={current.layout}
                   articles={articles}
                   categories={categories}
                   groups={groups}
+                  archive={previewArchive}
                   preview
                 />
               ) : (
                 <p className="py-16 text-center text-sm text-gray-500">
-                  Every section is hidden or removed. The front page would be
-                  blank.
+                  Every section is hidden or removed. The page would be blank.
                 </p>
               )}
             </div>
@@ -802,7 +1209,7 @@ export default function HomeDesignerPage() {
 
       <Modal
         open={confirmReset}
-        title="Reset the front page?"
+        title={`Reset ${SURFACE_LABELS[surface].toLowerCase()}?`}
         onClose={() => setConfirmReset(false)}
         footer={
           <>
@@ -814,10 +1221,9 @@ export default function HomeDesignerPage() {
         }
       >
         <p className="text-sm text-gray-600">
-          This throws away your arrangement and puts the original layout back:
-          search, category pills, Courses, a quote, The Learning Lab, then
-          Stories &amp; Discoveries. It takes effect on the live site
-          immediately.
+          This throws away your arrangement and puts the original layout back:{' '}
+          {RESET_SUMMARY[surface]}. It takes effect on the live site
+          immediately, and leaves the other pages alone.
         </p>
       </Modal>
     </div>

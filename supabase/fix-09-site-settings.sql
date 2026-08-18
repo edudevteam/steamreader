@@ -12,7 +12,10 @@
 --     because the next setting should not need a migration. The trade is that
 --     the shape of each value is validated in TypeScript, not in Postgres.
 --   * `home_layout` is the first key. Its value is an ordered list of section
---     descriptors that the home page renders top to bottom.
+--     descriptors that the home page renders top to bottom. `category_layout`
+--     and `tag_layout` came later and hold the same kind of document for the
+--     category and tag archives -- no migration needed, which is the point of
+--     a key/value store.
 --
 -- WHO MAY WRITE is admin only, not editor. Rearranging the front page is a
 -- different kind of act from publishing an article: one editor's experiment
@@ -20,9 +23,9 @@
 -- Reads are public and unauthenticated, because the home page is.
 --
 -- NOT DONE HERE, on purpose:
---   * No row is seeded. An absent `home_layout` means "use the built-in
---     default", which is the layout the site shipped with -- so this migration
---     changes nothing visible until someone opens the designer and saves.
+--   * No row is seeded. An absent key means "use the built-in default", which
+--     is the layout the site shipped with -- so this migration changes nothing
+--     visible until someone opens the Designer and saves.
 --   * No history or draft/publish cycle. A save is live. The designer offers
 --     "reset to default", which deletes the row rather than writing one.
 --

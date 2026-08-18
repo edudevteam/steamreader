@@ -737,10 +737,11 @@ ON CONFLICT (slug) DO NOTHING;
 -- setting should not need a migration -- so the shape of each value is
 -- validated in the client, not here.
 --
--- `home_layout` is the first key: the ordered list of sections the front page
--- renders, edited in the Front Page Designer. No row is seeded. An absent key
--- means "use the layout built into the site", which is what a fresh install
--- shows until an admin saves.
+-- `home_layout`, `category_layout` and `tag_layout` are the first keys: each
+-- holds the ordered list of sections one page renders, edited in the Designer.
+-- One layout covers every category archive, and one every tag archive. No row
+-- is seeded. An absent key means "use the layout built into the site", which is
+-- what a fresh install shows until an admin saves.
 --
 -- Writes are admin-only rather than editor. A save here is live for every
 -- visitor with no draft state to catch it, which is a heavier act than

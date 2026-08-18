@@ -43,7 +43,7 @@ instead, **in order**:
 | `fix-06-retire-image-bucket.sql` | Serves images from R2 instead of Storage |
 | `fix-07-article-trash.sql` | Deleting an article sends it to a trash first |
 | `fix-08-groups.sql` | Courses become groups, and groups get their own categories |
-| `fix-09-site-settings.sql` | `site_settings`, and the editable front page layout |
+| `fix-09-site-settings.sql` | `site_settings`, and the editable page layouts behind the Designer |
 
 Order matters between 02 and 05: `fix-02` adds its helpers to `public`, and
 `fix-05` is what relocates them to `private`.
@@ -189,31 +189,49 @@ static import of any of it. Verify after a build with:
 grep -c 'hljs\|turndown' dist/assets/index-*.js   # entry chunk should be 0
 ```
 
-## The front page
+## The Designer
 
-`/admin/home` — **Front page**, admin only — is the front page as a list of
-sections rather than as code. Sections move up and down, switch off without
-being deleted, and each carries its own settings: which tag or category an
-article carousel draws from, which group category a group shelf draws from,
-where the random quote sits.
+`/admin/designer` — **Designer**, admin only — is the site's three laid-out
+pages as lists of sections rather than as code. One tab per page: **Front
+page**, **Category pages**, **Tag pages**. Sections move up and down, switch
+off without being deleted, and each carries its own settings: which tag or
+category an article carousel draws from, which group category a group shelf
+draws from, where the random quote sits.
 
-The arrangement lives in `site_settings.home_layout` as a JSON document. Two
-things follow from that:
+The three arrangements live in `site_settings` as JSON documents, under
+`home_layout`, `category_layout` and `tag_layout`. Three things follow from
+that:
 
-- **No row is the normal state.** Until someone saves, the page renders
-  `DEFAULT_HOME_LAYOUT` from `src/types/homeLayout.ts` — search, category
-  pills, Courses, a quote, The Learning Lab, then Stories & Discoveries, which
-  is the layout the site shipped with. "Reset to original" deletes the row
-  rather than writing the default into it.
+- **No row is the normal state.** Until someone saves, each page renders its
+  entry in `DEFAULT_LAYOUTS` from `src/types/pageLayout.ts` — the layouts the
+  site shipped with. "Reset to original" deletes that one row rather than
+  writing the default into it, and leaves the other two pages alone.
 - **The shape is validated in TypeScript, not in Postgres.** `jsonb` will
-  accept anything, so `normalizeHomeLayout` repairs whatever it reads —
+  accept anything, so `normalizePageLayout` repairs whatever it reads —
   a missing field falls back to its default, an unknown section type is
   dropped. A layout saved by an older version of the designer keeps working.
+- **One layout covers every archive.** There is no per-category or per-tag
+  layout; `category_layout` is what every `/category/…` page renders, and
+  `tag_layout` every `/tag/…` page. The preview's dropdown picks which real
+  category or tag to render the layout against.
 
-The preview beside the section list is the real `HomeSections` component with
-the real content, so there is no second rendering of the front page to drift
-out of step. A save is live immediately; there is no draft, which is why this
-screen is admin-only while articles and groups are open to editors.
+Most section types work on any of the three pages. Two are archive-only, and
+the Add menu offers them only there:
+
+| Section | Where | What it is |
+| --- | --- | --- |
+| Page header | Category, Tag | Breadcrumb, name, description, article count |
+| Article list | Category, Tag | The archive's own articles, as a grid or a list |
+| Articles | Anywhere | A carousel filtered by tag or category |
+| Groups | Anywhere | A carousel of groups from one group category |
+| Search bar, Category pills, Random quote, Text block | Anywhere | As on the front page |
+
+The preview beside the section list is the real `PageSections` component with
+the real content, so there is no second rendering of any page to drift out of
+step. Each tab keeps its own unsaved state while the screen is open, and its
+tab wears an "Unsaved" badge until you save it. A save is live immediately;
+there is no draft, which is why this screen is admin-only while articles and
+groups are open to editors.
 
 ## Publishing workflow
 
