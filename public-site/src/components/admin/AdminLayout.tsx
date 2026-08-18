@@ -70,6 +70,19 @@ const NAVIGATION: NavItem[] = [
     )
   },
   {
+    name: 'Front page',
+    href: '/admin/home',
+    minimum: 'admin',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.8}
+        d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1zm0 4h16M9 9v10"
+      />
+    )
+  },
+  {
     name: 'Users',
     href: '/admin/users',
     minimum: 'admin',

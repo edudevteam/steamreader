@@ -13,14 +13,17 @@ import {
   fetchAuthors,
   fetchCategories,
   fetchGroups,
+  fetchHomeLayout,
   fetchTags
 } from 'lib/content'
+import { DEFAULT_HOME_LAYOUT } from 'types'
 import type {
   Article,
   ArticleMeta,
   Author,
   Category,
   GroupMeta,
+  HomeLayout,
   Tag
 } from 'types'
 
@@ -132,6 +135,15 @@ export function useAuthors(): AsyncState<Author[]> {
 
 export function useGroups(): AsyncState<GroupMeta[]> {
   return useCachedResource('groups', fetchGroups, [])
+}
+
+/**
+ * The home page layout. The fallback is the built-in default rather than an
+ * empty list, so the first paint before the fetch settles is the real page and
+ * not a blank one.
+ */
+export function useHomeLayout(): AsyncState<HomeLayout> {
+  return useCachedResource('home_layout', fetchHomeLayout, DEFAULT_HOME_LAYOUT)
 }
 
 /**

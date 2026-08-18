@@ -43,6 +43,7 @@ instead, **in order**:
 | `fix-06-retire-image-bucket.sql` | Serves images from R2 instead of Storage |
 | `fix-07-article-trash.sql` | Deleting an article sends it to a trash first |
 | `fix-08-groups.sql` | Courses become groups, and groups get their own categories |
+| `fix-09-site-settings.sql` | `site_settings`, and the editable front page layout |
 
 Order matters between 02 and 05: `fix-02` adds its helpers to `public`, and
 `fix-05` is what relocates them to `private`.
@@ -187,6 +188,32 @@ static import of any of it. Verify after a build with:
 ```bash
 grep -c 'hljs\|turndown' dist/assets/index-*.js   # entry chunk should be 0
 ```
+
+## The front page
+
+`/admin/home` — **Front page**, admin only — is the front page as a list of
+sections rather than as code. Sections move up and down, switch off without
+being deleted, and each carries its own settings: which tag or category an
+article carousel draws from, which group category a group shelf draws from,
+where the random quote sits.
+
+The arrangement lives in `site_settings.home_layout` as a JSON document. Two
+things follow from that:
+
+- **No row is the normal state.** Until someone saves, the page renders
+  `DEFAULT_HOME_LAYOUT` from `src/types/homeLayout.ts` — search, category
+  pills, Courses, a quote, The Learning Lab, then Stories & Discoveries, which
+  is the layout the site shipped with. "Reset to original" deletes the row
+  rather than writing the default into it.
+- **The shape is validated in TypeScript, not in Postgres.** `jsonb` will
+  accept anything, so `normalizeHomeLayout` repairs whatever it reads —
+  a missing field falls back to its default, an unknown section type is
+  dropped. A layout saved by an older version of the designer keeps working.
+
+The preview beside the section list is the real `HomeSections` component with
+the real content, so there is no second rendering of the front page to drift
+out of step. A save is live immediately; there is no draft, which is why this
+screen is admin-only while articles and groups are open to editors.
 
 ## Publishing workflow
 

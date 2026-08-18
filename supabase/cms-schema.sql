@@ -731,6 +731,60 @@ ON CONFLICT (slug) DO NOTHING;
 
 
 -- ============================================
+-- SITE SETTINGS
+-- ============================================
+-- Key/value JSON settings for the public site. Generic on purpose -- the next
+-- setting should not need a migration -- so the shape of each value is
+-- validated in the client, not here.
+--
+-- `home_layout` is the first key: the ordered list of sections the front page
+-- renders, edited in the Front Page Designer. No row is seeded. An absent key
+-- means "use the layout built into the site", which is what a fresh install
+-- shows until an admin saves.
+--
+-- Writes are admin-only rather than editor. A save here is live for every
+-- visitor with no draft state to catch it, which is a heavier act than
+-- publishing an article.
+CREATE TABLE IF NOT EXISTS site_settings (
+  key        TEXT PRIMARY KEY,
+  value      JSONB NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_by UUID REFERENCES auth.users(id) ON DELETE SET NULL
+);
+
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read site settings"   ON site_settings;
+DROP POLICY IF EXISTS "Admins manage site settings" ON site_settings;
+
+-- The home page reads this before anyone signs in.
+CREATE POLICY "Public read site settings" ON site_settings
+  FOR SELECT USING (true);
+
+CREATE POLICY "Admins manage site settings" ON site_settings
+  FOR ALL TO authenticated USING (private.is_admin()) WITH CHECK (private.is_admin());
+
+-- `updated_at` is what the designer shows as "last saved", so it has to move
+-- on every write rather than only on insert.
+CREATE OR REPLACE FUNCTION public.touch_site_settings()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = ''
+AS $$
+BEGIN
+  NEW.updated_at := NOW();
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS site_settings_touch ON site_settings;
+CREATE TRIGGER site_settings_touch
+  BEFORE UPDATE ON site_settings
+  FOR EACH ROW EXECUTE FUNCTION public.touch_site_settings();
+
+
+-- ============================================
 -- PUBLIC AUTHOR VIEW
 -- ============================================
 -- security_invoker = on, like every other view here: the caller's own grants and

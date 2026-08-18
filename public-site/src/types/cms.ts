@@ -177,6 +177,17 @@ export interface GroupRow {
 }
 
 /**
+ * A group reduced to what a membership lookup needs: a name to offer in a
+ * filter and the articles it holds. Not a `GroupRow` -- nothing here renders
+ * the cover, the category or the count.
+ */
+export interface GroupMembership {
+  id: string
+  title: string
+  article_ids: string[]
+}
+
+/**
  * One lesson in a group, in reading order.
  *
  * `status` and `trashed` ride along because the public group page silently

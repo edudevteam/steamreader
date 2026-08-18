@@ -12,6 +12,7 @@
  */
 import { supabase } from 'lib/supabase'
 import { stripInlineMarkdown } from 'utils'
+import { DEFAULT_HOME_LAYOUT, normalizeHomeLayout } from 'types'
 import type {
   Article,
   ArticleMeta,
@@ -21,6 +22,7 @@ import type {
   Category,
   FeatureImage,
   GroupMeta,
+  HomeLayout,
   Tag
 } from 'types'
 
@@ -224,4 +226,24 @@ export async function searchArticles(query: string): Promise<ArticleMeta[]> {
 
   if (error) throw error
   return (data as ArticleRow[]).map(toMeta)
+}
+
+/**
+ * The home page layout, as saved by the Front Page Designer.
+ *
+ * A missing row is the normal state, not an error: the site ships with a
+ * default layout and only writes a row once someone edits it. A failed read is
+ * treated the same way -- the front page renders its default rather than an
+ * error, because a settings table being unreachable is no reason to show a
+ * visitor nothing.
+ */
+export async function fetchHomeLayout(): Promise<HomeLayout> {
+  const { data, error } = await supabase
+    .from('site_settings')
+    .select('value')
+    .eq('key', 'home_layout')
+    .maybeSingle()
+
+  if (error || !data) return DEFAULT_HOME_LAYOUT
+  return normalizeHomeLayout(data.value)
 }

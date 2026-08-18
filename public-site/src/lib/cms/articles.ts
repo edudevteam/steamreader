@@ -330,6 +330,57 @@ export async function setArticleStatus(
   invalidateContent()
 }
 
+/**
+ * Bulk edits from the article list's selection.
+ *
+ * Each is one statement over `.in('id', ids)` rather than a loop of single
+ * updates: RLS narrows the set to the rows this account may write, so a
+ * selection that reaches past its permissions quietly edits the part it owns
+ * instead of half-failing partway through. The ownership triggers still raise
+ * -- trying to publish a batch without the role fails the whole statement, and
+ * `translateError` says why.
+ */
+export async function setArticlesCategory(
+  ids: string[],
+  categoryId: string | null
+): Promise<void> {
+  if (ids.length === 0) return
+
+  const { error } = await supabase
+    .from('articles')
+    .update({ category_id: categoryId })
+    .in('id', ids)
+
+  if (error) throw translateError(error)
+  invalidateContent()
+}
+
+export async function setArticlesStatus(
+  ids: string[],
+  status: ArticleStatus
+): Promise<void> {
+  if (ids.length === 0) return
+
+  const patch: Record<string, unknown> = { status }
+  if (status === 'published') patch.published_at = new Date().toISOString()
+
+  const { error } = await supabase.from('articles').update(patch).in('id', ids)
+  if (error) throw translateError(error)
+  invalidateContent()
+}
+
+export async function trashArticles(ids: string[]): Promise<void> {
+  if (ids.length === 0) return
+
+  const { error } = await supabase
+    .from('articles')
+    .update({ deleted_at: new Date().toISOString() })
+    .in('id', ids)
+
+  if (error) throw translateError(error)
+  invalidateContent()
+}
+
 export async function isSlugAvailable(
   slug: string,
   excludeId?: string

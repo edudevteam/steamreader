@@ -47,6 +47,7 @@ const AdminGroupsPage = lazyWithRetry(() => import('pages/admin/Groups'))
 const GroupEditorPage = lazyWithRetry(() => import('pages/admin/GroupEditor'))
 const AdminUsersPage = lazyWithRetry(() => import('pages/admin/Users'))
 const AdminTaxonomyPage = lazyWithRetry(() => import('pages/admin/Taxonomy'))
+const HomeDesignerPage = lazyWithRetry(() => import('pages/admin/HomeDesigner'))
 const AdminProfilePage = lazyWithRetry(() => import('pages/admin/Profile'))
 const NoAccessPage = lazyWithRetry(() => import('pages/admin/NoAccess'))
 const ArticlePreviewPage = lazyWithRetry(
@@ -168,6 +169,19 @@ export const router = createBrowserRouter([
           <Lazy>
             <RequireRole minimum="editor">
               <AdminTaxonomyPage />
+            </RequireRole>
+          </Lazy>
+        )
+      },
+      // Admin rather than editor: a save here is live for every visitor with
+      // no draft state to catch it, which is a heavier act than publishing an
+      // article. Mirrors the "Admins manage site settings" policy.
+      {
+        path: 'home',
+        element: (
+          <Lazy>
+            <RequireRole minimum="admin">
+              <HomeDesignerPage />
             </RequireRole>
           </Lazy>
         )

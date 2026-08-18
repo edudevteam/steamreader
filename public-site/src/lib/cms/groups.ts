@@ -19,6 +19,7 @@ import type {
   CategoryRef,
   GroupDraft,
   GroupLesson,
+  GroupMembership,
   GroupRow
 } from 'types'
 
@@ -82,6 +83,36 @@ export async function listGroups(): Promise<GroupRow[]> {
       lesson_count: group_articles?.[0]?.count ?? 0
     })
   )
+}
+
+/**
+ * Which articles sit in which group, for the article list's group filter.
+ *
+ * Only the ids and titles are read: the filter needs a name to show and a set
+ * to test membership against, not the cover material `listGroups` carries. A
+ * trashed article keeps its join row, so the caller matches against the rows
+ * it already has rather than trusting this to be a live article list.
+ */
+export async function listGroupMemberships(): Promise<GroupMembership[]> {
+  const { data, error } = await supabase
+    .from('groups')
+    .select('id, title, group_articles(article_id)')
+    .order('sort_order')
+    .order('title')
+
+  if (error) throw error
+
+  type Row = {
+    id: string
+    title: string
+    group_articles: { article_id: string }[] | null
+  }
+
+  return ((data ?? []) as Row[]).map((row) => ({
+    id: row.id,
+    title: row.title,
+    article_ids: (row.group_articles ?? []).map((join) => join.article_id)
+  }))
 }
 
 export async function getGroup(id: string): Promise<GroupDraft | null> {
