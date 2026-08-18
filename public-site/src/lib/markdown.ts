@@ -214,6 +214,10 @@ function getTurndown(): TurndownService {
 // blank nodes and discards them before any custom rule is consulted -- which
 // silently stripped every figure and iframe on save. Tokenising sidesteps that
 // path entirely, and works on any HTML rather than only on TipTap's output.
+//
+// Video embeds ride the same path: turndown has no rule that would keep a
+// `<div><iframe></iframe></div>` intact either, and the wrapper carries the
+// aspect-ratio styling the published player needs.
 const RAW_TOKEN = (index: number) => `xrawhtmlblock${index}x`
 
 function extractRawHtml(html: string): { prepared: string; blocks: string[] } {
@@ -225,12 +229,16 @@ function extractRawHtml(html: string): { prepared: string; blocks: string[] } {
 
   const blocks: string[] = []
 
-  template.content.querySelectorAll('div[data-raw-html]').forEach((element) => {
-    const placeholder = document.createElement('p')
-    placeholder.textContent = RAW_TOKEN(blocks.length)
-    blocks.push(element.getAttribute('data-raw-html') ?? '')
-    element.replaceWith(placeholder)
-  })
+  template.content
+    .querySelectorAll('div[data-raw-html], div[data-video-embed]')
+    .forEach((element) => {
+      const placeholder = document.createElement('p')
+      placeholder.textContent = RAW_TOKEN(blocks.length)
+      // A raw block stores its source in the attribute; a video embed *is* the
+      // markup the article should keep.
+      blocks.push(element.getAttribute('data-raw-html') ?? element.outerHTML)
+      element.replaceWith(placeholder)
+    })
 
   return { prepared: template.innerHTML, blocks }
 }

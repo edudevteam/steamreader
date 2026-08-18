@@ -64,6 +64,18 @@
   user-select: none;
 }
 
+/* Video embeds carry their 16:9 frame as inline styles, for the same reason
+   the buttons do -- the published article has no stylesheet of its own. Inside
+   the editor the player is a single object: clicks select it rather than
+   reaching the player's own controls. */
+.tiptap div[data-video-embed] {
+  cursor: pointer;
+}
+
+.tiptap div[data-video-embed] iframe {
+  pointer-events: none;
+}
+
 /* Selected atom nodes (images, embeds) need a visible selection ring, since
    they have no text cursor of their own. */
 .ProseMirror-selectednode {

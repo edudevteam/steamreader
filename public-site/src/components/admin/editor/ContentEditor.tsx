@@ -20,6 +20,7 @@ import {
 import EditorToolbar from './EditorToolbar'
 import ArticleButton from './extensions/ArticleButton'
 import RawHtmlBlock from './extensions/RawHtmlBlock'
+import VideoEmbed from './extensions/VideoEmbed'
 import { Alert } from '../ui'
 
 const lowlight = createLowlight(common)
@@ -71,6 +72,7 @@ export default function ContentEditor({
       TableHeader,
       TableCell,
       ArticleButton,
+      VideoEmbed,
       RawHtmlBlock,
       Placeholder.configure({ placeholder: 'Start writing your article…' })
     ],

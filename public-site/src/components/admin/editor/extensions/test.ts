@@ -5,15 +5,21 @@ import { Color } from '@tiptap/extension-color'
 import { describe, expect, it } from 'vitest'
 import { htmlToMarkdown, renderForEditor } from 'lib/markdown'
 import ArticleButton, { safeColor, safeHref, safeRadius } from './ArticleButton'
+import RawHtmlBlock from './RawHtmlBlock'
+import VideoEmbed, {
+  parseVideoUrl,
+  videoEmbedSrc,
+  videoShareUrl
+} from './VideoEmbed'
 
 /**
  * Loads markdown into a real editor and saves it back out, exactly as the CMS
  * does when a writer opens an article and hits save.
  *
  * The extension list mirrors ContentEditor's, because the failures worth
- * catching here come from *other* extensions claiming the button: Bold parses
- * a bare `font-weight` style, Color parses a bare `color`, and StarterKit's
- * Link matches any `a[href]`.
+ * catching here come from *other* extensions claiming the node: Bold parses a
+ * bare `font-weight` style, Color parses a bare `color`, StarterKit's Link
+ * matches any `a[href]`, and RawHtmlBlock matches any `iframe`.
  */
 function throughEditor(markdown: string): string {
   const editor = new Editor({
@@ -25,7 +31,9 @@ function throughEditor(markdown: string): string {
       }),
       TextStyle,
       Color,
-      ArticleButton
+      ArticleButton,
+      VideoEmbed,
+      RawHtmlBlock
     ],
     content: renderForEditor(markdown)
   })
@@ -154,6 +162,154 @@ describe('ArticleButton', () => {
       expect(safeHref('mailto:hi@example.com')).toBe('mailto:hi@example.com')
       expect(safeHref('javascript:alert(1)')).toBe('')
       expect(safeHref('data:text/html,<script>')).toBe('')
+    })
+  })
+})
+
+/** The markdown the toolbar's video dialog produces for a pasted link. */
+function insertVideo(url: string): string {
+  const editor = new Editor({ extensions: [StarterKit, VideoEmbed] })
+
+  editor.commands.setVideoEmbed(parseVideoUrl(url) ?? {})
+  const html = editor.getHTML()
+  editor.destroy()
+
+  return htmlToMarkdown(html)
+}
+
+describe('VideoEmbed', () => {
+  describe('url parsing', () => {
+    it('reads every YouTube link shape an author might paste', () => {
+      const shapes = [
+        'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        'https://youtu.be/dQw4w9WgXcQ',
+        'https://m.youtube.com/watch?v=dQw4w9WgXcQ&feature=share',
+        'https://www.youtube.com/embed/dQw4w9WgXcQ',
+        'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ',
+        'https://www.youtube.com/shorts/dQw4w9WgXcQ',
+        'https://www.youtube.com/live/dQw4w9WgXcQ',
+        // No scheme: what a browser's address bar hands over on copy.
+        'youtu.be/dQw4w9WgXcQ'
+      ]
+
+      for (const url of shapes) {
+        expect(parseVideoUrl(url)).toMatchObject({
+          provider: 'youtube',
+          videoId: 'dQw4w9WgXcQ'
+        })
+      }
+    })
+
+    it('reads every Vimeo link shape, unlisted keys included', () => {
+      expect(parseVideoUrl('https://vimeo.com/347119375')).toMatchObject({
+        provider: 'vimeo',
+        videoId: '347119375',
+        hash: ''
+      })
+      expect(
+        parseVideoUrl('https://vimeo.com/347119375/9f2c1a8b3d')
+      ).toMatchObject({ videoId: '347119375', hash: '9f2c1a8b3d' })
+      expect(
+        parseVideoUrl('https://player.vimeo.com/video/347119375?h=9f2c1a8b3d')
+      ).toMatchObject({ videoId: '347119375', hash: '9f2c1a8b3d' })
+      expect(
+        parseVideoUrl('https://vimeo.com/channels/staffpicks/347119375')
+      ).toMatchObject({ videoId: '347119375' })
+    })
+
+    it('keeps the start offset from a "copy at current time" link', () => {
+      expect(parseVideoUrl('https://youtu.be/dQw4w9WgXcQ?t=95')?.start).toBe(95)
+      expect(
+        parseVideoUrl('https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1h2m30s')
+          ?.start
+      ).toBe(3750)
+      expect(parseVideoUrl('https://vimeo.com/347119375#t=90s')?.start).toBe(90)
+    })
+
+    it('rejects anything that is not a YouTube or Vimeo video', () => {
+      expect(parseVideoUrl('https://example.com/video/123')).toBeNull()
+      expect(parseVideoUrl('https://vimeo.com/about')).toBeNull()
+      expect(parseVideoUrl('https://www.youtube.com/watch?v=short')).toBeNull()
+      expect(parseVideoUrl('javascript:alert(1)')).toBeNull()
+      expect(parseVideoUrl('')).toBeNull()
+    })
+  })
+
+  describe('embed source', () => {
+    it('builds a privacy-preserving YouTube player', () => {
+      expect(
+        videoEmbedSrc(parseVideoUrl('https://youtu.be/dQw4w9WgXcQ?t=95')!)
+      ).toBe('https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?start=95')
+    })
+
+    it('carries the Vimeo unlisted key through to the player', () => {
+      expect(
+        videoEmbedSrc(parseVideoUrl('https://vimeo.com/347119375/9f2c1a8b3d')!)
+      ).toBe('https://player.vimeo.com/video/347119375?h=9f2c1a8b3d')
+    })
+
+    it('offers the author-facing link back for editing', () => {
+      expect(
+        videoShareUrl(parseVideoUrl('https://youtu.be/dQw4w9WgXcQ?t=95')!)
+      ).toBe('https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=95')
+    })
+  })
+
+  describe('markdown round trip', () => {
+    it('writes an embed the editor reads back unchanged', () => {
+      const saved = insertVideo('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+
+      expect(saved).toContain('data-video-embed="youtube"')
+      expect(saved).toContain('data-video-id="dQw4w9WgXcQ"')
+      expect(saved).toContain(
+        'src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"'
+      )
+      // Opening and saving the article again must not rewrite the markup, or
+      // every save churns the file.
+      expect(throughEditor(saved)).toBe(saved)
+    })
+
+    it('keeps the start offset and title across a save', () => {
+      const saved = throughEditor(
+        insertVideo('https://vimeo.com/347119375/9f2c1a8b3d#t=90s')
+      )
+
+      expect(saved).toContain('data-video-hash="9f2c1a8b3d"')
+      expect(saved).toContain('data-video-start="90"')
+      expect(saved).toContain('#t=90s')
+      expect(saved).toContain('title="Vimeo video player"')
+    })
+
+    it('leaves the surrounding prose alone', () => {
+      const source = [
+        'Watch the walkthrough:',
+        '',
+        insertVideo('https://youtu.be/dQw4w9WgXcQ'),
+        '',
+        'Then try it yourself.'
+      ].join('\n')
+
+      const saved = throughEditor(source)
+
+      expect(saved).toContain('Watch the walkthrough:')
+      expect(saved).toContain('Then try it yourself.')
+      expect(saved).toContain('data-video-id="dQw4w9WgXcQ"')
+    })
+
+    it('never rebuilds a player from a tampered id', () => {
+      // The `src` is built from the id, so a hand-edited markdown source must
+      // not be able to point the frame anywhere it likes.
+      const tampered =
+        '<div data-video-embed="youtube" data-video-id="../../evil">' +
+        '<iframe src="https://evil.example.com/x"></iframe></div>'
+
+      const saved = throughEditor(tampered)
+
+      expect(saved).not.toContain('data-video-embed')
+      expect(saved).not.toContain('youtube-nocookie')
+      // Unrecognised markup falls through to the verbatim raw-HTML block
+      // rather than being silently dropped.
+      expect(saved).toContain('evil.example.com')
     })
   })
 })

@@ -3,11 +3,18 @@ import type { Editor } from '@tiptap/react'
 import { classNames } from 'utils'
 import { uploadImage } from 'lib/cms/uploads'
 import ButtonDialog from './ButtonDialog'
+import VideoDialog from './VideoDialog'
 import {
   DEFAULT_ARTICLE_BUTTON,
   normalizeArticleButton,
   type ArticleButtonAttributes
 } from './extensions/ArticleButton'
+import {
+  defaultVideoTitle,
+  normalizeVideoEmbed,
+  videoShareUrl,
+  type VideoEmbedAttributes
+} from './extensions/VideoEmbed'
 
 function ToolButton({
   onClick,
@@ -75,6 +82,11 @@ export default function EditorToolbar({
     attributes: ArticleButtonAttributes
     editing: boolean
   } | null>(null)
+  const [videoDraft, setVideoDraft] = useState<{
+    url: string
+    title: string
+    editing: boolean
+  } | null>(null)
 
   // Selecting an existing button and hitting the toolbar edits it in place;
   // otherwise a fresh one is inserted at the cursor.
@@ -101,6 +113,41 @@ export default function EditorToolbar({
   const removeButton = () => {
     editor.chain().focus().unsetArticleButton().run()
     setButtonDraft(null)
+  }
+
+  // Same in-place-or-insert rule as the button: with an embed selected the
+  // toolbar edits it, otherwise a new player lands at the cursor.
+  const openVideoDialog = () => {
+    const editing = editor.isActive('videoEmbed')
+    const attributes = editing
+      ? normalizeVideoEmbed(editor.getAttributes('videoEmbed'))
+      : null
+
+    setVideoDraft({
+      editing,
+      url: attributes ? videoShareUrl(attributes) : '',
+      // The generic fallback is reapplied on save, so a title nobody chose
+      // shows as an empty field rather than as the author's own wording.
+      title:
+        attributes &&
+        attributes.title !== defaultVideoTitle(attributes.provider)
+          ? attributes.title
+          : ''
+    })
+  }
+
+  const saveVideo = (attributes: VideoEmbedAttributes) => {
+    const chain = editor.chain().focus()
+
+    if (videoDraft?.editing) chain.updateVideoEmbed(attributes).run()
+    else chain.setVideoEmbed(attributes).run()
+
+    setVideoDraft(null)
+  }
+
+  const removeVideo = () => {
+    editor.chain().focus().unsetVideoEmbed().run()
+    setVideoDraft(null)
   }
 
   const addLink = () => {
@@ -191,7 +238,8 @@ export default function EditorToolbar({
         active={editor.isActive('code')}
         onClick={() => editor.chain().focus().toggleCode().run()}
       >
-        <span className="font-mono text-xs">{'</>'}</span>
+        {/* Bare angle brackets: a fragment of code inside a line of prose. */}
+        <Icon d="M9.5 9L6 12l3.5 3M14.5 9L18 12l-3.5 3" />
       </ToolButton>
 
       <Divider />
@@ -222,7 +270,8 @@ export default function EditorToolbar({
         active={editor.isActive('codeBlock')}
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
       >
-        <Icon d="M8 9l-3 3 3 3m8-6l3 3-3 3M14 5l-4 14" />
+        {/* A framed terminal with a prompt: a whole block set apart. */}
+        <Icon d="M4 4.5h16a1 1 0 011 1v13a1 1 0 01-1 1H4a1 1 0 01-1-1v-13a1 1 0 011-1zM3 8.5h18M7 11.5l2 2-2 2M12 15.5H17" />
       </ToolButton>
       <ToolButton
         title="Divider"
@@ -268,6 +317,20 @@ export default function EditorToolbar({
         <Icon d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </ToolButton>
       <ToolButton
+        title={editor.isActive('videoEmbed') ? 'Edit video' : 'Embed video'}
+        active={editor.isActive('videoEmbed')}
+        onClick={openVideoDialog}
+      >
+        {/* A play triangle inside a wide screen -- the shape of the embed. */}
+        <Icon d="M4 5.5h16a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1v-11a1 1 0 011-1z">
+          <path
+            d="M10.4 9.2l4.4 2.8-4.4 2.8V9.2z"
+            fill="currentColor"
+            stroke="none"
+          />
+        </Icon>
+      </ToolButton>
+      <ToolButton
         title="Insert table"
         onClick={() =>
           editor
@@ -292,6 +355,17 @@ export default function EditorToolbar({
           event.target.value = ''
         }}
       />
+
+      {videoDraft && (
+        <VideoDialog
+          initialUrl={videoDraft.url}
+          initialTitle={videoDraft.title}
+          editing={videoDraft.editing}
+          onClose={() => setVideoDraft(null)}
+          onSubmit={saveVideo}
+          onRemove={removeVideo}
+        />
+      )}
 
       {buttonDraft && (
         <ButtonDialog
