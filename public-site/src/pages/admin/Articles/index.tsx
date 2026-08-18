@@ -10,6 +10,7 @@ import {
   trashArticles
 } from 'lib/cms/articles'
 import { listGroupMemberships } from 'lib/cms/groups'
+import { listContributors } from 'lib/cms/users'
 import { listCategories } from 'lib/cms/taxonomy'
 import {
   Alert,
@@ -27,17 +28,17 @@ import type {
   ArticleRow,
   ArticleStatus,
   CategoryRow,
-  GroupMembership
+  GroupMembership,
+  Profile
 } from 'types'
 import { STATUS_LABELS } from 'types/cms'
 
-type Scope = 'mine' | 'all'
 type SortKey = 'title' | 'author' | 'category' | 'status' | 'updated'
 type SortDir = 'asc' | 'desc'
 type Sort = { key: SortKey; dir: SortDir }
 
-// The category and group filters share a shape: "all" is no filter, "none"
-// picks the articles the taxonomy has missed, anything else is a row id.
+// The author, category and group filters share a shape: "all" is no filter,
+// "none" picks the articles the taxonomy has missed, anything else is a row id.
 const ANY = 'all'
 const UNASSIGNED = 'none'
 
@@ -67,6 +68,18 @@ const FIRST_DIR: Record<SortKey, SortDir> = {
 const CHECKBOX_CLASS =
   'size-4 rounded border-gray-300 text-brand-600 focus:ring-brand-600 ' +
   'disabled:cursor-not-allowed disabled:opacity-50'
+
+// The byline is the primary author plus any co-authors, and the `authors`
+// aggregate can be missing on a row the view built before co-authoring landed.
+const bylineIds = (row: ArticleRow): string[] => {
+  const ids = new Set<string>()
+  if (row.author_id) ids.add(row.author_id)
+  for (const person of row.authors ?? []) ids.add(person.id)
+  return [...ids]
+}
+
+const bylineHas = (row: ArticleRow, id: string): boolean =>
+  row.author_id === id || (row.authors ?? []).some((person) => person.id === id)
 
 const sortValue = (row: ArticleRow, key: SortKey): string | number => {
   switch (key) {
@@ -183,9 +196,9 @@ export default function AdminArticlesPage() {
   const { user, isEditor } = useAuth()
   const navigate = useNavigate()
 
-  // Writers only ever have their own articles, so the scope toggle is
-  // meaningless for them -- default them straight to "mine".
-  const [scope, setScope] = useState<Scope>(isEditor ? 'all' : 'mine')
+  // Writers only ever have their own articles, so the author filter is
+  // meaningless for them and is never rendered.
+  const [author, setAuthor] = useState<string>(ANY)
   const [status, setStatus] = useState<ArticleStatus | 'all'>('all')
   const [category, setCategory] = useState<string>(ANY)
   const [group, setGroup] = useState<string>(ANY)
@@ -194,6 +207,9 @@ export default function AdminArticlesPage() {
   const [rows, setRows] = useState<ArticleRow[]>([])
   const [categories, setCategories] = useState<CategoryRow[]>([])
   const [groups, setGroups] = useState<GroupMembership[]>([])
+  const [contributors, setContributors] = useState<
+    Pick<Profile, 'id' | 'display_name' | 'slug' | 'role'>[]
+  >([])
   const [selected, setSelected] = useState<Set<string>>(() => new Set())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -206,14 +222,16 @@ export default function AdminArticlesPage() {
     setLoading(true)
     setError(null)
     try {
+      // Everyone's work is loaded once and narrowed in place; a writer only
+      // ever gets their own rows back, so the flag is for them alone.
       const next = await listArticles({
-        mine: scope === 'mine',
+        mine: !isEditor,
         authorId: user?.id
       })
       setRows(next)
 
-      // An article that has left the list -- trashed, or reassigned out of
-      // this scope -- must not stay in a selection the bulk bar acts on.
+      // An article that has left the list -- trashed, or reassigned away --
+      // must not stay in a selection the bulk bar acts on.
       const live = new Set(next.map((row) => row.id))
       setSelected((current) => {
         const kept = [...current].filter((id) => live.has(id))
@@ -224,15 +242,16 @@ export default function AdminArticlesPage() {
     } finally {
       setLoading(false)
     }
-  }, [scope, user?.id])
+  }, [isEditor, user?.id])
 
   useEffect(() => {
     void refresh()
   }, [refresh])
 
-  // The two taxonomies the filters and the bulk bar offer. Neither changes
-  // while the page is open, so they load once rather than with every refresh,
-  // and an empty list simply means one fewer filter to choose from.
+  // The lists the filters and the bulk bar offer. None of them changes while
+  // the page is open, so they load once rather than with every refresh, and an
+  // empty list simply means one fewer filter to choose from. The byline is a
+  // writer's own name every time, so they are spared the contributor read.
   useEffect(() => {
     listCategories()
       .then(setCategories)
@@ -240,7 +259,11 @@ export default function AdminArticlesPage() {
     listGroupMemberships()
       .then(setGroups)
       .catch(() => setGroups([]))
-  }, [])
+    if (isEditor)
+      listContributors()
+        .then(setContributors)
+        .catch(() => setContributors([]))
+  }, [isEditor])
 
   // Group membership arrives grouped by group; the filter asks the opposite
   // question, so invert it once. An article can sit in several groups.
@@ -261,6 +284,10 @@ export default function AdminArticlesPage() {
     const term = search.trim().toLowerCase()
     return rows.filter((row) => {
       if (status !== 'all' && row.status !== status) return false
+
+      // Picking an author should surface the work they co-wrote as well as
+      // the work they lead, the way the old "Only mine" toggle did.
+      if (author !== ANY && !bylineHas(row, author)) return false
 
       if (category !== ANY) {
         const id = row.category_id
@@ -287,11 +314,11 @@ export default function AdminArticlesPage() {
         (row.author_name ?? '').toLowerCase().includes(term)
       )
     })
-  }, [rows, status, category, group, groupsByArticle, search])
+  }, [rows, author, status, category, group, groupsByArticle, search])
 
   // The Author column only exists for an editor browsing everyone's work, so a
   // sort left over from that view falls back rather than sorting invisibly.
-  const showAuthor = isEditor && scope === 'all'
+  const showAuthor = isEditor && author === ANY
   const activeSort = sort.key === 'author' && !showAuthor ? DEFAULT_SORT : sort
 
   const sorted = useMemo(() => {
@@ -327,11 +354,16 @@ export default function AdminArticlesPage() {
   // after the choice already in force.
   const counts = useMemo(() => {
     const byStatus: Record<string, number> = { all: rows.length }
+    const byAuthor: Record<string, number> = {}
     const byCategory: Record<string, number> = { [UNASSIGNED]: 0 }
     const byGroup: Record<string, number> = { [UNASSIGNED]: 0 }
 
     for (const row of rows) {
       byStatus[row.status] = (byStatus[row.status] ?? 0) + 1
+
+      // A co-written article counts once for every name on the byline, the
+      // same way it appears under any of their filters.
+      for (const id of bylineIds(row)) byAuthor[id] = (byAuthor[id] ?? 0) + 1
 
       const categoryKey = row.category_id ?? UNASSIGNED
       byCategory[categoryKey] = (byCategory[categoryKey] ?? 0) + 1
@@ -343,8 +375,35 @@ export default function AdminArticlesPage() {
       else for (const id of memberships) byGroup[id] = (byGroup[id] ?? 0) + 1
     }
 
-    return { status: byStatus, category: byCategory, group: byGroup }
+    return {
+      status: byStatus,
+      author: byAuthor,
+      category: byCategory,
+      group: byGroup
+    }
   }, [rows, groupsByArticle])
+
+  // Every contributor gets an entry, plus anyone whose name is on a loaded
+  // article but no longer in the contributor list -- a deactivated account's
+  // work would otherwise be impossible to filter to. The signed-in user leads
+  // the list, since "my articles" is the choice made most often.
+  const authorOptions = useMemo(() => {
+    const byId = new Map<string, string>()
+    for (const person of contributors)
+      byId.set(person.id, person.display_name ?? 'Unnamed author')
+    for (const row of rows)
+      for (const person of row.authors ?? [])
+        if (!byId.has(person.id))
+          byId.set(person.id, person.name ?? 'Unnamed author')
+
+    const options = [...byId].map(([id, name]) => ({ id, name }))
+    options.sort((a, b) => {
+      if (a.id === user?.id) return -1
+      if (b.id === user?.id) return 1
+      return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+    })
+    return options
+  }, [contributors, rows, user?.id])
 
   const selectedIds = useMemo(() => [...selected], [selected])
   const allVisibleSelected =
@@ -506,22 +565,21 @@ export default function AdminArticlesPage() {
       <Card className="mb-4 p-4">
         <div className="flex flex-wrap items-end gap-3">
           {isEditor && (
-            <div className="inline-flex rounded-lg bg-gray-100 p-1">
-              {(['all', 'mine'] as Scope[]).map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => setScope(option)}
-                  className={classNames(
-                    'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
-                    scope === option
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600'
-                  )}
-                >
-                  {option === 'all' ? 'All authors' : 'Only mine'}
-                </button>
-              ))}
+            <div className="w-52">
+              <Select
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+                aria-label="Filter by author"
+              >
+                <option value={ANY}>All authors ({rows.length})</option>
+                {authorOptions.map((person) => (
+                  <option key={person.id} value={person.id}>
+                    {`${person.name}${person.id === user?.id ? ' (me)' : ''} (${
+                      counts.author[person.id] ?? 0
+                    })`}
+                  </option>
+                ))}
+              </Select>
             </div>
           )}
 
