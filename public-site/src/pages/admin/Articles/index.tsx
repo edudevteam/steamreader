@@ -571,7 +571,9 @@ export default function AdminArticlesPage() {
                 onChange={(e) => setAuthor(e.target.value)}
                 aria-label="Filter by author"
               >
-                <option value={ANY}>All authors ({rows.length})</option>
+                <option value={ANY}>
+                  All authors ({authorOptions.length})
+                </option>
                 {authorOptions.map((person) => (
                   <option key={person.id} value={person.id}>
                     {`${person.name}${person.id === user?.id ? ' (me)' : ''} (${
