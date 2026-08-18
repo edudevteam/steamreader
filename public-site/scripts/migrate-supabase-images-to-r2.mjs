@@ -190,7 +190,7 @@ async function main() {
 
   console.log('Rewriting stored URLs...')
   await rewriteTable('articles', ['feature_image', 'content_markdown', 'content_html'])
-  await rewriteTable('courses', ['feature_image'])
+  await rewriteTable('groups', ['feature_image'])
   await rewriteTable('profiles', ['avatar_url'])
 
   console.log(

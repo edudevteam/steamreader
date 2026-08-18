@@ -1,5 +1,5 @@
 import { Suspense, type ReactNode } from 'react'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate, useParams } from 'react-router-dom'
 import PageLayout from 'components/layout/PageLayout'
 import RouteError from 'components/layout/RouteError'
 import RequireRole from 'components/admin/RequireRole'
@@ -25,7 +25,7 @@ import UpdatePasswordPage from 'pages/UpdatePassword'
 import AccountPage from 'pages/Account'
 import EmailConfirmedPage from 'pages/EmailConfirmed'
 import TermsPage from 'pages/Terms'
-import CoursePage from 'pages/Course'
+import GroupPage from 'pages/Group'
 import ChangelogPage from 'pages/Changelog'
 import { lazyWithRetry } from './lazyWithRetry'
 
@@ -43,8 +43,8 @@ const ArticleEditorPage = lazyWithRetry(
 const AdminArticleTrashPage = lazyWithRetry(
   () => import('pages/admin/ArticleTrash')
 )
-const AdminCoursesPage = lazyWithRetry(() => import('pages/admin/Courses'))
-const CourseEditorPage = lazyWithRetry(() => import('pages/admin/CourseEditor'))
+const AdminGroupsPage = lazyWithRetry(() => import('pages/admin/Groups'))
+const GroupEditorPage = lazyWithRetry(() => import('pages/admin/GroupEditor'))
 const AdminUsersPage = lazyWithRetry(() => import('pages/admin/Users'))
 const AdminTaxonomyPage = lazyWithRetry(() => import('pages/admin/Taxonomy'))
 const AdminProfilePage = lazyWithRetry(() => import('pages/admin/Profile'))
@@ -55,6 +55,20 @@ const ArticlePreviewPage = lazyWithRetry(
 
 function Lazy({ children }: { children: ReactNode }) {
   return <Suspense fallback={<LoadingBlock />}>{children}</Suspense>
+}
+
+/**
+ * Groups used to be courses, and /course/<slug> links are out in the world.
+ * The slug did not change, so the group page can serve them -- a redirect
+ * rather than a second copy of the page.
+ *
+ * Client-side, so it is a 200 and a replace rather than a 301. Good enough for
+ * a reader following an old link; if the old URLs need to pass their search
+ * ranking on, that wants a `_redirects` rule at the edge instead.
+ */
+function CourseRedirect() {
+  const { slug } = useParams<{ slug: string }>()
+  return <Navigate to={`/group/${slug}`} replace />
 }
 
 export const router = createBrowserRouter([
@@ -125,25 +139,25 @@ export const router = createBrowserRouter([
           </Lazy>
         )
       },
-      // Courses are staff-managed -- "Staff manage courses" in the schema --
+      // Groups are staff-managed -- "Staff manage groups" in the schema --
       // so the route mirrors the policy rather than relying on the nav to
       // hide it.
       {
-        path: 'courses',
+        path: 'groups',
         element: (
           <Lazy>
             <RequireRole minimum="editor">
-              <AdminCoursesPage />
+              <AdminGroupsPage />
             </RequireRole>
           </Lazy>
         )
       },
       {
-        path: 'courses/:id',
+        path: 'groups/:id',
         element: (
           <Lazy>
             <RequireRole minimum="editor">
-              <CourseEditorPage />
+              <GroupEditorPage />
             </RequireRole>
           </Lazy>
         )
@@ -220,8 +234,12 @@ export const router = createBrowserRouter([
         element: <AuthorPage />
       },
       {
+        path: 'group/:slug',
+        element: <GroupPage />
+      },
+      {
         path: 'course/:slug',
-        element: <CoursePage />
+        element: <CourseRedirect />
       },
       {
         path: 'search',

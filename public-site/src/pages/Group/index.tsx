@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import type { ArticleMeta } from 'types'
 import ContentState from 'components/ContentState'
-import { useArticles, useCourses } from 'hooks/useContent'
+import { useArticles, useGroups } from 'hooks/useContent'
 import { filterPublishedArticles, formatByline, parseDate } from 'utils'
 
-export default function CoursePage() {
+export default function GroupPage() {
   const { slug } = useParams<{ slug: string }>()
   const {
     data: allArticles,
@@ -14,19 +14,19 @@ export default function CoursePage() {
     reload
   } = useArticles()
   const {
-    data: courses,
-    loading: coursesLoading,
-    error: coursesError
-  } = useCourses()
+    data: groups,
+    loading: groupsLoading,
+    error: groupsError
+  } = useGroups()
 
   const articles = useMemo(
     () => filterPublishedArticles(allArticles),
     [allArticles]
   )
-  const course = courses.find((c) => c.slug === slug)
+  const group = groups.find((g) => g.slug === slug)
 
-  const loading = articlesLoading || coursesLoading
-  const error = articlesError ?? coursesError
+  const loading = articlesLoading || groupsLoading
+  const error = articlesError ?? groupsError
 
   if (loading || error) {
     return (
@@ -36,14 +36,14 @@ export default function CoursePage() {
     )
   }
 
-  if (!course) {
+  if (!group) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
         <h1 className="mb-4 text-2xl font-bold text-gray-900">
-          Course Not Found
+          Group Not Found
         </h1>
         <p className="mb-8 text-gray-600">
-          The course you&apos;re looking for doesn&apos;t exist.
+          The group you&apos;re looking for doesn&apos;t exist.
         </p>
         <Link
           to="/"
@@ -55,8 +55,8 @@ export default function CoursePage() {
     )
   }
 
-  // Resolve article slugs to full ArticleMeta, preserving course order
-  const courseArticles = course.articles
+  // Resolve article slugs to full ArticleMeta, preserving group order
+  const groupArticles = group.articles
     .map((slug) => articles.find((a) => a.slug === slug))
     .filter((a): a is ArticleMeta => a !== undefined)
 
@@ -70,32 +70,32 @@ export default function CoursePage() {
           </Link>
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-sm font-medium text-teal-600">
-            {course.title}
+            {group.title}
           </span>
         </nav>
         <div className="flex items-center gap-4">
           <img
-            src={course.featureImage.src}
-            alt={course.featureImage.alt}
+            src={group.featureImage.src}
+            alt={group.featureImage.alt}
             className="hidden size-16 rounded-lg object-cover sm:block"
           />
           <div>
             <h1 className="mb-1 text-3xl font-bold text-gray-900">
-              {course.title}
+              {group.title}
             </h1>
-            <p className="text-sm text-gray-600">{course.description}</p>
+            <p className="text-sm text-gray-600">{group.description}</p>
             <p className="mt-1 text-sm text-gray-500">
-              {courseArticles.length} lesson
-              {courseArticles.length !== 1 ? 's' : ''}
+              {groupArticles.length} lesson
+              {groupArticles.length !== 1 ? 's' : ''}
             </p>
           </div>
         </div>
       </header>
 
       {/* Lessons List */}
-      {courseArticles.length > 0 ? (
+      {groupArticles.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {courseArticles.map((article, index) => (
+          {groupArticles.map((article, index) => (
             <Link
               key={article.slug}
               to={`/article/${article.slug}`}
@@ -134,7 +134,7 @@ export default function CoursePage() {
       ) : (
         <div className="rounded-lg bg-gray-50 p-8 text-center">
           <p className="text-gray-600">
-            No lessons available for this course yet.
+            No lessons available for this group yet.
           </p>
         </div>
       )}

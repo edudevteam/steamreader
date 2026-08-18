@@ -44,8 +44,8 @@ const NAVIGATION: NavItem[] = [
     )
   },
   {
-    name: 'Courses',
-    href: '/admin/courses',
+    name: 'Groups',
+    href: '/admin/groups',
     minimum: 'editor',
     icon: (
       <path

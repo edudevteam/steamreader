@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ContentState from 'components/ContentState'
-import { useArticles, useCategories, useCourses } from 'hooks/useContent'
+import { useArticles, useCategories, useGroups } from 'hooks/useContent'
 import { filterPublishedArticles } from 'utils'
+import { COURSES_CATEGORY_SLUG } from 'types'
 import ArticleCarousel from 'components/ArticleCarousel'
-import CourseCarousel from 'components/CourseCarousel'
+import GroupCarousel from 'components/GroupCarousel'
 
 const quotes = [
   {
@@ -82,11 +83,18 @@ const getRandomQuote = () => {
 export default function HomePage() {
   const { data: allArticles, loading, error, reload } = useArticles()
   const { data: categories } = useCategories()
-  const { data: courses } = useCourses()
+  const { data: groups } = useGroups()
 
   const articles = useMemo(
     () => filterPublishedArticles(allArticles),
     [allArticles]
+  )
+
+  // Groups in any other category are readable at their own URL but do not
+  // belong in this section.
+  const courses = useMemo(
+    () => groups.filter((g) => g.category?.slug === COURSES_CATEGORY_SLUG),
+    [groups]
   )
 
   const featuredArticles = useMemo(
@@ -173,8 +181,9 @@ export default function HomePage() {
 
         {/* Courses */}
         {courses.length > 0 && (
-          <CourseCarousel
-            courses={courses}
+          <GroupCarousel
+            groups={courses}
+            badge="Course"
             title="Courses"
             subtitle="Structured learning paths to build your skills"
           />

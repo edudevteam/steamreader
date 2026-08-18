@@ -12,7 +12,7 @@ import {
   fetchArticles,
   fetchAuthors,
   fetchCategories,
-  fetchCourses,
+  fetchGroups,
   fetchTags
 } from 'lib/content'
 import type {
@@ -20,7 +20,7 @@ import type {
   ArticleMeta,
   Author,
   Category,
-  CourseMeta,
+  GroupMeta,
   Tag
 } from 'types'
 
@@ -130,8 +130,8 @@ export function useAuthors(): AsyncState<Author[]> {
   return useCachedResource('authors', fetchAuthors, [])
 }
 
-export function useCourses(): AsyncState<CourseMeta[]> {
-  return useCachedResource('courses', fetchCourses, [])
+export function useGroups(): AsyncState<GroupMeta[]> {
+  return useCachedResource('groups', fetchGroups, [])
 }
 
 /**

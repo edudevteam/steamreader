@@ -257,7 +257,7 @@ export async function saveArticle(
 
 /**
  * Moves an article to the trash. Nothing is deleted, so its votes, tags,
- * co-authors and course placements all survive a restore.
+ * co-authors and group placements all survive a restore.
  *
  * `article_list` filters trashed rows out, so this is enough to take the
  * article off every public page and out of the admin list at once. Who may

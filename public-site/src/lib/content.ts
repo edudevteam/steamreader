@@ -19,8 +19,8 @@ import type {
   ArticleDetailRow,
   Author,
   Category,
-  CourseMeta,
   FeatureImage,
+  GroupMeta,
   Tag
 } from 'types'
 
@@ -184,34 +184,37 @@ export async function fetchAuthors(): Promise<Author[]> {
   }))
 }
 
-export async function fetchCourses(): Promise<CourseMeta[]> {
+export async function fetchGroups(): Promise<GroupMeta[]> {
   const { data, error } = await supabase
-    .from('courses')
+    .from('groups')
     .select(
-      'slug, title, description, feature_image, course_articles(position, articles(slug))'
+      'slug, title, description, feature_image, ' +
+        'group_categories(slug, name), group_articles(position, articles(slug))'
     )
     .order('sort_order', { ascending: true })
 
   if (error) throw error
 
-  type CourseJoin = {
+  type GroupJoin = {
     slug: string
     title: string
     description: string
     feature_image: { src: string; alt: string }
-    course_articles: { position: number; articles: { slug: string } | null }[]
+    group_categories: { slug: string; name: string } | null
+    group_articles: { position: number; articles: { slug: string } | null }[]
   }
 
-  return ((data ?? []) as unknown as CourseJoin[]).map((row) => ({
+  return ((data ?? []) as unknown as GroupJoin[]).map((row) => ({
     slug: row.slug,
     title: row.title,
     description: row.description,
     featureImage: row.feature_image?.src
       ? row.feature_image
       : { src: '', alt: row.title },
-    articles: [...(row.course_articles ?? [])]
+    category: row.group_categories,
+    articles: [...(row.group_articles ?? [])]
       .sort((a, b) => a.position - b.position)
-      .map((ca) => ca.articles?.slug)
+      .map((ga) => ga.articles?.slug)
       .filter(Boolean) as string[]
   }))
 }

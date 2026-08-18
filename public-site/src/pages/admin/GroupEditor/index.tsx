@@ -1,16 +1,18 @@
 /**
- * Course editor: cover material on the left, running order on the right.
+ * Group editor: cover material and category on the left, running order on the
+ * right.
  *
  * Lessons move with up/down buttons rather than drag-and-drop. Dragging would
- * mean a new dependency and a keyboard-accessible fallback anyway, and a
- * course is a handful of lessons, not a hundred.
+ * mean a new dependency and a keyboard-accessible fallback anyway, and a group
+ * is a handful of lessons, not a hundred.
  *
  * Position is never edited directly -- it is the index in `lessons` at save
  * time, so the list on screen is the running order by construction.
  */
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { getCourse, isCourseSlugAvailable, saveCourse } from 'lib/cms/courses'
+import { getGroup, isGroupSlugAvailable, saveGroup } from 'lib/cms/groups'
+import { listGroupCategories } from 'lib/cms/taxonomy'
 import { listArticles } from 'lib/cms/articles'
 import { generateSlug } from 'lib/markdown'
 import ImageField from 'components/admin/editor/ImageField'
@@ -22,19 +24,26 @@ import {
   Input,
   LoadingBlock,
   SectionHeading,
+  Select,
   StatusBadge,
   Textarea
 } from 'components/admin/ui'
 import { classNames } from 'utils'
-import { emptyCourse } from 'types/cms'
-import type { ArticleRow, CourseDraft, CourseLesson } from 'types'
+import { emptyGroup } from 'types/cms'
+import type {
+  ArticleRow,
+  GroupCategoryRow,
+  GroupDraft,
+  GroupLesson
+} from 'types'
 
-export default function CourseEditorPage() {
+export default function GroupEditorPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const isNew = id === 'new'
 
-  const [draft, setDraft] = useState<CourseDraft>(emptyCourse)
+  const [draft, setDraft] = useState<GroupDraft>(emptyGroup)
+  const [categories, setCategories] = useState<GroupCategoryRow[]>([])
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(!isNew)
@@ -48,14 +57,14 @@ export default function CourseEditorPage() {
     let cancelled = false
     setLoading(true)
 
-    getCourse(id!)
-      .then((course) => {
+    getGroup(id!)
+      .then((group) => {
         if (cancelled) return
-        if (!course) {
-          setError('That course does not exist.')
+        if (!group) {
+          setError('That group does not exist.')
           return
         }
-        setDraft(course)
+        setDraft(group)
       })
       .catch((err: Error) => !cancelled && setError(err.message))
       .finally(() => !cancelled && setLoading(false))
@@ -65,7 +74,13 @@ export default function CourseEditorPage() {
     }
   }, [id, isNew])
 
-  // Every article the account may see, drafts included: a course is often
+  useEffect(() => {
+    listGroupCategories()
+      .then(setCategories)
+      .catch((err: Error) => setError(err.message))
+  }, [])
+
+  // Every article the account may see, drafts included: a group is often
   // assembled before its later lessons are published.
   useEffect(() => {
     listArticles()
@@ -74,7 +89,7 @@ export default function CourseEditorPage() {
   }, [])
 
   const update = useCallback(
-    <K extends keyof CourseDraft>(key: K, value: CourseDraft[K]) => {
+    <K extends keyof GroupDraft>(key: K, value: GroupDraft[K]) => {
       setDraft((current) => ({ ...current, [key]: value }))
       setNotice(null)
     },
@@ -135,31 +150,31 @@ export default function CourseEditorPage() {
     setNotice(null)
 
     try {
-      if (!draft.title.trim()) throw new Error('A course needs a title.')
+      if (!draft.title.trim()) throw new Error('A group needs a title.')
 
       const slug = (
         draft.slug.trim() || generateSlug(draft.title)
       ).toLowerCase()
-      if (!(await isCourseSlugAvailable(slug, draft.id))) {
-        throw new Error(`The slug "${slug}" is already used by another course.`)
+      if (!(await isGroupSlugAvailable(slug, draft.id))) {
+        throw new Error(`The slug "${slug}" is already used by another group.`)
       }
 
-      const courseId = await saveCourse({ ...draft, slug })
+      const groupId = await saveGroup({ ...draft, slug })
 
       if (isNew) {
-        navigate(`/admin/courses/${courseId}`, { replace: true })
+        navigate(`/admin/groups/${groupId}`, { replace: true })
       } else {
         setDraft((current) => ({ ...current, slug }))
       }
-      setNotice('Course saved.')
+      setNotice('Group saved.')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the course')
+      setError(err instanceof Error ? err.message : 'Could not save the group')
     } finally {
       setSaving(false)
     }
   }
 
-  if (loading) return <LoadingBlock label="Loading course…" />
+  if (loading) return <LoadingBlock label="Loading group…" />
 
   // Both counts describe lessons a reader cannot open, but they need different
   // fixes -- publish it, or restore it from the trash -- so they are reported
@@ -175,19 +190,19 @@ export default function CourseEditorPage() {
         <div>
           <button
             type="button"
-            onClick={() => navigate('/admin/courses')}
+            onClick={() => navigate('/admin/groups')}
             className="text-sm font-medium text-gray-500 hover:text-gray-900"
           >
-            ← Courses
+            ← Groups
           </button>
           <h1 className="mt-2 text-2xl font-bold text-gray-900">
-            {isNew ? 'New course' : draft.title || 'Untitled course'}
+            {isNew ? 'New group' : draft.title || 'Untitled group'}
           </h1>
         </div>
         <div className="flex items-center gap-2">
           {!isNew && draft.slug && (
             <a
-              href={`/course/${draft.slug}`}
+              href={`/group/${draft.slug}`}
               target="_blank"
               rel="noreferrer"
               className="text-sm font-medium text-gray-500 hover:text-gray-900"
@@ -196,7 +211,7 @@ export default function CourseEditorPage() {
             </a>
           )}
           <Button variant="primary" onClick={handleSave} loading={saving}>
-            Save course
+            Save group
           </Button>
         </div>
       </div>
@@ -215,8 +230,8 @@ export default function CourseEditorPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="p-6">
           <SectionHeading
-            title="Course details"
-            description="What a reader sees on the course card and at the top of the course page."
+            title="Group details"
+            description="What a reader sees on the group card and at the top of the group page."
           />
 
           <div className="mt-5 space-y-4">
@@ -249,6 +264,36 @@ export default function CourseEditorPage() {
               />
             </Field>
 
+            <Field
+              label="Category"
+              hint="Decides where the group appears on the public site. Groups in Courses show up on the home page."
+            >
+              <Select
+                value={draft.category_id ?? ''}
+                onChange={(e) => update('category_id', e.target.value || null)}
+              >
+                <option value="">Uncategorised</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Select>
+            </Field>
+
+            {/* Not an error -- an uncategorised group is a valid thing to
+                save mid-assembly. It is just invisible until it has a home,
+                which is worth saying before the editor walks away. */}
+            {!draft.category_id && (
+              <Alert kind="info">
+                This group has no category, so it appears in no section of the
+                public site. It is still readable at its own URL.{' '}
+                <Link to="/admin/groups" className="font-medium underline">
+                  Manage categories
+                </Link>
+              </Alert>
+            )}
+
             <Field label="Sort order" hint="Lower numbers appear first.">
               <Input
                 type="number"
@@ -272,7 +317,7 @@ export default function CourseEditorPage() {
         <Card className="p-6">
           <SectionHeading
             title="Lessons"
-            description="Read in this order. An article can belong to more than one course."
+            description="Read in this order. An article can belong to more than one group."
           />
 
           {trashed > 0 && (
@@ -286,7 +331,7 @@ export default function CourseEditorPage() {
                 >
                   Trash
                 </Link>
-                , or remove {trashed === 1 ? 'it' : 'them'} from this course.
+                , or remove {trashed === 1 ? 'it' : 'them'} from this group.
               </Alert>
             </div>
           )}
@@ -296,8 +341,8 @@ export default function CourseEditorPage() {
               <Alert kind="info">
                 {unpublished} lesson{unpublished === 1 ? ' is' : 's are'} not
                 published yet, so {unpublished === 1 ? 'it is' : 'they are'}{' '}
-                hidden from readers until published. The rest of the course
-                still works.
+                hidden from readers until published. The rest of the group still
+                works.
               </Alert>
             </div>
           )}
@@ -355,7 +400,7 @@ export default function CourseEditorPage() {
                 <li className="px-3 py-2 text-sm text-gray-500">
                   {search.trim()
                     ? 'Nothing matches that search.'
-                    : 'Every article you can see is already in this course.'}
+                    : 'Every article you can see is already in this group.'}
                 </li>
               )}
             </ul>
@@ -373,7 +418,7 @@ function LessonRow({
   onMove,
   onRemove
 }: {
-  lesson: CourseLesson
+  lesson: GroupLesson
   index: number
   total: number
   onMove: (from: number, to: number) => void
@@ -418,7 +463,7 @@ function LessonRow({
         <button
           type="button"
           onClick={() => onRemove(lesson.article_id)}
-          aria-label={`Remove ${lesson.title} from this course`}
+          aria-label={`Remove ${lesson.title} from this group`}
           className="rounded p-1 text-gray-400 hover:bg-red-100 hover:text-red-700"
         >
           <svg

@@ -1,28 +1,36 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import type { CourseMeta } from 'types'
+import type { GroupMeta } from 'types'
 
-interface CourseCarouselProps {
-  courses: CourseMeta[]
+interface GroupCarouselProps {
+  groups: GroupMeta[]
   title: string
   subtitle?: string
   count?: number
   limit?: number
+  /**
+   * What each card calls itself. Defaults to the group's own category name, so
+   * a mixed list labels itself correctly; pass it when a section wants one
+   * word for every card -- the Courses section says "Course", singular, rather
+   * than repeating the category's plural name.
+   */
+  badge?: string
 }
 
-export default function CourseCarousel({
-  courses,
+export default function GroupCarousel({
+  groups,
   title,
   subtitle,
   count = 3,
-  limit
-}: CourseCarouselProps) {
+  limit,
+  badge
+}: GroupCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [currentPage, setCurrentPage] = useState(0)
 
-  const limitedCourses = limit ? courses.slice(0, limit) : courses
-  const totalPages = Math.ceil(limitedCourses.length / count)
-  const paginatedCourses = limitedCourses.slice(
+  const limitedGroups = limit ? groups.slice(0, limit) : groups
+  const totalPages = Math.ceil(limitedGroups.length / count)
+  const paginatedGroups = limitedGroups.slice(
     currentPage * count,
     (currentPage + 1) * count
   )
@@ -53,7 +61,7 @@ export default function CourseCarousel({
     setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))
   }
 
-  if (limitedCourses.length === 0) return null
+  if (limitedGroups.length === 0) return null
 
   const cardClasses =
     'group overflow-hidden rounded-xl border-2 border-teal-100 bg-gradient-to-br from-teal-50 to-white shadow-md transition-all hover:border-teal-200 hover:shadow-lg'
@@ -95,34 +103,34 @@ export default function CourseCarousel({
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-8 pb-4 scrollbar-hide"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {limitedCourses.map((course) => (
+          {limitedGroups.map((group) => (
             <Link
-              key={course.slug}
-              to={`/course/${course.slug}`}
+              key={group.slug}
+              to={`/group/${group.slug}`}
               className={`w-[85vw] shrink-0 snap-center ${cardClasses}`}
             >
               <div className="aspect-video w-full overflow-hidden">
                 <img
-                  src={course.featureImage.src}
-                  alt={course.featureImage.alt}
+                  src={group.featureImage.src}
+                  alt={group.featureImage.alt}
                   className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <span className="rounded-full bg-teal-100 px-2 py-1 text-xs font-medium text-teal-700">
-                    Course
+                    {badge ?? group.category?.name ?? 'Group'}
                   </span>
                   <span className="text-xs text-gray-500">
-                    {course.articles.length} lesson
-                    {course.articles.length !== 1 ? 's' : ''}
+                    {group.articles.length} lesson
+                    {group.articles.length !== 1 ? 's' : ''}
                   </span>
                 </div>
                 <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-teal-600">
-                  {course.title}
+                  {group.title}
                 </h3>
                 <p className="line-clamp-2 text-sm text-gray-600">
-                  {course.description}
+                  {group.description}
                 </p>
               </div>
             </Link>
@@ -153,34 +161,34 @@ export default function CourseCarousel({
       {/* Desktop Grid */}
       <div className="hidden md:block">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {paginatedCourses.map((course) => (
+          {paginatedGroups.map((group) => (
             <Link
-              key={course.slug}
-              to={`/course/${course.slug}`}
+              key={group.slug}
+              to={`/group/${group.slug}`}
               className={cardClasses}
             >
               <div className="aspect-video w-full overflow-hidden">
                 <img
-                  src={course.featureImage.src}
-                  alt={course.featureImage.alt}
+                  src={group.featureImage.src}
+                  alt={group.featureImage.alt}
                   className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
                 <div className="mb-2 flex items-center gap-2">
                   <span className="rounded-full bg-teal-100 px-2 py-1 text-xs font-medium text-teal-700">
-                    Course
+                    {badge ?? group.category?.name ?? 'Group'}
                   </span>
                   <span className="text-xs text-gray-500">
-                    {course.articles.length} lesson
-                    {course.articles.length !== 1 ? 's' : ''}
+                    {group.articles.length} lesson
+                    {group.articles.length !== 1 ? 's' : ''}
                   </span>
                 </div>
                 <h3 className="mb-2 font-semibold text-gray-900 group-hover:text-teal-600">
-                  {course.title}
+                  {group.title}
                 </h3>
                 <p className="line-clamp-2 text-sm text-gray-600">
-                  {course.description}
+                  {group.description}
                 </p>
               </div>
             </Link>
