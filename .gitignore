@@ -6,3 +6,4 @@ NOTES.md
 .dev.vars
 .wrangler/
 node_modules/
+.claude
