@@ -1,5 +1,4 @@
 NOTES.md
-supabase/.temp/
 
 # wrangler and its local state now live under public-site/, which is the Pages
 # project root -- see public-site/.gitignore. These stay only as a backstop for

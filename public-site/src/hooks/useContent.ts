@@ -14,7 +14,8 @@ import {
   fetchCategories,
   fetchGroups,
   fetchPageLayout,
-  fetchTags
+  fetchTags,
+  resetSiteData
 } from 'lib/content'
 import { DEFAULT_LAYOUTS, SURFACE_KEYS } from 'types'
 import type {
@@ -51,8 +52,12 @@ function load<T>(key: string, loader: Loader<T>): Promise<T> {
   return promise
 }
 
-/** Drops cached content so the next read hits the database (used after a save). */
+/**
+ * Drops cached content so the next read fetches it again. The Studio calls
+ * this after a save so its previews pick the change up.
+ */
 export function invalidateContent(key?: string): void {
+  resetSiteData()
   if (key) {
     cache.delete(key)
     return

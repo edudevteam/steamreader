@@ -1,0 +1,58 @@
+{
+  "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+  "slug": "python-requirements",
+  "title": "Creating the Python requirements.txt",
+  "subtitle": "Making code portal and reusable",
+  "excerpt": "It's not enough to create a `venv` for a python project. You also need an easy way to download the correct libraries using the `pip` command. That's where the requirements.txt document comes into play.",
+  "status": "published",
+  "published_at": "2025-06-24",
+  "created_at": "2025-06-24",
+  "updated_at": "2025-06-24",
+  "deleted_at": null,
+  "author_ids": [
+    "b57482c5-f468-42a2-86ea-fa69259636c5"
+  ],
+  "category_id": "e9de6e3d-f330-4338-8a59-08bfe5f10080",
+  "tag_ids": [
+    "058633c7-ab40-4286-8313-693d7af28172",
+    "6eecc3e9-9b30-4f9d-8062-13e45e905e6f",
+    "d0328fb7-5875-4ca0-b395-2721dd8934fe",
+    "9d83cfc0-53e8-4b17-aeb6-96148762984c",
+    "ab975764-0a8f-44a8-b2dc-8806eb1b4e40",
+    "28dd53dd-1fb2-46fa-9d42-0a95594d8792",
+    "577b67b1-5315-463c-aa6b-c18945b11a9c"
+  ],
+  "feature_image": {
+    "src": "https://cdn.steamreader.com/static/python-generating-requirements-file.png",
+    "alt": "python generating requirements TXT file",
+    "caption": "Graphic by FundedYouth"
+  },
+  "validation": null,
+  "previous_slug": "python-requirements",
+  "next_slug": null,
+  "content_markdown": null,
+  "content_html": "<p>The <code>requirements.txt</code> has two major benefits.</p>\n<ol>\n<li>It tells other developers which libraries your application needs.</li>\n<li>Instead of installing libraries one by one, you can install them all at once with:</li>\n</ol>\n<pre><code class=\"hljs language-bash\">$ pip install -r requirements.txt\n</code></pre><h2 id=\"tutorial\">Tutorial</h2>\n<ol>\n<li>Create a new project folder</li>\n</ol>\n<p>For this tutorial, we’ll call it <code>python_requirements</code>, but you can name it anything.</p>\n<ol start=\"2\">\n<li>Change into the new project directory, install a new virutal environment, and activate it.</li>\n</ol>\n<pre><code class=\"hljs language-bash\">$ <span class=\"hljs-built_in\">cd</span> python_requirements\n$ python -m venv venv\n<span class=\"hljs-comment\"># Mac and Linux</span>\n$ <span class=\"hljs-built_in\">source</span> venv/bin/activate\n<span class=\"hljs-comment\"># Windows users run a different command</span>\n$ .\\bubble\\Scripts\\activate\n</code></pre><ol start=\"3\">\n<li>Install the following libraries using pip.</li>\n</ol>\n<pre><code class=\"hljs language-bash\">$ pip install pyjokes\n$ pip install quoters\n$ pip install random_word\n</code></pre><ol start=\"4\">\n<li>Create a new app called <code>app.py</code> and import the three libraries into the app.</li>\n</ol>\n<blockquote>\n<p>I’m going to use nano for this example but you could easily use an IDE like VS Code.</p>\n</blockquote>\n<pre><code class=\"hljs language-bash\">$ nano app.py\n</code></pre><pre><code class=\"hljs language-python\"><span class=\"hljs-keyword\">from</span> quoters <span class=\"hljs-keyword\">import</span> Quote\n<span class=\"hljs-keyword\">from</span> random_word <span class=\"hljs-keyword\">import</span> RandomWords\n<span class=\"hljs-keyword\">import</span> pyjokes\n\n<span class=\"hljs-built_in\">print</span>(<span class=\"hljs-string\">&quot;hello&quot;</span>)\n</code></pre><h3 id=\"create-requirmentstxt-the-standard-way\">Create \"requirments.txt\" the standard way</h3>\n<ol start=\"5\">\n<li>In a terminal within the project/app directory run the command:</li>\n</ol>\n<pre><code class=\"hljs language-bash\">pip freeze &gt; requirements.txt\n</code></pre><p>This command will add all the libraries to the requirements.txt. From the imported libraries used to the dependencies, etc.</p>\n<h3 id=\"alternative-only-used-libraries-requirementstxt\">(alternative) - Only used libraries requirements.txt</h3>\n<ol start=\"5\">\n<li>Install the library <code>pipreqs</code></li>\n</ol>\n<pre><code class=\"hljs language-bash\">$ pip install pipreqs\n</code></pre><ol start=\"6\">\n<li>The run the command:</li>\n</ol>\n<pre><code class=\"hljs language-bash\"><span class=\"hljs-comment\"># if you are in the project directory, then just run pipreqs</span>\n$ pipreqs /path/to/your/project\n\n<span class=\"hljs-comment\"># for this project, I was in the project directory so I ran:</span>\n$ pipreqs\n</code></pre><ol start=\"7\">\n<li>Running this command will generate the <code>requirements.txt</code> with only the libraries imported / used in the project.</li>\n</ol>\n<pre><code class=\"hljs language-bash\">pyjokes==0.8.3\nquoters==0.30\nrandom_word==1.0.13\n</code></pre><h2 id=\"congrats\">🎉 Congrats</h2>\n<p>You now know how to generate a <code>requirements.txt</code> which will help with future personal and team projects.</p>\n",
+  "toc": [
+    {
+      "id": "tutorial",
+      "text": "Tutorial",
+      "level": 2
+    },
+    {
+      "id": "create-requirmentstxt-the-standard-way",
+      "text": "Create \"requirments.txt\" the standard way",
+      "level": 3
+    },
+    {
+      "id": "alternative-only-used-libraries-requirementstxt",
+      "text": "(alternative) - Only used libraries requirements.txt",
+      "level": 3
+    },
+    {
+      "id": "congrats",
+      "text": "🎉 Congrats",
+      "level": 2
+    }
+  ],
+  "reading_time": 2
+}

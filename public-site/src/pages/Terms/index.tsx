@@ -58,9 +58,9 @@ export default function TermsPage() {
 
         <h2>6. User Contributions</h2>
         <p>
-          When you vote on or interact with articles, you agree that your
-          contributions will be used to help improve content quality for all
-          users. You retain no ownership rights over aggregated voting data.
+          When you submit feedback or content for an article, you agree that
+          your contributions will be used to help improve content quality for
+          all readers.
         </p>
 
         <h2>7. Privacy</h2>

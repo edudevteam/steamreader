@@ -1,0 +1,322 @@
+[
+  {
+    "id": "058633c7-ab40-4286-8313-693d7af28172",
+    "slug": "education",
+    "name": "education"
+  },
+  {
+    "id": "d2389d42-b3c1-4590-b94a-278f00fcf492",
+    "slug": "electronics",
+    "name": "electronics"
+  },
+  {
+    "id": "b82705bf-3ba5-4734-93a6-4c6ab2c6c2d9",
+    "slug": "circuits",
+    "name": "circuits"
+  },
+  {
+    "id": "95a96b2b-f454-4c77-8fd5-a1c2e7c7701b",
+    "slug": "electricity",
+    "name": "electricity"
+  },
+  {
+    "id": "639d11be-7eb8-4512-909c-385f9cf95e7e",
+    "slug": "energy",
+    "name": "energy"
+  },
+  {
+    "id": "5635f4e9-5dbe-4971-96be-3a8cf8223762",
+    "slug": "ohms-law",
+    "name": "ohms law"
+  },
+  {
+    "id": "db7ae908-d083-4fea-b901-f1087b21c73f",
+    "slug": "restance",
+    "name": "restance"
+  },
+  {
+    "id": "ae01626d-e51a-48e2-acc9-aa8aa8cfa60b",
+    "slug": "rgb-led",
+    "name": "rgb led"
+  },
+  {
+    "id": "09acc1a4-4f27-45ad-9402-3a8a06d97f28",
+    "slug": "breadboard",
+    "name": "breadboard"
+  },
+  {
+    "id": "db11c1eb-b219-4b59-8512-7c08aab98319",
+    "slug": "potentiometer",
+    "name": "potentiometer"
+  },
+  {
+    "id": "d477d0d1-4343-4d1b-9813-8d72e3fca6ea",
+    "slug": "led",
+    "name": "led"
+  },
+  {
+    "id": "d187edad-6e7f-4240-818b-b72f47dbda6f",
+    "slug": "vite",
+    "name": "vite"
+  },
+  {
+    "id": "ea4b94e9-ed88-4942-a54e-a9048c271fb1",
+    "slug": "react",
+    "name": "react"
+  },
+  {
+    "id": "819e1786-1c5e-4ac0-84f0-01a7ca4bb30e",
+    "slug": "pnpm",
+    "name": "pnpm"
+  },
+  {
+    "id": "b674b9bd-9dc3-4ba9-a404-6d4b435a4994",
+    "slug": "google-ai-studio",
+    "name": "google ai studio"
+  },
+  {
+    "id": "6445886b-4496-4ac7-9345-16448db92667",
+    "slug": "cloudflare-pages",
+    "name": "cloudflare pages"
+  },
+  {
+    "id": "97e53c37-9c91-47ff-9204-ef06e82176aa",
+    "slug": "github",
+    "name": "github"
+  },
+  {
+    "id": "87147701-5142-4b57-b604-76bdae335036",
+    "slug": "github-desktop",
+    "name": "github desktop"
+  },
+  {
+    "id": "aa97d121-5924-43ab-aba5-a9e713a876d1",
+    "slug": "claude-ai",
+    "name": "claude ai"
+  },
+  {
+    "id": "97b0ac97-0fa4-4856-8c81-8608fa1156e1",
+    "slug": "claude-cli",
+    "name": "claude cli"
+  },
+  {
+    "id": "4d5505dd-acee-4130-9c4b-83025e8d8402",
+    "slug": "claude-code",
+    "name": "claude code"
+  },
+  {
+    "id": "56cc4f3c-a9e5-4a0f-8105-f6396e51182e",
+    "slug": "website",
+    "name": "website"
+  },
+  {
+    "id": "47a66589-84e7-48b4-94d6-2dbc5d061c88",
+    "slug": "ai-development",
+    "name": "ai development"
+  },
+  {
+    "id": "bdaac8f4-f575-4bf8-b0a8-347859a06619",
+    "slug": "prompt-design",
+    "name": "prompt design"
+  },
+  {
+    "id": "6eecc3e9-9b30-4f9d-8062-13e45e905e6f",
+    "slug": "tutorial",
+    "name": "tutorial"
+  },
+  {
+    "id": "f65f0462-c067-4114-8067-782afb17fc1a",
+    "slug": "codeorg",
+    "name": "code.org"
+  },
+  {
+    "id": "960e2893-2830-472e-a35e-9f47e218d1bf",
+    "slug": "sprite-lab",
+    "name": "sprite lab"
+  },
+  {
+    "id": "57188e3a-36e2-40f0-b52a-75f4af03cf3e",
+    "slug": "storyboard",
+    "name": "storyboard"
+  },
+  {
+    "id": "a43e10fe-87d0-4ea7-8556-93cd89ce1e2c",
+    "slug": "story-board",
+    "name": "story board"
+  },
+  {
+    "id": "792f7f2f-1b7a-4310-b9ef-9b01415cb348",
+    "slug": "functions",
+    "name": "functions"
+  },
+  {
+    "id": "6296fb29-ef50-43a3-854f-cadc849e7fb3",
+    "slug": "logical-operators",
+    "name": "logical operators"
+  },
+  {
+    "id": "4b797e2a-6ef7-416a-bec0-dc7e44cdfa1a",
+    "slug": "conditional-operators",
+    "name": "conditional operators"
+  },
+  {
+    "id": "8f9722fa-6a41-4472-8d3a-bfb07c7392a9",
+    "slug": "if-blocks",
+    "name": "if blocks"
+  },
+  {
+    "id": "3845610d-107c-4b31-87d3-8337286a66ad",
+    "slug": "event-blocks",
+    "name": "event blocks"
+  },
+  {
+    "id": "868c0df4-6ff6-46f5-b7de-c7e7b28eb770",
+    "slug": "grid-mapping",
+    "name": "grid mapping"
+  },
+  {
+    "id": "be3dc117-d2e8-421c-ba5a-01aa0eab27bc",
+    "slug": "behaviors",
+    "name": "behaviors"
+  },
+  {
+    "id": "62003fe4-3fe1-4690-ae88-829667de02d2",
+    "slug": "game-development",
+    "name": "game development"
+  },
+  {
+    "id": "1eb6d391-042c-4e03-8caa-d9d2a9faf163",
+    "slug": "costume-graphics",
+    "name": "costume graphics"
+  },
+  {
+    "id": "585b66f8-5dd4-42f4-8268-64ac31ea78ef",
+    "slug": "show-hide",
+    "name": "show / hide"
+  },
+  {
+    "id": "57342f25-888e-4976-bdd4-9504a33359dd",
+    "slug": "background-libarary",
+    "name": "background libarary"
+  },
+  {
+    "id": "ca979550-b53e-4021-b3e2-d5c236ea7a32",
+    "slug": "sprite-library",
+    "name": "sprite library"
+  },
+  {
+    "id": "a023a866-af1f-40b4-8fda-de32cf81cf58",
+    "slug": "import",
+    "name": "import"
+  },
+  {
+    "id": "b0111811-888b-44fa-a5ab-4fb31d5aeebe",
+    "slug": "variables",
+    "name": "variables"
+  },
+  {
+    "id": "8c1c1313-1c07-4568-9766-eeae1c747b17",
+    "slug": "counters",
+    "name": "counters"
+  },
+  {
+    "id": "ba6c3bc3-f74b-4350-891c-f259dca15554",
+    "slug": "location-block",
+    "name": "location block"
+  },
+  {
+    "id": "1d5bf13c-9ec7-40af-bb15-6606f0393cc0",
+    "slug": "reuse-logic",
+    "name": "reuse logic"
+  },
+  {
+    "id": "d0328fb7-5875-4ca0-b395-2721dd8934fe",
+    "slug": "coding",
+    "name": "coding"
+  },
+  {
+    "id": "378c7a88-16f0-42bd-827b-aa09f1fe7f64",
+    "slug": "eduation",
+    "name": "eduation"
+  },
+  {
+    "id": "dfef5657-83a9-4d6a-ac40-fc52536fd15a",
+    "slug": "blocks",
+    "name": "blocks"
+  },
+  {
+    "id": "e6dd3d41-5063-4914-b398-64d8fad4e0b6",
+    "slug": "events",
+    "name": "events"
+  },
+  {
+    "id": "9f1d4283-0a27-4c3f-9a41-7dce081020ac",
+    "slug": "counter",
+    "name": "counter"
+  },
+  {
+    "id": "b442343a-38fe-4b30-a625-b73797e31e54",
+    "slug": "swapping-images",
+    "name": "swapping images"
+  },
+  {
+    "id": "151160e9-1216-4fe3-8b01-7f3fe6ef49d0",
+    "slug": "position",
+    "name": "position"
+  },
+  {
+    "id": "c962bc4f-0ec2-4a58-a7db-013f5582052c",
+    "slug": "location",
+    "name": "location"
+  },
+  {
+    "id": "69156eb1-7a87-494b-9deb-e220cd99b3ba",
+    "slug": "chat",
+    "name": "chat"
+  },
+  {
+    "id": "9d83cfc0-53e8-4b17-aeb6-96148762984c",
+    "slug": "python",
+    "name": "python"
+  },
+  {
+    "id": "ab975764-0a8f-44a8-b2dc-8806eb1b4e40",
+    "slug": "venv",
+    "name": "venv"
+  },
+  {
+    "id": "28dd53dd-1fb2-46fa-9d42-0a95594d8792",
+    "slug": "virtual-environment",
+    "name": "virtual environment"
+  },
+  {
+    "id": "577b67b1-5315-463c-aa6b-c18945b11a9c",
+    "slug": "pip",
+    "name": "pip"
+  },
+  {
+    "id": "49ad5c67-2a8a-4a69-a52a-02013e00a08e",
+    "slug": "rest-api",
+    "name": "rest api"
+  },
+  {
+    "id": "75d1dbeb-353a-46fd-8368-e337cc9e29f3",
+    "slug": "fastapi",
+    "name": "fastapi"
+  },
+  {
+    "id": "e2854b53-4018-44e3-b9bf-b839711ef036",
+    "slug": "server",
+    "name": "server"
+  },
+  {
+    "id": "057ff960-7c2a-42a0-9801-ce5a413f8505",
+    "slug": "insomnia",
+    "name": "insomnia"
+  },
+  {
+    "id": "8cb22ffa-aa84-4e3c-b1c1-7ecaddd5510b",
+    "slug": "postman",
+    "name": "postman"
+  }
+]

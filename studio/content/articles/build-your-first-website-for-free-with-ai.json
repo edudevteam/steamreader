@@ -1,0 +1,59 @@
+{
+  "id": "23da6d2e-9c9c-44cd-8181-d1751f1e4185",
+  "slug": "build-your-first-website-for-free-with-ai",
+  "title": "Build Your First Website for Free (With AI!)",
+  "subtitle": "Follow step-by-step to design, build, and share your website—just a little GitHub experience helps!",
+  "excerpt": "Learn how to design, build, and host a website for free using Google AI Studio, Claude Code, GitHub, and Cloudflare Pages — no web development experience required.",
+  "status": "published",
+  "published_at": "2026-03-25",
+  "created_at": "2026-03-25",
+  "updated_at": "2026-03-25",
+  "deleted_at": null,
+  "author_ids": [
+    "b57482c5-f468-42a2-86ea-fa69259636c5"
+  ],
+  "category_id": "33d457f2-2396-4839-b66f-3e4f923ae6f7",
+  "tag_ids": [
+    "d187edad-6e7f-4240-818b-b72f47dbda6f",
+    "ea4b94e9-ed88-4942-a54e-a9048c271fb1",
+    "819e1786-1c5e-4ac0-84f0-01a7ca4bb30e",
+    "b674b9bd-9dc3-4ba9-a404-6d4b435a4994",
+    "6445886b-4496-4ac7-9345-16448db92667",
+    "97e53c37-9c91-47ff-9204-ef06e82176aa",
+    "87147701-5142-4b57-b604-76bdae335036",
+    "aa97d121-5924-43ab-aba5-a9e713a876d1",
+    "97b0ac97-0fa4-4856-8c81-8608fa1156e1",
+    "4d5505dd-acee-4130-9c4b-83025e8d8402",
+    "56cc4f3c-a9e5-4a0f-8105-f6396e51182e",
+    "47a66589-84e7-48b4-94d6-2dbc5d061c88",
+    "bdaac8f4-f575-4bf8-b0a8-347859a06619"
+  ],
+  "feature_image": {
+    "src": "https://cdn.steamreader.com/static/vibe-code-a-website-google-to-claude-to-cloudflare-pages.png",
+    "alt": "Build Your First Website for Free (With AI!)",
+    "caption": "Think it, design it, vibe it out — from Google AI Studio to Claude Code to free hosting on Cloudflare Pages."
+  },
+  "validation": null,
+  "previous_slug": null,
+  "next_slug": null,
+  "content_markdown": null,
+  "content_html": "<h1 id=\"build-your-first-website-for-free-with-ai\">Build Your First Website for Free (With AI!)</h1>\n<p>Learn how to design, build, and host a website for free using Google AI Studio, Claude Code, GitHub, and Cloudflare Pages — no web development experience required.</p>\n<h2 id=\"lesson-objectives\">📌 Lesson Objectives</h2>\n<ul>\n<li>Design a website/app layout in <code>Google AI Studio</code></li>\n<li>Create a <code>GitHub</code> repository for the project</li>\n<li>Use <code>Claude CLI</code> to clean up the code and build out the site</li>\n<li>Host site on <code>Cloudflare Pages</code> for free</li>\n</ul>\n<h2 id=\"project-requirements\">Project Requirements</h2>\n<p>Make sure you have the following free personal accounts created:</p>\n<ul>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> GitHub - <a href=\"https://github.com\">https://github.com</a></li>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> Google Account (Gmail works)</li>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> Google AI Studio - <a href=\"https://aistudio.google.com\">https://aistudio.google.com</a></li>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> Cloudflare - <a href=\"https://www.cloudflare.com\">https://www.cloudflare.com</a></li>\n<li><input checked=\"\" disabled=\"\" type=\"checkbox\"> VS Code - <a href=\"https://code.visualstudio.com\">https://code.visualstudio.com</a> (NOT Visual Studio)</li>\n</ul>\n<h2 id=\"tutorial\">🚀 Tutorial</h2>\n<p><strong>Watch the video</strong></p>\n<figure>\n  <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/PDB9Ka7LMsU\" frameborder=\"0\" allowfullscreen></iframe>\n</figure>\n\n<blockquote>\n<p>Important Note: This tutorial uses Claude Code CLI, which is a paid service. You could technically use Google Gemini CLI as an alternative.</p>\n</blockquote>\n<ol>\n<li><p>Log into GitHub.com and create a new repository for your website/web app.</p>\n</li>\n<li><p>Clone the newly created repo to your local machine (computer). I like to use GitHub Desktop.</p>\n</li>\n<li><p>Log into Google and go to <a href=\"https://aistudio.google.com\">https://aistudio.google.com</a>. Agree to the terms, and click the <strong>Build</strong> link in the left navigation.</p>\n</li>\n<li><p>In the prompt, explain what type of website you want. Consider pasting in an image of a concept you like or a color theme, and tell the prompt to design the site to look like the image while still keeping the idea you want.</p>\n</li>\n<li><p>With Google AI Studio, we just want to design the look and feel of the home page. You can swap out image placeholders here if you want.</p>\n</li>\n<li><p>Once your site has the desired look and feel, click the <strong>Code</strong> tab, then find the download button above the code and click it.</p>\n</li>\n<li><p>Download this into the local Git repository you created on GitHub and cloned to your computer. The downloaded file is a <code>.zip</code>.</p>\n</li>\n<li><p>Extract the contents of the <code>.zip</code>, then move all the contents—including hidden files—into the root of the project directory.</p>\n</li>\n<li><p>Remove the empty folder and <code>.zip</code> file.</p>\n</li>\n<li><p>Open the project in VS Code and open a new Claude prompt using the <a href=\"https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code\">VS Code Plugin</a>.</p>\n</li>\n<li><p>In the prompt, give it the following commands one at a time:</p>\n</li>\n</ol>\n<pre><code>    1. Remove all Google AI dependencies and libraries, except Google Fonts.\n    2. Install PNPM.\n    3. Update the README.md to reflect these changes.\n    4. /init (this will create a CLAUDE.md file)\n</code></pre><ol start=\"12\">\n<li>Open a new terminal window via <strong>Terminal &gt; New Terminal</strong>, then type:</li>\n</ol>\n<pre><code>pnpm dev\n</code></pre><ol start=\"13\">\n<li><p>This will start a local server and show you a couple of IP addresses. You can click on <code>http://localhost:3000</code> to view your current website and make sure it is still working. Press <code>Ctrl + C</code> to stop the local server.</p>\n</li>\n<li><p>In the Claude prompt, type: <code>create a title and description for these changes in code blocks. use markdown syntax tag for the description.</code> Wait for it to generate.</p>\n</li>\n<li><p>Copy the title and paste it into your GitHub Desktop title field. Do the same for the description.</p>\n</li>\n<li><p>Click the <strong>Commit</strong> button, then click <strong>Push</strong> to upload the changes to the online GitHub repository.</p>\n</li>\n<li><p>Log into your Cloudflare account. Click the <strong>Build</strong> link in the left navigation. This will expand some menu items. Click <strong>Workers &amp; Pages</strong>.</p>\n</li>\n<li><p>Click the blue <strong>Create application</strong> button, then below the popup click the text: <strong>Looking to deploy Pages? Get Started</strong>.</p>\n</li>\n<li><p>Select <strong>Import an existing Git repository</strong>, then click <strong>Get Started</strong>.</p>\n</li>\n<li><p>Under the GitHub section (which should already be selected), click <strong>Add account</strong> and log into your GitHub account. You can choose to select a single repo or all repos—it&#39;s up to you. This can take anywhere from 30 seconds to 5 minutes to connect.</p>\n</li>\n<li><p>Once it is connected, click on your repo under <strong>Select a repository</strong>.</p>\n</li>\n<li><p>For the build command, type: <code>pnpm build</code></p>\n</li>\n<li><p>For the build output directory, type: <code>dist</code></p>\n</li>\n<li><p>Scroll down and click <strong>Save and Deploy</strong>, then wait for the site to build. Once it finishes, click <strong>Continue to project</strong>.</p>\n</li>\n<li><p>Click the link to load your live, freely hosted website!</p>\n</li>\n</ol>\n",
+  "toc": [
+    {
+      "id": "lesson-objectives",
+      "text": "📌 Lesson Objectives",
+      "level": 2
+    },
+    {
+      "id": "project-requirements",
+      "text": "Project Requirements",
+      "level": 2
+    },
+    {
+      "id": "tutorial",
+      "text": "🚀 Tutorial",
+      "level": 2
+    }
+  ],
+  "reading_time": 4
+}

@@ -1,4 +1,4 @@
-# Cloudflare Pages header rules. See src/router/lazyWithRetry.ts for why the
+# Cloudflare Pages header rules. See studio/src/router/lazyWithRetry.ts for why the
 # split below matters: a browser holding a stale index.html asks for chunk
 # hashes that the current deploy no longer has.
 

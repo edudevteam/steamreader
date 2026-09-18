@@ -1,115 +1,104 @@
 # STEAM Reader
 
-A blog site for Science, Technology, Engineering, Arts, and Mathematics education content, published through a built-in CMS backed by Supabase.
+A blog site for Science, Technology, Engineering, Arts, and Mathematics education content.
+
+The repo holds two apps:
+
+| Folder | What it is | Where it runs |
+| --- | --- | --- |
+| [`public-site/`](public-site) | The site readers see. Read-only: no login, no database. | Cloudflare Pages |
+| [`studio/`](studio) | The editor used to write and publish articles. | Your computer only |
+
+```
+studio/content  ──Publish──▶  R2 bucket "steamreader"  ──▶  public-site (steamreader.com)
+ (git, drafts)                data/*.json + images             fetches the JSON
+```
+
+Articles are JSON files in `studio/content/`, committed to git. Publishing
+uploads the published ones to Cloudflare R2, alongside the images. The public
+site fetches them from `https://cdn.steamreader.com/data/`. Nothing on the
+public site can change content, so there is no account, API or database for
+anyone to attack.
 
 ## Features
 
-- **Built-in CMS** - Write and publish from `/admin`: a WYSIWYG markdown editor, draft/review/published workflow, courses, taxonomy and user management
+- **Local Studio** - WYSIWYG markdown editor, drafts, groups (courses), taxonomy, authors and a page Designer
 - **Category & Tag Filtering** - Browse articles by category, tag, or author
-- **Full-Text Search** - Search articles by title, author, category, or tags
-- **Courses** - Group articles into an ordered, multi-part series
+- **Search** - Search articles by title, author, category, or tags
+- **Groups** - Arrange articles into an ordered, multi-part series
 - **Social Sharing** - Share buttons for Twitter, Facebook, LinkedIn, and Email
 - **Responsive Design** - Mobile-friendly with collapsible navigation
 - **Changelog System** - Public changelog page, RSS feed, and version endpoint
 
 ## Tech Stack
 
-- React 18 + TypeScript
-- Vite (build tool)
-- TailwindCSS + Typography plugin
-- React Router
-- Supabase (Postgres, auth, RLS) for content
-- Cloudflare R2 for images
+- React 18 + TypeScript, Vite, TailwindCSS, React Router
+- Cloudflare R2 for content JSON and images
+- Cloudflare Pages for hosting
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- pnpm (recommended) or npm
+- pnpm
 
-### Installation
+### Public site
 
 ```bash
 cd public-site
 pnpm install
+pnpm dev        # http://localhost:5173, reading the live published content
+pnpm build      # production build into dist/
 ```
 
-### Development
+`VITE_CONTENT_BASE_URL` in `public-site/.env` points the site at a different
+content location. It defaults to `https://cdn.steamreader.com/data`.
+
+### Studio
 
 ```bash
-pnpm dev
+cd studio
+pnpm install
+pnpm start      # http://127.0.0.1:5180
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### Production Build
-
-```bash
-pnpm build
-pnpm serve  # Preview the build
-```
+See [studio/README.md](studio/README.md) for the R2 token, how publishing
+works and where content lives.
 
 ## Project Structure
 
 ```
 public-site/
-├── scripts/                         # Build tools
-│   ├── generate-changelog-assets.mjs
-│   └── migrate-supabase-images-to-r2.mjs
+├── scripts/generate-changelog-assets.mjs
 ├── src/
-│   ├── components/
-│   │   ├── admin/                   # CMS editor and admin widgets
-│   │   └── layout/                  # Header, Footer, PageLayout
-│   ├── pages/                       # Route pages
-│   │   └── admin/                   # CMS screens
-│   ├── lib/                         # Supabase client, content queries, markdown
-│   ├── data/
-│   │   └── changelog.json           # Changelog entries (edit manually)
-│   ├── types/                       # TypeScript interfaces
-│   └── router/                      # Route configuration
+│   ├── components/          # Layout, page sections, carousels
+│   ├── pages/               # Route pages
+│   ├── lib/content.ts       # Fetches the published JSON
+│   ├── hooks/useContent.ts  # Per-session caching of that JSON
+│   ├── data/changelog.json  # Changelog entries (edit manually)
+│   └── types/               # Shared with the Studio
 └── public/
-    ├── version.json                 # Generated — latest changelog entry
-    └── rss.xml                      # Generated — RSS feed
+
+studio/
+├── content/                 # The articles, authors, groups... (source of truth)
+├── server/                  # Local API: file store, publish build, R2 upload
+└── src/                     # Editor screens; reuses public-site/src for previews
 ```
-
-Article content is not in this repo — it lives in Supabase. Images are served
-from Cloudflare R2.
-
-## Writing Articles
-
-Articles are written and published in the CMS at `/admin`, which is part of the
-site itself. There is no build step and nothing to commit: saving in the editor
-writes to Supabase, and the change is live as soon as the article is published.
-
-1. Sign in and open **`/admin/articles`**
-2. **New article** opens the WYSIWYG editor. Content is stored as markdown, so
-   switching between the visual editor and markdown is lossless.
-3. Fill in the sidebar — category, tags, feature image, authors, excerpt
-4. Set **status** to `published` (the publish date defaults to now; a future
-   date schedules it)
-
-Images dropped into the editor upload to R2 automatically.
-
-Courses — an ordered, multi-part series of articles — are managed separately at
-**`/admin/courses`**, where lessons are added and dragged into order.
-
-See [CMS-SETUP.md](CMS-SETUP.md) for the database schema, roles and permissions.
 
 ## Routes
 
 | Path | Description |
 |------|-------------|
-| `/` | Home page with featured and latest articles |
+| `/` | Home page, laid out in the Studio's Designer |
 | `/article/:slug` | Full article view |
 | `/category/:slug` | Articles filtered by category |
 | `/tag/:slug` | Articles filtered by tag |
 | `/author/:slug` | Articles by author |
-| `/course/:slug` | A course and its ordered lessons |
+| `/group/:slug` | A group and its ordered lessons (`/course/:slug` redirects here) |
 | `/latest` | All articles, newest first |
 | `/search` | Search page with filters |
 | `/changelog` | Public changelog of site updates |
-| `/admin` | CMS — articles, courses, taxonomy, users |
 
 ## Changelog & Versioning
 
@@ -222,7 +211,6 @@ colors: {
 | `pnpm typecheck` | Run TypeScript type checking |
 | `pnpm lint` | Run ESLint |
 | `pnpm test` | Run tests |
-| `pnpm migrate:r2:supabase` | One-off: copy Supabase-hosted images to R2 and rewrite their URLs |
 
 ## License
 

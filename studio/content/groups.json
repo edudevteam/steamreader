@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ca7f0708-78ab-4ea4-a986-57af99ac09ce",
+    "slug": "sprite-lab",
+    "title": "Sprite Lab",
+    "description": "Learn to build interactive stories and games using Code.org's Sprite Lab. Start with the basics and work your way up to creating your own storyboarded project.",
+    "feature_image": {
+      "src": "https://cdn.steamreader.com/static/sprite-lab.png",
+      "alt": "Code.org Sprite Lab"
+    },
+    "category_id": "e9e74416-22d8-4e26-9357-1a56568a7a16",
+    "sort_order": 0,
+    "created_at": "2026-09-18T05:14:07.758Z",
+    "article_ids": [
+      "e5f6a7b8-c9d0-4e1f-a2b3-4c5d6e7f8a9b",
+      "606374b8-f8ba-4e0f-9148-5ca337774470",
+      "165af792-a141-427f-a001-3b738f2361b4",
+      "bbeed3a9-873b-41c1-a3c1-411356ed6b6c",
+      "ad97e8e5-5b46-4e73-a803-d675a2243d95",
+      "e2b5a490-7aa6-4d91-b278-f3e56008e5db"
+    ]
+  },
+  {
+    "id": "a3e62ec6-f977-4fde-a8fc-5f38c8232031",
+    "slug": "tinkercad-circuits",
+    "title": "Tinkercad Circuits Lab",
+    "description": "Learn to send electricity around a loop and keep your lights safe with resistors. Then learn to use buttons and knobs to turn your lights on, dim them, and mix your own colors!",
+    "feature_image": {
+      "src": "https://cdn.steamreader.com/static/TinkerCAD-Circuits-Course.png",
+      "alt": "TinkerCAD Circuits Lab"
+    },
+    "category_id": "e9e74416-22d8-4e26-9357-1a56568a7a16",
+    "sort_order": 1,
+    "created_at": "2026-09-18T05:14:07.758Z",
+    "article_ids": [
+      "073db6bd-895a-4d6d-b08d-fd1b4cb83f32",
+      "85dd43b6-21bb-408a-beb7-0c4d22ef5169",
+      "0cd16aab-54e8-494d-a96d-0f9b613630cd",
+      "4a863e63-175e-41d5-9d80-eca868be43bd",
+      "f564a273-7bba-48c7-9872-cf9eebdd1214",
+      "e78dc961-f383-46e6-bc56-c2a4b129f9e8"
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+
+# R2 credentials -- see .env.example
+.env
+.env.local
+
+# half-written saves (the store writes to .tmp, then renames)
+content/**/*.tmp
