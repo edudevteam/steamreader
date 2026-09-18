@@ -1,9 +1,6 @@
-import { Suspense, type ReactNode } from 'react'
 import { createBrowserRouter, Navigate, useParams } from 'react-router-dom'
 import PageLayout from 'components/layout/PageLayout'
 import RouteError from 'components/layout/RouteError'
-import RequireRole from 'components/admin/RequireRole'
-import { LoadingBlock } from 'components/admin/ui'
 import HomePage from 'pages/Home'
 import RandomPage from 'pages/Random'
 import LatestPage from 'pages/Latest'
@@ -18,45 +15,9 @@ import AboutPage from 'pages/About'
 import SupportPage from 'pages/Support'
 import ValidationProcessPage from 'pages/ValidationProcess'
 import NotFoundPage from 'pages/NotFound'
-import LoginPage from 'pages/Login'
-import SignupPage from 'pages/Signup'
-import ResetPasswordPage from 'pages/ResetPassword'
-import UpdatePasswordPage from 'pages/UpdatePassword'
-import AccountPage from 'pages/Account'
-import EmailConfirmedPage from 'pages/EmailConfirmed'
 import TermsPage from 'pages/Terms'
 import GroupPage from 'pages/Group'
 import ChangelogPage from 'pages/Changelog'
-import { lazyWithRetry } from './lazyWithRetry'
-
-// The CMS pulls in TipTap, ProseMirror and turndown -- several hundred KB that
-// a reader should never download. Lazy-loading keeps all of it in its own
-// chunk, fetched only when someone actually opens /admin. lazyWithRetry rather
-// than plain lazy so a deploy mid-session does not strand an open tab on a
-// chunk hash that no longer exists.
-const AdminLayout = lazyWithRetry(() => import('components/admin/AdminLayout'))
-const AdminDashboardPage = lazyWithRetry(() => import('pages/admin/Dashboard'))
-const AdminArticlesPage = lazyWithRetry(() => import('pages/admin/Articles'))
-const ArticleEditorPage = lazyWithRetry(
-  () => import('pages/admin/ArticleEditor')
-)
-const AdminArticleTrashPage = lazyWithRetry(
-  () => import('pages/admin/ArticleTrash')
-)
-const AdminGroupsPage = lazyWithRetry(() => import('pages/admin/Groups'))
-const GroupEditorPage = lazyWithRetry(() => import('pages/admin/GroupEditor'))
-const AdminUsersPage = lazyWithRetry(() => import('pages/admin/Users'))
-const AdminTaxonomyPage = lazyWithRetry(() => import('pages/admin/Taxonomy'))
-const DesignerPage = lazyWithRetry(() => import('pages/admin/Designer'))
-const AdminProfilePage = lazyWithRetry(() => import('pages/admin/Profile'))
-const NoAccessPage = lazyWithRetry(() => import('pages/admin/NoAccess'))
-const ArticlePreviewPage = lazyWithRetry(
-  () => import('pages/admin/ArticlePreview')
-)
-
-function Lazy({ children }: { children: ReactNode }) {
-  return <Suspense fallback={<LoadingBlock />}>{children}</Suspense>
-}
 
 /**
  * Groups used to be courses, and /course/<slug> links are out in the world.
@@ -73,142 +34,6 @@ function CourseRedirect() {
 }
 
 export const router = createBrowserRouter([
-  {
-    path: '/admin/no-access',
-    element: (
-      <Lazy>
-        <NoAccessPage />
-      </Lazy>
-    ),
-    errorElement: <RouteError />
-  },
-  // Outside the /admin branch on purpose: the preview opens in its own tab and
-  // wears the public site's chrome, not the CMS shell.
-  {
-    path: '/admin/article-preview',
-    element: (
-      <Lazy>
-        <RequireRole minimum="writer">
-          <ArticlePreviewPage />
-        </RequireRole>
-      </Lazy>
-    ),
-    errorElement: <RouteError />
-  },
-  {
-    path: '/admin',
-    element: (
-      <Lazy>
-        <RequireRole minimum="writer">
-          <AdminLayout />
-        </RequireRole>
-      </Lazy>
-    ),
-    errorElement: <RouteError />,
-    children: [
-      {
-        index: true,
-        element: (
-          <Lazy>
-            <AdminDashboardPage />
-          </Lazy>
-        )
-      },
-      {
-        path: 'articles',
-        element: (
-          <Lazy>
-            <AdminArticlesPage />
-          </Lazy>
-        )
-      },
-      // Ahead of `articles/:id` so the intent is obvious at a glance, though
-      // the router would rank the static segment first either way.
-      {
-        path: 'articles/trash',
-        element: (
-          <Lazy>
-            <AdminArticleTrashPage />
-          </Lazy>
-        )
-      },
-      {
-        path: 'articles/:id',
-        element: (
-          <Lazy>
-            <ArticleEditorPage />
-          </Lazy>
-        )
-      },
-      // Groups are staff-managed -- "Staff manage groups" in the schema --
-      // so the route mirrors the policy rather than relying on the nav to
-      // hide it.
-      {
-        path: 'groups',
-        element: (
-          <Lazy>
-            <RequireRole minimum="editor">
-              <AdminGroupsPage />
-            </RequireRole>
-          </Lazy>
-        )
-      },
-      {
-        path: 'groups/:id',
-        element: (
-          <Lazy>
-            <RequireRole minimum="editor">
-              <GroupEditorPage />
-            </RequireRole>
-          </Lazy>
-        )
-      },
-      {
-        path: 'taxonomy',
-        element: (
-          <Lazy>
-            <RequireRole minimum="editor">
-              <AdminTaxonomyPage />
-            </RequireRole>
-          </Lazy>
-        )
-      },
-      // Admin rather than editor: a save here is live for every visitor with
-      // no draft state to catch it, which is a heavier act than publishing an
-      // article. Mirrors the "Admins manage site settings" policy.
-      {
-        path: 'designer',
-        element: (
-          <Lazy>
-            <RequireRole minimum="admin">
-              <DesignerPage />
-            </RequireRole>
-          </Lazy>
-        )
-      },
-      // The Designer was the Front Page Designer and lived here. Bookmarks and
-      // the odd link in a changelog entry still point at it.
-      { path: 'home', element: <Navigate to="/admin/designer" replace /> },
-      {
-        path: 'users',
-        element: (
-          <Lazy>
-            <RequireRole minimum="admin">
-              <AdminUsersPage />
-            </RequireRole>
-          </Lazy>
-        )
-      },
-      {
-        path: 'profile',
-        element: (
-          <Lazy>
-            <AdminProfilePage />
-          </Lazy>
-        )
-      }
-    ]
-  },
   {
     path: '/',
     element: <PageLayout />,
@@ -273,30 +98,6 @@ export const router = createBrowserRouter([
       {
         path: 'validation-process',
         element: <ValidationProcessPage />
-      },
-      {
-        path: 'login',
-        element: <LoginPage />
-      },
-      {
-        path: 'signup',
-        element: <SignupPage />
-      },
-      {
-        path: 'reset-password',
-        element: <ResetPasswordPage />
-      },
-      {
-        path: 'update-password',
-        element: <UpdatePasswordPage />
-      },
-      {
-        path: 'account',
-        element: <AccountPage />
-      },
-      {
-        path: 'email-confirmed',
-        element: <EmailConfirmedPage />
       },
       {
         path: 'terms',

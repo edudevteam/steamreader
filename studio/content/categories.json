@@ -1,0 +1,18 @@
+[
+  {
+    "id": "33d457f2-2396-4839-b66f-3e4f923ae6f7",
+    "slug": "tutorial",
+    "name": "Tutorial",
+    "description": null,
+    "color": null,
+    "sort_order": 0
+  },
+  {
+    "id": "e9de6e3d-f330-4338-8a59-08bfe5f10080",
+    "slug": "technology",
+    "name": "Technology",
+    "description": null,
+    "color": null,
+    "sort_order": 1
+  }
+]

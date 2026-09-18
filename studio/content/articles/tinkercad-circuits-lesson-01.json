@@ -1,0 +1,45 @@
+{
+  "id": "c0a87c33-cea4-4060-94bb-98246168a827",
+  "slug": "tinkercad-circuits-lesson-01",
+  "title": "tinkercad-circuits-lesson-0",
+  "subtitle": "How to use this course",
+  "excerpt": "",
+  "status": "draft",
+  "published_at": "2026-08-06",
+  "created_at": "2026-08-06",
+  "updated_at": "2026-08-06",
+  "deleted_at": null,
+  "author_ids": [
+    "2e73eca0-ddda-4a31-ab40-307f5ca399e9"
+  ],
+  "category_id": "33d457f2-2396-4839-b66f-3e4f923ae6f7",
+  "tag_ids": [],
+  "feature_image": {
+    "src": "https://cdn.steamreader.com/static/Tinkercad-Circuits-Lesson-0.png",
+    "alt": "Circuits Lesson 0",
+    "caption": ""
+  },
+  "validation": null,
+  "previous_slug": null,
+  "next_slug": "tinkercad-circuits-lesson-1",
+  "content_markdown": null,
+  "content_html": "<h1 id=\"tinkercad-circuits-lesson-0-whats-needed\">TinkerCAD Circuits Lesson 0: What's needed</h1>\n<h2 id=\"lesson-objectives\">📌 Lesson Objectives</h2>\n<h2 id=\"tutorial\">🚀 Tutorial</h2>\n<h2 id=\"challenge\">🧩 Challenge</h2>\n",
+  "toc": [
+    {
+      "id": "lesson-objectives",
+      "text": "📌 Lesson Objectives",
+      "level": 2
+    },
+    {
+      "id": "tutorial",
+      "text": "🚀 Tutorial",
+      "level": 2
+    },
+    {
+      "id": "challenge",
+      "text": "🧩 Challenge",
+      "level": 2
+    }
+  ],
+  "reading_time": 1
+}

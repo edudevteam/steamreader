@@ -4,8 +4,6 @@ import { useArticle } from 'hooks/useContent'
 import { useCodeBlockCopyButtons } from 'hooks/useCodeBlockCopyButtons'
 import ImageLightbox from 'components/ImageLightbox'
 import TableOfContents from 'components/TableOfContents'
-import VoteButtons from 'components/VoteButtons'
-import VoteBadges from 'components/VoteBadges'
 import { parseDate } from 'utils'
 
 export default function ArticlePage() {
@@ -195,11 +193,6 @@ export default function ArticlePage() {
         <SocialShareButtons />
       </div>
 
-      {/* Community Feedback Badges */}
-      <div className="mb-6">
-        <VoteBadges articleId={article.id} />
-      </div>
-
       {/* Article Header */}
       <header className="mb-8">
         <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -359,11 +352,6 @@ export default function ArticlePage() {
           </div>
         </nav>
       )}
-
-      {/* Voting Section */}
-      <div className="mt-8 border-t border-gray-200 pt-8">
-        <VoteButtons articleId={article.id} />
-      </div>
 
       {/* Social Share - Bottom */}
       <div className="mt-8 border-t border-gray-200 pt-8">

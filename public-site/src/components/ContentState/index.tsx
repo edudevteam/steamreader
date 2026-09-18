@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 /**
- * Loading and error shell for pages whose content now comes from Supabase.
+ * Loading and error shell for pages whose content is fetched at runtime.
  *
  * Content used to be bundled JSON and rendered synchronously, so nothing on
  * the public site had a loading state. This keeps that transition uniform

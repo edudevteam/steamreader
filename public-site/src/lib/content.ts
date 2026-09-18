@@ -1,252 +1,126 @@
 /**
- * Public content queries.
+ * Public content reads.
  *
- * Every read here goes through the `article_list` / `article_detail` views,
- * which run with `security_invoker = on`. That means RLS decides visibility:
- * anonymous visitors get published articles only, and there is no way for a
- * draft to leak just because a page forgot to filter.
+ * Everything the site shows is static JSON that the Studio publishes to the
+ * R2 bucket under `data/`:
  *
- * Rows are mapped back into the same `ArticleMeta` / `Article` shapes the site
- * used when content came from JSON, so the pages stay unchanged below the
- * fetch.
+ *   data/articles/index.json   every published article, newest first
+ *   data/articles/<slug>.json  one article with its body
+ *   data/site.json             categories, tags, authors, groups, page layouts
+ *
+ * There is no database and no login behind any of it, so nothing a visitor
+ * does can write to it. Drafts never leave the Studio's machine, so there is
+ * nothing unpublished here to filter out either.
+ *
+ * `VITE_CONTENT_BASE_URL` points somewhere else in development or in the
+ * Studio's preview; the default is the public bucket.
  */
-import { supabase } from 'lib/supabase'
-import { stripInlineMarkdown } from 'utils'
-import { DEFAULT_LAYOUTS, SURFACE_KEYS, normalizePageLayout } from 'types'
+import { DEFAULT_LAYOUTS, normalizePageLayout } from 'types'
 import type {
   Article,
   ArticleMeta,
-  ArticleRow,
-  ArticleDetailRow,
+  ArticlesIndex,
   Author,
   Category,
-  FeatureImage,
   GroupMeta,
   PageLayout,
   PageSurface,
   Tag
 } from 'types'
 
-const FALLBACK_IMAGE: FeatureImage = { src: '', alt: '' }
+export const CONTENT_BASE_URL = (
+  import.meta.env.VITE_CONTENT_BASE_URL ?? 'https://cdn.steamreader.com/data'
+).replace(/\/$/, '')
 
-function toMeta(row: ArticleRow): ArticleMeta {
-  const featureImage = row.feature_image as FeatureImage
+/** The shape of `data/site.json`. */
+export interface SiteData {
+  categories: (Category & { articleCount: number })[]
+  tags: Tag[]
+  authors: Author[]
+  groups: GroupMeta[]
+  /** Only the surfaces the Designer has changed; the rest use the defaults. */
+  layouts: Partial<Record<PageSurface, unknown>>
+}
 
-  return {
-    id: row.id,
-    slug: row.slug,
-    title: row.title,
-    subtitle: row.subtitle ?? undefined,
-    excerpt: row.excerpt,
-    author: {
-      slug: row.author_slug ?? '',
-      name: row.author_name ?? 'Unknown'
-    },
-    // The view already sorts primary-first; map rather than re-sort. An article
-    // with no author at all still needs one entry so bylines never render blank.
-    authors:
-      row.authors && row.authors.length > 0
-        ? row.authors.map((person) => ({
-            slug: person.slug ?? '',
-            name: person.name ?? 'Unknown'
-          }))
-        : [{ slug: row.author_slug ?? '', name: row.author_name ?? 'Unknown' }],
-    // Kept as a full timestamp: `parseDate` handles both shapes, and trimming
-    // to a UTC date pushed anything published in the evening onto tomorrow,
-    // which hid it from every published-only page until local midnight.
-    publishedAt: row.published_at ?? row.created_at,
-    updatedAt: row.updated_at,
-    category: {
-      slug: row.category_slug ?? 'uncategorized',
-      name: row.category_name ?? 'Uncategorized'
-    },
-    tags: row.tags ?? [],
-    featureImage: featureImage?.src ? featureImage : FALLBACK_IMAGE,
-    readingTime: row.reading_time,
-    status: row.status,
-    validation: row.validation ?? undefined
-  }
+class NotFoundError extends Error {}
+
+async function getJson<T>(path: string): Promise<T> {
+  // `no-cache` revalidates rather than skipping the cache: an unchanged file
+  // costs a 304, and a fresh publish shows up on the next navigation instead
+  // of whenever the browser's heuristic expiry runs out.
+  const response = await fetch(`${CONTENT_BASE_URL}/${path}`, {
+    cache: 'no-cache'
+  })
+  if (response.status === 404) throw new NotFoundError(path)
+  if (!response.ok)
+    throw new Error(`Failed to load content (${response.status})`)
+  return (await response.json()) as T
+}
+
+let site: Promise<SiteData> | null = null
+
+/** One request for all the small collections, shared by every hook below. */
+function fetchSite(): Promise<SiteData> {
+  site ??= getJson<SiteData>('site.json').catch((error) => {
+    site = null
+    throw error
+  })
+  return site
+}
+
+/** Forgets the shared site document, so the next read fetches it again. */
+export function resetSiteData(): void {
+  site = null
 }
 
 export async function fetchArticles(): Promise<ArticleMeta[]> {
-  const { data, error } = await supabase
-    .from('article_list')
-    .select('*')
-    .eq('status', 'published')
-    .order('published_at', { ascending: false })
-
-  if (error) throw error
-  return (data as ArticleRow[]).map(toMeta)
+  const index = await getJson<ArticlesIndex>('articles/index.json')
+  return index.articles
 }
 
 export async function fetchArticleBySlug(
   slug: string
 ): Promise<Article | null> {
-  const { data, error } = await supabase
-    .from('article_detail')
-    .select('*')
-    .eq('slug', slug)
-    .maybeSingle()
-
-  if (error) throw error
-  if (!data) return null
-
-  const row = data as ArticleDetailRow
-  const article: Article = {
-    ...toMeta(row),
-    content: row.content_html,
-    // The stored toc predates the strip in extractTableOfContents, so rows
-    // published before it still carry `**bold**` in their heading text.
-    tableOfContents: (row.toc ?? []).map((item) => ({
-      ...item,
-      text: stripInlineMarkdown(item.text)
-    }))
+  try {
+    return await getJson<Article>(`articles/${encodeURIComponent(slug)}.json`)
+  } catch (error) {
+    if (error instanceof NotFoundError) return null
+    throw error
   }
-
-  // prev/next are stored as slugs; the reader needs titles for the nav links.
-  const neighbourSlugs = [row.previous_slug, row.next_slug].filter(
-    Boolean
-  ) as string[]
-  if (neighbourSlugs.length > 0) {
-    const { data: neighbours } = await supabase
-      .from('article_list')
-      .select('slug, title')
-      .in('slug', neighbourSlugs)
-
-    const titleBySlug = new Map(
-      (neighbours ?? []).map((n) => [n.slug, n.title])
-    )
-
-    if (row.previous_slug && titleBySlug.has(row.previous_slug)) {
-      article.previousArticle = {
-        slug: row.previous_slug,
-        title: titleBySlug.get(row.previous_slug)!
-      }
-    }
-    if (row.next_slug && titleBySlug.has(row.next_slug)) {
-      article.nextArticle = {
-        slug: row.next_slug,
-        title: titleBySlug.get(row.next_slug)!
-      }
-    }
-  }
-
-  return article
 }
 
 export async function fetchCategories(): Promise<
   (Category & { articleCount: number })[]
 > {
-  const { data, error } = await supabase
-    .from('category_counts')
-    .select('*')
-    .order('sort_order', { ascending: true })
-    .order('name', { ascending: true })
-
-  if (error) throw error
-
-  return (data ?? []).map((row) => ({
-    slug: row.slug,
-    name: row.name,
-    description: row.description ?? undefined,
-    color: row.color ?? undefined,
-    articleCount: Number(row.article_count) || 0
-  }))
+  return (await fetchSite()).categories
 }
 
 export async function fetchTags(): Promise<Tag[]> {
-  const { data, error } = await supabase
-    .from('tag_counts')
-    .select('*')
-    .order('name', { ascending: true })
-
-  if (error) throw error
-
-  return (data ?? []).map((row) => ({
-    slug: row.slug,
-    name: row.name,
-    articleCount: Number(row.article_count) || 0
-  }))
+  return (await fetchSite()).tags
 }
 
 export async function fetchAuthors(): Promise<Author[]> {
-  const { data, error } = await supabase
-    .from('public_authors')
-    .select('*')
-    .order('name', { ascending: true })
-
-  if (error) throw error
-
-  return (data ?? []).map((row) => ({
-    slug: row.slug ?? '',
-    name: row.name ?? 'Unknown',
-    bio: row.bio ?? undefined,
-    avatar: row.avatar_url ?? undefined,
-    social: row.social ?? undefined,
-    articleCount: Number(row.article_count) || 0
-  }))
+  return (await fetchSite()).authors
 }
 
 export async function fetchGroups(): Promise<GroupMeta[]> {
-  const { data, error } = await supabase
-    .from('groups')
-    .select(
-      'slug, title, description, feature_image, ' +
-        'group_categories(slug, name), group_articles(position, articles(slug))'
-    )
-    .order('sort_order', { ascending: true })
-
-  if (error) throw error
-
-  type GroupJoin = {
-    slug: string
-    title: string
-    description: string
-    feature_image: { src: string; alt: string }
-    group_categories: { slug: string; name: string } | null
-    group_articles: { position: number; articles: { slug: string } | null }[]
-  }
-
-  return ((data ?? []) as unknown as GroupJoin[]).map((row) => ({
-    slug: row.slug,
-    title: row.title,
-    description: row.description,
-    featureImage: row.feature_image?.src
-      ? row.feature_image
-      : { src: '', alt: row.title },
-    category: row.group_categories,
-    articles: [...(row.group_articles ?? [])]
-      .sort((a, b) => a.position - b.position)
-      .map((ga) => ga.articles?.slug)
-      .filter(Boolean) as string[]
-  }))
-}
-
-export async function searchArticles(query: string): Promise<ArticleMeta[]> {
-  const { data, error } = await supabase.rpc('search_articles', { query })
-
-  if (error) throw error
-  return (data as ArticleRow[]).map(toMeta)
+  return (await fetchSite()).groups
 }
 
 /**
- * One page's layout, as saved by the Designer.
- *
- * A missing row is the normal state, not an error: the site ships with default
- * layouts and only writes a row once someone edits one. A failed read is
- * treated the same way -- the page renders its default rather than an error,
- * because a settings table being unreachable is no reason to show a visitor
- * nothing.
+ * One page's layout, as saved by the Designer. A surface nobody has changed
+ * is simply absent, and so is one the site cannot load -- either way the page
+ * renders its built-in default rather than nothing.
  */
 export async function fetchPageLayout(
   surface: PageSurface
 ): Promise<PageLayout> {
-  const { data, error } = await supabase
-    .from('site_settings')
-    .select('value')
-    .eq('key', SURFACE_KEYS[surface])
-    .maybeSingle()
-
-  if (error || !data) return DEFAULT_LAYOUTS[surface]
-  return normalizePageLayout(data.value, surface)
+  try {
+    const stored = (await fetchSite()).layouts?.[surface]
+    return stored
+      ? normalizePageLayout(stored, surface)
+      : DEFAULT_LAYOUTS[surface]
+  } catch {
+    return DEFAULT_LAYOUTS[surface]
+  }
 }

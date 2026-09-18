@@ -2,52 +2,18 @@
 
 # STEAM Reader
 
-A React-based educational content platform with user authentication, article voting, and community feedback features.
-
-> **New to this project?** See the comprehensive [SETUP-GUIDE.md](../SETUP-GUIDE.md) for complete installation, configuration, and deployment instructions.
+The public, read-only half of STEAM Reader. It has no login and no database:
+every page is built from JSON that the [Studio](../studio) publishes to
+Cloudflare R2. See the [repo README](../README.md) for how the two fit together.
 
 ## Tech Stack
 
-This project is built with Vite, React 18, TypeScript, Vitest, Testing Library, TailwindCSS 3, Eslint and Prettier.
-
-## Key Features
-
-- **User Authentication** - Email/password auth with Supabase, email confirmation required
-- **Article Voting** - Users can mark articles as read, verify tutorials, verify links, and endorse
-- **Session Management** - Sessions stored in sessionStorage (cleared on browser close)
-- **Password Security** - 13+ character passwords with complexity requirements and built-in generator
-
-## What is inside?
-
-This project uses many tools like:
-
-- [Vite](https://vitejs.dev)
-- [ReactJS](https://reactjs.org)
-- [TypeScript](https://www.typescriptlang.org)
-- [Supabase](https://supabase.com) - Authentication & Database
-- [Vitest](https://vitest.dev)
-- [Testing Library](https://testing-library.com)
-- [Tailwindcss](https://tailwindcss.com)
-- [Eslint](https://eslint.org)
-- [Prettier](https://prettier.io)
+Vite, React 18, TypeScript, React Router, TailwindCSS 3, Vitest, Testing
+Library, ESLint and Prettier.
 
 ## Getting Started
 
 ### Install
-
-Create the project.
-
-```bash
-pnpm dlx degit joaopaulomoraes/reactjs-vite-tailwindcss-boilerplate my-app
-```
-
-Access the project directory.
-
-```bash
-cd my-app
-```
-
-Install dependencies.
 
 ```bash
 pnpm install
@@ -91,31 +57,19 @@ pnpm run test:ui
 
 ## Articles
 
-Articles live in Supabase and are written in the CMS at `/admin` — there are no
-markdown files in the repo and no build step for content. Saving in the editor
-writes to the database; publishing makes the article live.
+Articles, categories, tags, authors, groups and page layouts are all written
+in the Studio (`../studio`) and published as JSON under
+`https://cdn.steamreader.com/data/`. `src/lib/content.ts` fetches them, and
+`src/hooks/useContent.ts` caches them for the session.
 
-- `/admin/articles` — list, filter, search, and open the editor
-- `/admin/articles/trash` — soft-deleted articles, restorable
-- `/admin/courses` — group articles into an ordered, multi-part series
+**Scheduling:** an article with a future publish date is hidden from listings
+until that date.
 
-The editor has a **Visual** tab and a **Markdown** tab over the same content.
-Article fields (category, tags, feature image, authors, excerpt, validation
-badges) are set in the editor sidebar rather than in frontmatter.
-
-**Scheduling:** the publish date defaults to the moment you publish. Setting it
-in the future keeps the article hidden until then.
-
-**Series:** ordering is handled by courses in `/admin/courses`, which also
-generate the previous/next links on an article.
-
-See [../CMS-SETUP.md](../CMS-SETUP.md) for schema, roles and editor internals.
+`src/data/` holds the JSON snapshot from before the move to R2. The Studio's
+`import:snapshot` script reads it; the site itself uses only
+`data/changelog.json`.
 
 ## Categories and Tags
-
-Both are managed at `/admin/taxonomy` — add, rename, edit or delete, with
-article counts calculated automatically. Categories carry a `sort_order` that
-controls the order shown in the footer and on the categories page.
 
 ### Category Colors
 
@@ -128,10 +82,9 @@ const categoryColors: Record<string, string> = {
 }
 ```
 
-Categories without a mapping use the default gray style. Note that the
-`categories` table has a `color` column that `saveCategory` already writes and
-`fetchCategories` already returns — but no admin screen sets it and the page
-above does not read it. Wiring that up would remove this hardcoded map.
+Categories without a mapping use the default gray style. Categories also carry
+a `color` field in `site.json`, which the page above doesn't read yet. Wiring
+that up would remove this hardcoded map.
 
 ## H5P Interactive Content
 

@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import { classNames } from 'utils'
-import { useAuth } from 'context/AuthContext'
 
 const navigation = [
   {
@@ -122,40 +121,6 @@ const navigation = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isRecoveryMode, setIsRecoveryMode] = useState(false)
-  const { user, profile, signOut, isContributor } = useAuth()
-  const location = useLocation()
-
-  // Detect if user is in password recovery mode
-  useEffect(() => {
-    const isOnUpdatePassword = location.pathname === '/update-password'
-    const hashParams = new URLSearchParams(window.location.hash.substring(1))
-    const type = hashParams.get('type')
-    setIsRecoveryMode(isOnUpdatePassword && type === 'recovery')
-  }, [location])
-
-  const handleSignOut = () => {
-    signOut()
-  }
-
-  // Show minimal header during password recovery - no navigation allowed
-  if (isRecoveryMode) {
-    return (
-      <header className="sticky top-0 z-50 bg-gray-50 shadow-md">
-        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="STEAM Reader" className="h-8 w-auto" />
-              <span className="text-xl font-bold text-gray-900">
-                STEAM Reader
-              </span>
-            </div>
-            <span className="text-sm text-gray-500">Password Reset</span>
-          </div>
-        </nav>
-      </header>
-    )
-  }
 
   return (
     <>
@@ -274,147 +239,6 @@ export default function Header() {
                   </NavLink>
                 ))}
               </div>
-            </div>
-
-            {/* Auth section */}
-            <div className="border-t border-gray-200 p-4">
-              {user ? (
-                <>
-                  <div className="mb-3 px-3">
-                    <p className="text-sm font-medium text-gray-900">
-                      {profile?.display_name || 'User'}
-                    </p>
-                    <p className="truncate text-xs text-gray-500">
-                      {user.email}
-                    </p>
-                  </div>
-                  {isContributor && (
-                    <NavLink
-                      to="/admin"
-                      onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-3 rounded-lg p-3 text-base font-medium text-brand-600 transition-colors hover:bg-brand-50"
-                    >
-                      <svg
-                        className="size-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                        />
-                      </svg>
-                      Content Studio
-                    </NavLink>
-                  )}
-                  <NavLink
-                    to="/account"
-                    onClick={() => setMenuOpen(false)}
-                    className={({ isActive }) =>
-                      classNames(
-                        'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
-                        isActive
-                          ? 'bg-brand-50 text-brand-600'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                      )
-                    }
-                  >
-                    <svg
-                      className="size-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                    Account
-                  </NavLink>
-                  <button
-                    onClick={handleSignOut}
-                    className="flex w-full items-center gap-3 rounded-lg p-3 text-base font-medium text-red-600 transition-colors hover:bg-red-50"
-                  >
-                    <svg
-                      className="size-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                      />
-                    </svg>
-                    Sign Out
-                  </button>
-                </>
-              ) : (
-                <>
-                  <NavLink
-                    to="/login"
-                    onClick={() => setMenuOpen(false)}
-                    className={({ isActive }) =>
-                      classNames(
-                        'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
-                        isActive
-                          ? 'bg-brand-50 text-brand-600'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                      )
-                    }
-                  >
-                    <svg
-                      className="size-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                      />
-                    </svg>
-                    Sign In
-                  </NavLink>
-                  <NavLink
-                    to="/signup"
-                    onClick={() => setMenuOpen(false)}
-                    className={({ isActive }) =>
-                      classNames(
-                        'flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors',
-                        isActive
-                          ? 'bg-brand-50 text-brand-600'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                      )
-                    }
-                  >
-                    <svg
-                      className="size-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                      />
-                    </svg>
-                    Sign Up
-                  </NavLink>
-                </>
-              )}
             </div>
           </div>
         </div>
